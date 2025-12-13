@@ -110,6 +110,14 @@ fetch(CSV_URL)
     initFilters();
   });
 
+   function baseColor(colorKey) {
+     return colorKey
+       .replace(/^dark/, "")
+       .replace(/^light/, "")
+       .replace(/^matte/, "")
+       .replace(/^silk/, "");
+   }
+
 /* ============================
    FILTERS
 ============================ */
@@ -129,6 +137,7 @@ function initFilters() {
          .flat()
          .map(cell => detectColor(cell))
          .filter(Boolean)
+         .map(c => baseColor(c))
      )
    ];
 

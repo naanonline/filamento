@@ -143,7 +143,7 @@ function initFilters() {
 
    colorSelect.innerHTML = `<option value="">Color</option>`;
   colors.forEach(c => {
-     colorSelect.innerHTML += <option value="${c}">${c}</option>;
+     colorSelect.innerHTML += `<option value="${c}">${c}</option>`;
    });
 
   const materials = [...new Set(rawData.map(r => r[1]).filter(Boolean))];

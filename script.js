@@ -205,66 +205,49 @@ function applyFilters() {
 
 
 /* ============================
-   TABLE
+   CARDS
 ============================ */
-function renderTable(data, brand) {
-  const table = document.createElement("table");
+function renderCards(data, brand) {
+  const container = document.getElementById("cards-container");
+  container.innerHTML = "";
 
-  const visibleColumns = headers
-    .map((h, i) => ({ h, i }))
-    .filter(col => {
-      if (col.i < 2) return true;
-      if (!brand) return true;
-      if (col.h === brand) return true;
-      return data.some(row => row[col.i]);
-    });
-
-  if (brand) {
-    visibleColumns.sort((a, b) => {
-      if (a.h === brand) return -1;
-      if (b.h === brand) return 1;
-      return 0;
-    });
-  }
-
-  const thead = document.createElement("tr");
-  visibleColumns.forEach(col => {
-    const th = document.createElement("th");
-    th.textContent = col.h;
-    thead.appendChild(th);
-  });
-  table.appendChild(thead);
+  const brandIndex = brand ? headers.indexOf(brand) : -1;
 
   data.forEach(row => {
-    const tr = document.createElement("tr");
 
-    visibleColumns.forEach(col => {
-      const td = document.createElement("td");
+    headers.forEach((header, colIndex) => {
+      if (colIndex < 2) return;
 
-      const cellValue = row[col.i] || "";
+      // Si hay marca seleccionada, solo esa columna
+      if (brandIndex >= 0 && colIndex !== brandIndex) return;
 
-      if (cellValue) {
-        const color = getSwatchColor(cellValue);
-      
-        // Si detectamos color (no gris default), mostramos swatch
-        if (color !== "#cccccc") {
-          const swatch = document.createElement("span");
-          swatch.className = "swatch";
-          swatch.style.backgroundColor = color;
-      
-          td.appendChild(swatch);
-        }
-      
-        td.appendChild(document.createTextNode(cellValue));
-      }
+      const cellValue = row[colIndex];
+      if (!cellValue) return;
 
-      tr.appendChild(td);
+      const colorHex = getSwatchColor(cellValue);
+      if (colorHex === "#cccccc") return;
+
+      const card = document.createElement("div");
+      card.className = "color-card";
+
+      const swatch = document.createElement("div");
+      swatch.className = "color-swatch";
+      swatch.style.backgroundColor = colorHex;
+
+      const brandLabel = document.createElement("div");
+      brandLabel.className = "color-brand";
+      brandLabel.textContent = header;
+
+      const colorName = document.createElement("div");
+      colorName.className = "color-name";
+      colorName.textContent = cellValue;
+
+      card.appendChild(swatch);
+      card.appendChild(brandLabel);
+      card.appendChild(colorName);
+
+      container.appendChild(card);
     });
 
-    table.appendChild(tr);
   });
-
-  const container = document.getElementById("table-container");
-  container.innerHTML = "";
-  container.appendChild(table);
 }

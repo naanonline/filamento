@@ -69,7 +69,6 @@ fetch(CSV_URL)
     rawData = text.trim().split("\n").map(r => r.split(","));
     headers = rawData.shift();
     initFilters();
-    applyFilters();
   });
 
 /* ============================
@@ -107,13 +106,27 @@ function applyFilters() {
   const color = document.getElementById("colorSelect").value;
   const material = document.getElementById("materialSelect").value;
 
+  const container = document.getElementById("table-container");
+
+  // 👉 Si NO hay ningún filtro activo, no mostramos nada
+  if (!brand && !color && !material) {
+    container.innerHTML = "";
+    return;
+  }
+
   let filtered = rawData;
 
-  if (color) filtered = filtered.filter(r => r[0] === color);
-  if (material) filtered = filtered.filter(r => r[1] === material);
+  if (color) {
+    filtered = filtered.filter(r => r[0] === color);
+  }
+
+  if (material) {
+    filtered = filtered.filter(r => r[1] === material);
+  }
 
   renderTable(filtered, brand);
 }
+
 
 /* ============================
    TABLE

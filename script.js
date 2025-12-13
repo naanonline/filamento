@@ -120,7 +120,7 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
   // Si no hay filtros activos, no mostramos nada
   if (!selectedBrand && !selectedColor && !selectedMaterial) return;
 
-  const brandIndexes = headers.map((h, i) => ({ h, i }));
+  const brandIndexes = headers.map((h, i) => ({ h, i })); // todas las columnas, desde 0 hasta la última
 
   const brandsToRender = selectedBrand
     ? brandIndexes.filter(b => b.h === selectedBrand)
@@ -136,7 +136,7 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
 
   brandsToRender.forEach(({ h, i }) => {
     const filteredRows = data.filter(row => {
-      const cellValue = row[i] || "";
+      const cellValue = row[i] || ""; // nunca undefined
       if (!cellValue) return false;
 
       let colorMatch = true;

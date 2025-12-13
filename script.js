@@ -152,6 +152,7 @@ function applyFilters() {
   const brand = document.getElementById("brandSelect").value;
   const color = document.getElementById("colorSelect").value;
   const material = document.getElementById("materialSelect").value;
+  const brandIndex = brand ? headers.indexOf(brand) : -1;
 
   const container = document.getElementById("table-container");
 
@@ -164,9 +165,16 @@ function applyFilters() {
   let filtered = rawData;
 
   if (color) {
-     filtered = filtered.filter(row =>
-       row.some(cell => detectColor(cell) === color)
-     );
+     filtered = filtered.filter(row => {
+   
+       // 🎯 Caso 1: hay marca base → color DEBE coincidir ahí
+       if (brandIndex >= 0) {
+         return detectColor(row[brandIndex]) === color;
+       }
+   
+       // 🎯 Caso 2: sin marca base → cualquier columna
+       return row.some(cell => detectColor(cell) === color);
+     });
    }
 
   if (material) {

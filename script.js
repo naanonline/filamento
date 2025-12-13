@@ -101,10 +101,18 @@ function initFilters() {
     brandSelect.innerHTML += `<option value="${h}">${h}</option>`;
   });
 
-  // colores
-  const colors = [...new Set(rawData.flat().map(cell => detectColor(cell)).filter(Boolean))];
+  // colores → revisamos TODAS las columnas de marcas
+  const colors = new Set();
+  rawData.forEach(row => {
+    headers.slice(2).forEach((h, i) => {
+      const cell = row[i] ? row[i].trim() : "";
+      const detected = detectColor(cell);
+      if (detected) colors.add(detected);
+    });
+  });
+
   colorSelect.innerHTML = `<option value="">Color</option>`;
-  colors.forEach(c => {
+  Array.from(colors).sort().forEach(c => {
     colorSelect.innerHTML += `<option value="${c}">${toProperName(c)}</option>`;
   });
 

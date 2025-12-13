@@ -9,6 +9,11 @@ const CSV_URL =
 ============================ */
 let rawData = [];
 let headers = [];
+rawData = rawData.map(row => {
+    const newRow = [...row];
+    while (newRow.length < headers.length) newRow.push("");
+    return newRow;
+});
 
 /* ============================
    COLOR KEYWORDS (REAL DATA)

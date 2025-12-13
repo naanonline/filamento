@@ -1,4 +1,4 @@
-/* Funcional============================
+/* ============================
    CONFIG
 ============================ */
 const CSV_URL =
@@ -200,71 +200,89 @@ function applyFilters() {
     filtered = filtered.filter(r => r[1] === material);
   }
 
-  renderTable(filtered, brand);
+  renderCards(filtered, brand, color, material);
 }
 
 
 /* ============================
-   TABLE
+   CARDS
 ============================ */
-function renderTable(data, brand) {
-  const table = document.createElement("table");
-
-  const visibleColumns = headers
-    .map((h, i) => ({ h, i }))
-    .filter(col => {
-      if (col.i < 2) return true;
-      if (!brand) return true;
-      if (col.h === brand) return true;
-      return data.some(row => row[col.i]);
-    });
-
-  if (brand) {
-    visibleColumns.sort((a, b) => {
-      if (a.h === brand) return -1;
-      if (b.h === brand) return 1;
-      return 0;
-    });
-  }
-
-  const thead = document.createElement("tr");
-  visibleColumns.forEach(col => {
-    const th = document.createElement("th");
-    th.textContent = col.h;
-    thead.appendChild(th);
-  });
-  table.appendChild(thead);
-
-  data.forEach(row => {
-    const tr = document.createElement("tr");
-
-    visibleColumns.forEach(col => {
-      const td = document.createElement("td");
-
-      const cellValue = row[col.i] || "";
-
-      if (cellValue) {
-        const color = getSwatchColor(cellValue);
-      
-        // Si detectamos color (no gris default), mostramos swatch
-        if (color !== "#cccccc") {
-          const swatch = document.createElement("span");
-          swatch.className = "swatch";
-          swatch.style.backgroundColor = color;
-      
-          td.appendChild(swatch);
-        }
-      
-        td.appendChild(document.createTextNode(cellValue));
-      }
-
-      tr.appendChild(td);
-    });
-
-    table.appendChild(tr);
-  });
-
-  const container = document.getElementById("table-container");
+function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
+  const container = document.getElementById("results");
   container.innerHTML = "";
-  container.appendChild(table);
+
+  const brandIndexes = headers
+    .map((h, i) => ({ h, i }))
+    .filter(col => col.i >= 2); // columnas de marcas
+
+  const brandsToRender = selectedBrand
+    ? brandIndexes.filter(b => b.h === selectedBrand)
+    : brandIndexes;
+
+  brandsToRender.forEach(({ h, i }) => {
+    const filteredRows = data.filter(row => {
+      const cellValue = row[i];
+      if (!cellValue) return false;
+
+      let colorMatch = true;
+      if (selectedColor) colorMatch = normalizeColorName(cellValue).includes(selectedColor);
+
+      let materialMatch = true;
+      if (selectedMaterial) materialMatch = row[1]?.trim() === selectedMaterial;
+
+      return colorMatch && materialMatch;
+    });
+
+    const cards = filteredRows.map(row => ({
+      brand: h,
+      name: row[i],
+      color: getSwatchColor(row[i])
+    }));
+
+    const section = document.createElement("div");
+    section.className = "brand-section";
+
+    const title = document.createElement("div");
+    title.className = "brand-title";
+    title.textContent = h;
+    section.appendChild(title);
+
+    const grid = document.createElement("div");
+    grid.className = "brand-grid";
+
+    if (cards.length === 0) {
+      const empty = document.createElement("div");
+      empty.textContent = "No hay coincidencias";
+      empty.style.fontSize = "13px";
+      empty.style.color = "#999";
+      empty.style.gridColumn = "1 / -1";
+      grid.appendChild(empty);
+    } else {
+      cards.forEach(c => {
+        const card = document.createElement("div");
+        card.className = "color-card";
+
+        const swatch = document.createElement("div");
+        swatch.className = "color-swatch";
+        swatch.style.backgroundColor = c.color;
+
+        const brandLabel = document.createElement("div");
+        brandLabel.className = "color-brand";
+        brandLabel.textContent = c.brand;
+
+        const colorName = document.createElement("div");
+        colorName.className = "color-name";
+        colorName.textContent = c.name;
+
+        card.appendChild(swatch);
+        card.appendChild(brandLabel);
+        card.appendChild(colorName);
+
+        grid.appendChild(card);
+      });
+    }
+
+    section.appendChild(grid);
+    container.appendChild(section);
+  });
 }

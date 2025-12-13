@@ -64,13 +64,17 @@ function toProperName(colorKey) {
 fetch(CSV_URL)
   .then(res => res.text())
   .then(text => {
-    rawData = text.trim().split("\n").map(r => r.split(","));
+    rawData = rawData.map(row => {
+     const newRow = new Array(headers.length).fill("");
+     row.forEach((val, idx) => newRow[idx] = val);
+     return newRow;
+   });
     headers = rawData.shift();
 
     // 🔹 Normalizamos filas para que todas tengan la misma longitud que headers
     rawData = rawData.map(row => {
-     const newRow = new Array(headers.length).fill("");
-     row.forEach((val, idx) => newRow[idx] = val);
+     const newRow = [...row];
+     while (newRow.length < headers.length) newRow.push("");
      return newRow;
    });
 

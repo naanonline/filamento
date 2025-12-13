@@ -211,17 +211,17 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
   const container = document.getElementById("results");
   container.innerHTML = "";
 
-  // Columnas de marcas (a partir de la columna 2)
+  // Columnas de marcas: todas
   const brandIndexes = headers
     .map((h, i) => ({ h, i }))
-    .filter(col => col.i >= 0);
+    .filter(col => col.i >= 0); // incluir todas las columnas
 
   // Filtramos las marcas a mostrar
   const brandsToRender = selectedBrand
     ? brandIndexes.filter(b => b.h === selectedBrand)
     : brandIndexes;
 
-  // Ordenamos para que la marca seleccionada salga primero
+  // Ordenar para que la marca seleccionada aparezca primero
   if (selectedBrand) {
     brandsToRender.sort((a, b) => {
       if (a.h === selectedBrand) return -1;
@@ -232,29 +232,41 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
 
   brandsToRender.forEach(({ h, i }) => {
     const filteredRows = data.filter(row => {
-      // 🎯 Si hay marca seleccionada, tomamos esa columna
-      // 🎯 Si no hay marca seleccionada, buscamos cualquier columna de marcas
-      const cellValue = selectedBrand ? row[i] : row.slice(0).find(c => c);
-      if (!cellValue) return false;
+      // Valor de la celda de la marca
+      let cellValue = selectedBrand ? row[i] : null;
 
+      // Filtrar color
       let colorMatch = true;
-      if (selectedColor) colorMatch = normalizeColorName(cellValue).includes(selectedColor);
+      if (selectedColor) {
+        if (selectedBrand) {
+          colorMatch = normalizeColorName(cellValue || "").includes(selectedColor);
+        } else {
+          // Buscar en TODAS las columnas
+          colorMatch = row.some(c => normalizeColorName(c || "").includes(selectedColor));
+        }
+      }
 
+      // Filtrar material
       let materialMatch = true;
       if (selectedMaterial) materialMatch = row[1]?.trim() === selectedMaterial;
+
+      // Si no hay marca seleccionada, usamos la primera columna con valor para mostrar
+      if (!cellValue) cellValue = row.slice(0).find(c => c) || "";
 
       return colorMatch && materialMatch;
     });
 
+    // Generar las tarjetas
     const cards = filteredRows.map(row => {
-      const cellValue = selectedBrand ? row[i] : row.slice(0).find(c => c);
+      const value = selectedBrand ? row[i] : row.slice(0).find(c => c) || "";
       return {
         brand: h,
-        name: cellValue,
-        color: getSwatchColor(cellValue)
+        name: value,
+        color: getSwatchColor(value)
       };
     });
 
+    // Sección de la marca
     const section = document.createElement("div");
     section.className = "brand-section";
 

@@ -267,39 +267,42 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
     const grid = document.createElement("div");
     grid.className = "brand-grid";
 
-    if (cards.length === 0) {
-      const empty = document.createElement("div");
-      empty.textContent = "No hay coincidencias";
-      empty.style.fontSize = "13px";
-      empty.style.color = "#999";
-      empty.style.gridColumn = "1 / -1";
-      grid.appendChild(empty);
-    } else {
-      cards.forEach(c => {
-        const card = document.createElement("div");
-        card.className = "color-card";
-
-        const swatch = document.createElement("div");
-        swatch.className = "color-swatch";
-        swatch.style.backgroundColor = c.color;
-
-        const brandLabel = document.createElement("div");
-        brandLabel.className = "color-brand";
-        brandLabel.textContent = c.brand;
-
-        const colorName = document.createElement("div");
-        colorName.className = "color-name";
-        colorName.textContent = c.name;
-
-        card.appendChild(swatch);
-        card.appendChild(brandLabel);
-        card.appendChild(colorName);
-
-        grid.appendChild(card);
-      });
-    }
-
-    section.appendChild(grid);
-    container.appendChild(section);
+    if (cards.length > 0) {
+     const section = document.createElement("div");
+     section.className = "brand-section";
+   
+     const title = document.createElement("div");
+     title.className = "brand-title";
+     title.textContent = h;
+     section.appendChild(title);
+   
+     const grid = document.createElement("div");
+     grid.className = "brand-grid";
+   
+     cards.forEach(c => {
+       const card = document.createElement("div");
+       card.className = "color-card";
+   
+       const swatch = document.createElement("div");
+       swatch.className = "color-swatch";
+       swatch.style.backgroundColor = c.color;
+   
+       const brandLabel = document.createElement("div");
+       brandLabel.className = "color-brand";
+       brandLabel.textContent = c.brand;
+   
+       const colorName = document.createElement("div");
+       colorName.className = "color-name";
+       colorName.textContent = c.name;
+   
+       card.appendChild(swatch);
+       card.appendChild(brandLabel);
+       card.appendChild(colorName);
+   
+       grid.appendChild(card);
+     });
+   
+     section.appendChild(grid);
+     container.appendChild(section);
   });
 }

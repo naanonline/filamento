@@ -61,16 +61,6 @@ function toProperName(colorKey) {
 /* ============================
    INIT
 ============================ */
-fetch(CSV_URL)
-  .then(res => res.text())
-  .then(text => {
-    rawData = rawData.map(row => {
-     const newRow = new Array(headers.length).fill("");
-     row.forEach((val, idx) => newRow[idx] = val);
-     return newRow;
-   });
-    headers = rawData.shift();
-
     // 🔹 Normalizamos filas para que todas tengan la misma longitud que headers
     rawData = rawData.map(row => {
      const newRow = [...row];
@@ -78,6 +68,11 @@ fetch(CSV_URL)
      return newRow;
    });
 
+fetch(CSV_URL)
+  .then(res => res.text())
+  .then(text => {
+    rawData = text.trim().split("\n").map(r => r.split(","));
+    headers = rawData.shift();
 
     initFilters();
   });

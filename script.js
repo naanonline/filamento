@@ -14,17 +14,35 @@ let headers = [];
    COLOR MAP
 ============================ */
 const colorMap = {
+  White: "#fafafa",
+  Black: "#212121",
+  Gray: "#9e9e9e",
+  Silver: "",
+  Beige: "#f5f5dc",
   Red: "#c62828",
-  Scarlet: "#d32f2f",
-  Burgundy: "#6d1b1b",
   DarkRed: "#8e0000",
+  Pink: "",
+  LightPink: "",
   Orange: "#ef6c00",
   Yellow: "#fbc02d",
+  Lime: "",
   Green: "#2e7d32",
+  DarkGreen: "",
+  Olive: "",
   Blue: "#1565c0",
-  Black: "#212121",
-  White: "#fafafa",
-  Gray: "#9e9e9e"
+  NavyBlue: "",
+  LightBlue: "",
+  Cyan: "",
+  Purple: "",
+  Lavender: "",
+  Brown: "",
+  Wood: "",
+  Marble: "",
+  GlowGreen: "",
+  SilkGold: "",
+  SilkSilver: "",
+  MatteBlack: "",
+  MatteWhite: ""
 };
 
 function getSwatchColor(colorName) {

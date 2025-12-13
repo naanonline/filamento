@@ -167,13 +167,15 @@ function applyFilters() {
   if (color) {
      filtered = filtered.filter(row => {
    
-       // 🎯 Caso 1: hay marca base → color DEBE coincidir ahí
+       // 🎯 Hay marca base → match SOLO en esa columna
        if (brandIndex >= 0) {
-         return detectColor(row[brandIndex]) === color;
+         return normalize(row[brandIndex] || "").includes(color);
        }
    
-       // 🎯 Caso 2: sin marca base → cualquier columna
-       return row.some(cell => detectColor(cell) === color);
+       // 🎯 Sin marca base → match en cualquier columna
+       return row.some(cell =>
+         normalize(cell || "").includes(color)
+       );
      });
    }
 

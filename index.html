@@ -2,65 +2,97 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Equivalencias de Filamento</title>
+  <title>Buscador de Equivalencias de Filamento</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-top: 15px;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 6px 8px;
-      font-size: 13px;
-    }
-    th {
-      background: #f2f2f2;
-    }
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    select { margin-right: 10px; padding: 5px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 15px; }
+    th, td { border: 1px solid #ccc; padding: 6px 8px; font-size: 13px; }
+    th { background: #f2f2f2; }
   </style>
 </head>
 <body>
 
 <h1>Equivalencias de Filamentos</h1>
-<button onclick="loadData()">Cargar datos</button>
+
+<div>
+  <select id="brandSelect"></select>
+  <select id="colorSelect"></select>
+  <select id="materialSelect"></select>
+</div>
 
 <div id="table-container"></div>
 
 <script>
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSqQ7ZocXOFSN_kojnrH3dHhf2uHmQ2uFVVcG9FYNlbGg8YiTuS5piDSGyZ3-1P8hVUPcpazMHyOf18/pub?output=csv";
 
-function parseCSV(text) {
-  return text
-    .trim()
-    .split("\n")
-    .map(row => row.split(","));
+let rawData = [];
+let headers = [];
+
+fetch(CSV_URL)
+  .then(res => res.text())
+  .then(text => {
+    rawData = text.trim().split("\n").map(r => r.split(","));
+    headers = rawData.shift();
+    initFilters();
+    renderTable(rawData);
+  });
+
+function initFilters() {
+  const brandSelect = document.getElementById("brandSelect");
+  const colorSelect = document.getElementById("colorSelect");
+  const materialSelect = document.getElementById("materialSelect");
+
+  brandSelect.innerHTML = `<option value="">Marca base</option>`;
+  headers.forEach(h => brandSelect.innerHTML += `<option value="${h}">${h}</option>`);
+
+  const colors = [...new Set(rawData.map(r => r[0]).filter(Boolean))];
+  colorSelect.innerHTML = `<option value="">Color</option>`;
+  colors.forEach(c => colorSelect.innerHTML += `<option value="${c}">${c}</option>`);
+
+  const materials = [...new Set(rawData.map(r => r[1]).filter(Boolean))];
+  materialSelect.innerHTML = `<option value="">Material</option>`;
+  materials.forEach(m => materialSelect.innerHTML += `<option value="${m}">${m}</option>`);
+
+  brandSelect.onchange = colorSelect.onchange = materialSelect.onchange = applyFilters;
 }
 
-function loadData() {
-  fetch(CSV_URL)
-    .then(res => res.text())
-    .then(text => {
-      const data = parseCSV(text);
-      renderTable(data);
-    });
+function applyFilters() {
+  const brand = document.getElementById("brandSelect").value;
+  const color = document.getElementById("colorSelect").value;
+  const material = document.getElementById("materialSelect").value;
+
+  let filtered = rawData;
+
+  if (color) filtered = filtered.filter(r => r[0] === color);
+  if (material) filtered = filtered.filter(r => r[1] === material);
+
+  renderTable(filtered, brand);
 }
 
-function renderTable(data) {
+function renderTable(data, brand) {
   const table = document.createElement("table");
+  const thead = document.createElement("tr");
 
-  data.forEach((row, i) => {
+  headers.forEach((h, i) => {
+    if (!brand || h === brand || i < 2) {
+      const th = document.createElement("th");
+      th.textContent = h;
+      thead.appendChild(th);
+    }
+  });
+
+  table.appendChild(thead);
+
+  data.forEach(row => {
     const tr = document.createElement("tr");
-
-    row.forEach(cell => {
-      const el = document.createElement(i === 0 ? "th" : "td");
-      el.textContent = cell;
-      tr.appendChild(el);
+    row.forEach((cell, i) => {
+      if (!brand || headers[i] === brand || i < 2) {
+        const td = document.createElement("td");
+        td.textContent = cell;
+        tr.appendChild(td);
+      }
     });
-
     table.appendChild(tr);
   });
 

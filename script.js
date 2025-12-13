@@ -2,7 +2,7 @@
    CONFIG
 ============================ */
 const CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSqQ7ZocXOFSN_kojnrH3dHhf2uHmQ2uFVVcG9FYNlbGg8YiTuS5piDSGyZ3-1P8hVUPcpazMHyOf18/pub?output=csv";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSqQ7ZocXOFSN_kojnrHhf2uHmQ2uFVVcG9FYNlbGg8YiTuS5piDSGyZ3-1P8hVUPcpazMHyOf18/pub?output=csv";
 
 /* ============================
    STATE
@@ -67,15 +67,6 @@ function detectColor(cellValue) {
   return null;
 }
 
-function toProperName(colorKey) {
-  return colorKey
-    .replace(/([a-z])([a-z]+)/g, "$1$2")
-    .replace(/(dark|light|matte|silk)/g, "$1 ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .replace(/\b\w/g, c => c.toUpperCase());
-}
-
 /* ============================
    INIT
 ============================ */
@@ -83,10 +74,7 @@ fetch(CSV_URL)
   .then(res => res.text())
   .then(text => {
     rawData = text.trim().split("\n").map(r => r.split(","));
-
-    // 🔹 Normalizamos headers
-    headers = rawData.shift().map(h => h.trim().replace(/\s+/g, " "));
-
+    headers = rawData.shift();
     initFilters();
   });
 
@@ -98,33 +86,21 @@ function initFilters() {
   const colorSelect = document.getElementById("colorSelect");
   const materialSelect = document.getElementById("materialSelect");
 
-  // 🔹 Marcas normalizadas
-  const brandHeaders = headers.slice(2); // columnas de marcas
+  // Marcas
   brandSelect.innerHTML = `<option value="">Marca base</option>`;
-  brandHeaders.forEach(h => {
+  headers.forEach(h => {
     brandSelect.innerHTML += `<option value="${h}">${h}</option>`;
   });
 
-  // 🔹 Colores: recorrer todas las columnas de marcas
-  const colors = new Set();
-  rawData.forEach(row => {
-    brandHeaders.forEach((h, idx) => {
-      const colIdx = idx + 2; // real índice en rawData
-      const cell = row[colIdx] ? row[colIdx].trim() : "";
-      const detected = detectColor(cell);
-      if (detected) colors.add(detected);
-    });
+  // Colores
+  const colors = [...new Set(rawData.map(r => r[0]).filter(Boolean))];
+  colorSelect.innerHTML = `<option value="">Color</option>`;
+  colors.forEach(c => {
+    colorSelect.innerHTML += `<option value="${c}">${c}</option>`;
   });
 
-  colorSelect.innerHTML = `<option value="">Color</option>`;
-  Array.from(colors)
-    .sort()
-    .forEach(c => {
-      colorSelect.innerHTML += `<option value="${c}">${toProperName(c)}</option>`;
-    });
-
-  // 🔹 Materiales
-  const materials = [...new Set(rawData.map(r => r[1]?.trim()).filter(Boolean))];
+  // Materiales
+  const materials = [...new Set(rawData.map(r => r[1]).filter(Boolean))];
   materialSelect.innerHTML = `<option value="">Material</option>`;
   materials.forEach(m => {
     materialSelect.innerHTML += `<option value="${m}">${m}</option>`;
@@ -140,99 +116,92 @@ function applyFilters() {
   const brand = document.getElementById("brandSelect").value;
   const color = document.getElementById("colorSelect").value;
   const material = document.getElementById("materialSelect").value;
+  const brandIndex = brand ? headers.indexOf(brand) : -1;
 
-  const container = document.getElementById("results");
+  const container = document.getElementById("table-container");
 
+  // Si NO hay filtros activos, no mostramos nada
   if (!brand && !color && !material) {
     container.innerHTML = "";
     return;
   }
 
-  renderCards(rawData, brand, color, material);
+  let filtered = rawData;
+
+  if (color) {
+    filtered = filtered.filter(row => {
+      if (brandIndex >= 0) {
+        return normalizeColorName(row[brandIndex] || "").includes(color);
+      }
+      return row.some(cell => normalizeColorName(cell || "").includes(color));
+    });
+  }
+
+  if (material) {
+    filtered = filtered.filter(r => r[1] === material);
+  }
+
+  renderTable(filtered, brand);
 }
 
 /* ============================
-   CARDS
+   TABLE
 ============================ */
-function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
-  const container = document.getElementById("results");
-  container.innerHTML = "";
+function renderTable(data, brand) {
+  const table = document.createElement("table");
 
-  const brandIndexes = headers
+  const visibleColumns = headers
     .map((h, i) => ({ h, i }))
-    .filter(col => col.i >= 2); // columnas de marcas
-
-  const brandsToRender = selectedBrand
-    ? brandIndexes.filter(b => b.h === selectedBrand)
-    : brandIndexes;
-
-  brandsToRender.forEach(({ h, i }) => {
-    const filteredRows = data.filter(row => {
-      const cellValue = row[i];
-      if (!cellValue) return false;
-
-      let colorMatch = true;
-      if (selectedColor) colorMatch = normalizeColorName(cellValue).includes(selectedColor);
-
-      let materialMatch = true;
-      if (selectedMaterial) materialMatch = row[1]?.trim() === selectedMaterial;
-
-      return colorMatch && materialMatch;
+    .filter(col => {
+      if (col.i < 2) return true;
+      if (!brand) return true;
+      if (col.h === brand) return true;
+      return data.some(row => row[col.i]);
     });
 
-    const cards = filteredRows.map(row => {
-      const cellValue = row[i];
-      return {
-        brand: h,
-        name: cellValue,
-        color: getSwatchColor(cellValue)
-      };
+  if (brand) {
+    visibleColumns.sort((a, b) => {
+      if (a.h === brand) return -1;
+      if (b.h === brand) return 1;
+      return 0;
     });
+  }
 
-    const section = document.createElement("div");
-    section.className = "brand-section";
-
-    const title = document.createElement("div");
-    title.className = "brand-title";
-    title.textContent = h;
-    section.appendChild(title);
-
-    const grid = document.createElement("div");
-    grid.className = "brand-grid";
-
-    if (cards.length === 0) {
-      const empty = document.createElement("div");
-      empty.textContent = "No hay coincidencias";
-      empty.style.fontSize = "13px";
-      empty.style.color = "#999";
-      empty.style.gridColumn = "1 / -1";
-      grid.appendChild(empty);
-    } else {
-      cards.forEach(c => {
-        const card = document.createElement("div");
-        card.className = "color-card";
-
-        const swatch = document.createElement("div");
-        swatch.className = "color-swatch";
-        swatch.style.backgroundColor = c.color;
-
-        const brandLabel = document.createElement("div");
-        brandLabel.className = "color-brand";
-        brandLabel.textContent = c.brand;
-
-        const colorName = document.createElement("div");
-        colorName.className = "color-name";
-        colorName.textContent = c.name;
-
-        card.appendChild(swatch);
-        card.appendChild(brandLabel);
-        card.appendChild(colorName);
-
-        grid.appendChild(card);
-      });
-    }
-
-    section.appendChild(grid);
-    container.appendChild(section);
+  const thead = document.createElement("tr");
+  visibleColumns.forEach(col => {
+    const th = document.createElement("th");
+    th.textContent = col.h;
+    thead.appendChild(th);
   });
+  table.appendChild(thead);
+
+  data.forEach(row => {
+    const tr = document.createElement("tr");
+
+    visibleColumns.forEach(col => {
+      const td = document.createElement("td");
+      const cellValue = row[col.i] || "";
+
+      if (cellValue) {
+        const color = getSwatchColor(cellValue);
+
+        if (color !== "#cccccc") {
+          const swatch = document.createElement("span");
+          swatch.className = "swatch";
+          swatch.style.backgroundColor = color;
+          td.appendChild(swatch);
+        }
+
+        td.appendChild(document.createTextNode(cellValue));
+      }
+
+      tr.appendChild(td);
+    });
+
+    table.appendChild(tr);
+  });
+
+  const container = document.getElementById("table-container");
+  container.innerHTML = "";
+  container.appendChild(table);
 }

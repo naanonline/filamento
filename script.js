@@ -45,9 +45,20 @@ const colorMap = {
   MatteWhite: ""
 };
 
-function getSwatchColor(colorName) {
-  return colorMap[colorName] || "#cccccc";
+function normalizeColorName(name) {
+  return name
+    .toLowerCase()
+    .replace(/\s+/g, "")
+    .replace(/[-_]/g, "");
 }
+
+function getSwatchColor(colorName) {
+  if (!colorName) return "#cccccc";
+
+  const key = normalizeColorName(colorName);
+  return colorMap[key] || "#cccccc";
+}
+
 
 /* ============================
    INIT

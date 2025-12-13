@@ -83,8 +83,10 @@ fetch(CSV_URL)
   .then(res => res.text())
   .then(text => {
     rawData = text.trim().split("\n").map(r => r.split(","));
-    // Normalizamos headers (trim)
-    headers = rawData.shift().map(h => h.trim());
+
+    // 🔹 Normalizamos headers
+    headers = rawData.shift().map(h => h.trim().replace(/\s+/g, " "));
+
     initFilters();
   });
 
@@ -96,21 +98,21 @@ function initFilters() {
   const colorSelect = document.getElementById("colorSelect");
   const materialSelect = document.getElementById("materialSelect");
 
-  // Marcas
+  // 🔹 Marcas normalizadas
+  const brandHeaders = headers.slice(2); // columnas de marcas
   brandSelect.innerHTML = `<option value="">Marca base</option>`;
-  headers.slice(2).forEach(h => {
+  brandHeaders.forEach(h => {
     brandSelect.innerHTML += `<option value="${h}">${h}</option>`;
   });
 
-  // Colores → recorrer TODAS las columnas de marcas usando índice real
+  // 🔹 Colores: recorrer todas las columnas de marcas
   const colors = new Set();
   rawData.forEach(row => {
-    headers.forEach((h, idx) => {
-      if (idx >= 2) { // solo marcas
-        const cell = row[idx] ? row[idx].trim() : "";
-        const detected = detectColor(cell);
-        if (detected) colors.add(detected);
-      }
+    brandHeaders.forEach((h, idx) => {
+      const colIdx = idx + 2; // real índice en rawData
+      const cell = row[colIdx] ? row[colIdx].trim() : "";
+      const detected = detectColor(cell);
+      if (detected) colors.add(detected);
     });
   });
 
@@ -121,7 +123,7 @@ function initFilters() {
       colorSelect.innerHTML += `<option value="${c}">${toProperName(c)}</option>`;
     });
 
-  // Materiales
+  // 🔹 Materiales
   const materials = [...new Set(rawData.map(r => r[1]?.trim()).filter(Boolean))];
   materialSelect.innerHTML = `<option value="">Material</option>`;
   materials.forEach(m => {

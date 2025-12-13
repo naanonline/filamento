@@ -207,47 +207,74 @@ function applyFilters() {
 /* ============================
    CARDS
 ============================ */
-function renderCards(data, brand) {
-  const container = document.getElementById("cards-container");
+function renderCards(data, selectedBrand) {
+  const container = document.getElementById("results");
   container.innerHTML = "";
 
-  const brandIndex = brand ? headers.indexOf(brand) : -1;
+  const brandIndexes = headers
+    .map((h, i) => ({ h, i }))
+    .filter(col => col.i >= 2);
 
-  data.forEach(row => {
+  // Si hay marca seleccionada → solo esa
+  const brandsToRender = selectedBrand
+    ? brandIndexes.filter(b => b.h === selectedBrand)
+    : brandIndexes;
 
-    headers.forEach((header, colIndex) => {
-      if (colIndex < 2) return;
+  brandsToRender.forEach(({ h, i }) => {
+    const cards = [];
 
-      // Si hay marca seleccionada, solo esa columna
-      if (brandIndex >= 0 && colIndex !== brandIndex) return;
-
-      const cellValue = row[colIndex];
+    data.forEach(row => {
+      const cellValue = row[i];
       if (!cellValue) return;
 
       const colorHex = getSwatchColor(cellValue);
       if (colorHex === "#cccccc") return;
 
+      cards.push({
+        brand: h,
+        name: cellValue,
+        color: colorHex
+      });
+    });
+
+    if (!cards.length) return;
+
+    // 🔹 Brand section
+    const section = document.createElement("div");
+    section.className = "brand-section";
+
+    const title = document.createElement("div");
+    title.className = "brand-title";
+    title.textContent = h;
+
+    const grid = document.createElement("div");
+    grid.className = "brand-grid";
+
+    cards.forEach(c => {
       const card = document.createElement("div");
       card.className = "color-card";
 
       const swatch = document.createElement("div");
       swatch.className = "color-swatch";
-      swatch.style.backgroundColor = colorHex;
+      swatch.style.backgroundColor = c.color;
 
       const brandLabel = document.createElement("div");
       brandLabel.className = "color-brand";
-      brandLabel.textContent = header;
+      brandLabel.textContent = c.brand;
 
       const colorName = document.createElement("div");
       colorName.className = "color-name";
-      colorName.textContent = cellValue;
+      colorName.textContent = c.name;
 
       card.appendChild(swatch);
       card.appendChild(brandLabel);
       card.appendChild(colorName);
 
-      container.appendChild(card);
+      grid.appendChild(card);
     });
 
+    section.appendChild(title);
+    section.appendChild(grid);
+    container.appendChild(section);
   });
 }

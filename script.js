@@ -166,10 +166,10 @@ function initFilters() {
 }
 
 function applyFilters() {
-  const brand = document.getElementById("brandSelect").value;
-  const color = document.getElementById("colorSelect").value;
-  const material = document.getElementById("materialSelect").value;
-  const brandIndex = brand ? headers.indexOf(brand) : -1;
+  const brand = document.getElementById("brandSelect").value || "";
+    const color = document.getElementById("colorSelect").value || "";
+    const material = document.getElementById("materialSelect").value || "";
+  const brandIndex = brand ? headers.indexOf(brand) : 0;
 
   const container = document.getElementById("table-container");
 
@@ -200,7 +200,7 @@ function applyFilters() {
     filtered = filtered.filter(r => r[1] === material);
   }
 
-  renderCards(filtered, brand, color, material);
+  renderCards(rawData, brand, color, material);
 }
 
 

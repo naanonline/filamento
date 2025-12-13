@@ -63,10 +63,11 @@ function toProperName(colorKey) {
 ============================ */
     // 🔹 Normalizamos filas para que todas tengan la misma longitud que headers
     rawData = rawData.map(row => {
-     const newRow = [...row];
-     while (newRow.length < headers.length) newRow.push("");
+     const newRow = new Array(headers.length).fill("");
+     row.forEach((val, idx) => newRow[idx] = val);
      return newRow;
    });
+
 
 fetch(CSV_URL)
   .then(res => res.text())

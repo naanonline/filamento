@@ -83,7 +83,7 @@ fetch(CSV_URL)
   .then(res => res.text())
   .then(text => {
     rawData = text.trim().split("\n").map(r => r.split(","));
-    headers = rawData.shift().map(h => h.trim()); // normalizamos headers
+    headers = rawData.shift();
     initFilters();
   });
 
@@ -95,49 +95,57 @@ function initFilters() {
   const colorSelect = document.getElementById("colorSelect");
   const materialSelect = document.getElementById("materialSelect");
 
-  // marcas
+  // Marcas
   brandSelect.innerHTML = `<option value="">Marca base</option>`;
   headers.slice(2).forEach(h => {
     brandSelect.innerHTML += `<option value="${h}">${h}</option>`;
   });
 
-  // colores → revisamos TODAS las columnas de marcas
+  // Colores → recorrer TODAS las columnas de marcas usando índice real
   const colors = new Set();
   rawData.forEach(row => {
-    headers.slice(2).forEach((h, i) => {
-      const cell = row[i] ? row[i].trim() : "";
-      const detected = detectColor(cell);
-      if (detected) colors.add(detected);
+    headers.forEach((h, idx) => {
+      if (idx >= 2) { // solo marcas
+        const cell = row[idx] ? row[idx].trim() : "";
+        const detected = detectColor(cell);
+        if (detected) colors.add(detected);
+      }
     });
   });
 
   colorSelect.innerHTML = `<option value="">Color</option>`;
-  Array.from(colors).sort().forEach(c => {
-    colorSelect.innerHTML += `<option value="${c}">${toProperName(c)}</option>`;
-  });
+  Array.from(colors)
+    .sort()
+    .forEach(c => {
+      colorSelect.innerHTML += `<option value="${c}">${toProperName(c)}</option>`;
+    });
 
-  // materiales
+  // Materiales
   const materials = [...new Set(rawData.map(r => r[1]).filter(Boolean))];
   materialSelect.innerHTML = `<option value="">Material</option>`;
   materials.forEach(m => {
     materialSelect.innerHTML += `<option value="${m}">${m}</option>`;
   });
 
-  brandSelect.onchange = colorSelect.onchange = materialSelect.onchange = applyFilters;
+  brandSelect.onchange =
+    colorSelect.onchange =
+    materialSelect.onchange =
+      applyFilters;
 }
 
 function applyFilters() {
-  const selectedBrand = document.getElementById("brandSelect").value;
-  const selectedColor = document.getElementById("colorSelect").value;
-  const selectedMaterial = document.getElementById("materialSelect").value;
+  const brand = document.getElementById("brandSelect").value;
+  const color = document.getElementById("colorSelect").value;
+  const material = document.getElementById("materialSelect").value;
 
   const container = document.getElementById("results");
-  if (!selectedBrand && !selectedColor && !selectedMaterial) {
+
+  if (!brand && !color && !material) {
     container.innerHTML = "";
     return;
   }
 
-  renderCards(rawData, selectedBrand, selectedColor, selectedMaterial);
+  renderCards(rawData, brand, color, material);
 }
 
 /* ============================
@@ -147,7 +155,9 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
   const container = document.getElementById("results");
   container.innerHTML = "";
 
-  const brandIndexes = headers.map((h, i) => ({ h, i })).filter(col => col.i >= 2);
+  const brandIndexes = headers
+    .map((h, i) => ({ h, i }))
+    .filter(col => col.i >= 2); // columnas de marcas
 
   const brandsToRender = selectedBrand
     ? brandIndexes.filter(b => b.h === selectedBrand)
@@ -155,27 +165,26 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
 
   brandsToRender.forEach(({ h, i }) => {
     const filteredRows = data.filter(row => {
-      const cellValue = row[i] ? row[i].trim() : "";
+      const cellValue = row[i];
       if (!cellValue) return false;
 
       let colorMatch = true;
-      if (selectedColor) {
-        colorMatch = normalizeColorName(cellValue).includes(selectedColor);
-      }
+      if (selectedColor) colorMatch = normalizeColorName(cellValue).includes(selectedColor);
 
       let materialMatch = true;
-      if (selectedMaterial) {
-        materialMatch = row[1] === selectedMaterial;
-      }
+      if (selectedMaterial) materialMatch = row[1] === selectedMaterial;
 
       return colorMatch && materialMatch;
     });
 
-    const cards = filteredRows.map(row => ({
-      brand: h,
-      name: row[i],
-      color: getSwatchColor(row[i])
-    }));
+    const cards = filteredRows.map(row => {
+      const cellValue = row[i];
+      return {
+        brand: h,
+        name: cellValue,
+        color: getSwatchColor(cellValue)
+      };
+    });
 
     const section = document.createElement("div");
     section.className = "brand-section";

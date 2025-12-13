@@ -13,7 +13,7 @@
 
 <script>
   function loadData() {
-    fetch("https://docs.google.com/spreadsheets/d/ID_AQUI/export?format=csv")
+    fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSqQ7ZocXOFSN_kojnrH3dHhf2uHmQ2uFVVcG9FYNlbGg8YiTuS5piDSGyZ3-1P8hVUPcpazMHyOf18/pub?output=csv")
       .then(res => res.text())
       .then(text => {
         document.getElementById("output").textContent = text;

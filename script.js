@@ -232,39 +232,28 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
 
   brandsToRender.forEach(({ h, i }) => {
     const filteredRows = data.filter(row => {
-      // Valor de la celda de la marca
-      let cellValue = selectedBrand ? row[i] : null;
-
-      // Filtrar color
-      let colorMatch = true;
-      if (selectedColor) {
-        if (selectedBrand) {
-          colorMatch = normalizeColorName(cellValue || "").includes(selectedColor);
-        } else {
-          // Buscar en TODAS las columnas
-          colorMatch = row.some(c => normalizeColorName(c || "").includes(selectedColor));
-        }
-      }
-
-      // Filtrar material
-      let materialMatch = true;
-      if (selectedMaterial) materialMatch = row[1]?.trim() === selectedMaterial;
-
-      // Si no hay marca seleccionada, usamos la primera columna con valor para mostrar
-      if (!cellValue) cellValue = row.slice(0).find(c => c) || "";
-
-      return colorMatch && materialMatch;
-    });
-
-    // Generar las tarjetas
-    const cards = filteredRows.map(row => {
-      const value = selectedBrand ? row[i] : row.slice(0).find(c => c) || "";
-      return {
-        brand: h,
-        name: value,
-        color: getSwatchColor(value)
-      };
-    });
+     const cellValue = row[i]; // siempre la columna de la marca
+     if (!cellValue) return false; // si no hay color, no mostrar
+   
+     // Filtros de color y material
+     let colorMatch = true;
+     if (selectedColor) colorMatch = normalizeColorName(cellValue).includes(selectedColor);
+   
+     let materialMatch = true;
+     if (selectedMaterial) materialMatch = row[1]?.trim() === selectedMaterial;
+   
+     return colorMatch && materialMatch;
+   });
+   
+   // Generar tarjetas
+   const cards = filteredRows.map(row => {
+     const value = row[i]; // nuevamente, columna de la marca
+     return {
+       brand: h,
+       name: value,
+       color: getSwatchColor(value)
+     };
+   });
 
     // Sección de la marca
     const section = document.createElement("div");

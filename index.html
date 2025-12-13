@@ -2,23 +2,25 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Filament Match</title>
+  <title>Prueba CSV</title>
 </head>
 <body>
 
-<h1>Filament Match</h1>
-<button onclick="loadData()">Cargar datos</button>
-
-<pre id="output">Esperando datos...</pre>
+<button onclick="loadData()">Cargar CSV</button>
+<pre id="output">Esperando...</pre>
 
 <script>
-  function loadData() {
-    fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSqQ7ZocXOFSN_kojnrH3dHhf2uHmQ2uFVVcG9FYNlbGg8YiTuS5piDSGyZ3-1P8hVUPcpazMHyOf18/pub?output=csv")
-      .then(res => res.text())
-      .then(text => {
-        document.getElementById("output").textContent = text;
-      });
-  }
+function loadData() {
+  fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSqQ7ZocXOFSN_kojnrH3dHhf2uHmQ2uFVVcG9FYNlbGg8YiTuS5piDSGyZ3-1P8hVUPcpazMHyOf18/pub?output=csv")
+    .then(res => res.text())
+    .then(text => {
+      document.getElementById("output").textContent = text.slice(0, 500);
+    })
+    .catch(err => {
+      document.getElementById("output").textContent = "ERROR";
+      console.error(err);
+    });
+}
 </script>
 
 </body>

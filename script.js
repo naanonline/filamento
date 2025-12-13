@@ -171,9 +171,9 @@ function applyFilters() {
   const material = document.getElementById("materialSelect").value;
   const brandIndex = brand ? headers.indexOf(brand) : -1;
 
-  const container = document.getElementById("table-container");
+  const container = document.getElementById("results");
 
-  // 👉 Si NO hay ningún filtro activo, no mostramos nada
+  // Si no hay filtros, no mostramos nada
   if (!brand && !color && !material) {
     container.innerHTML = "";
     return;
@@ -200,80 +200,101 @@ function applyFilters() {
     filtered = filtered.filter(r => r[1] === material);
   }
 
-  renderCards(filtered, brand);
+  renderCards(rawData, brand, color, material);
 }
 
 
 /* ============================
    CARDS
 ============================ */
-function renderCards(data, selectedBrand) {
+function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
   const container = document.getElementById("results");
   container.innerHTML = "";
 
   const brandIndexes = headers
     .map((h, i) => ({ h, i }))
-    .filter(col => col.i >= 2);
+    .filter(col => col.i >= 2); // solo columnas de marcas
 
-  // Si hay marca seleccionada → solo esa
+  // Determinar marcas a renderizar
   const brandsToRender = selectedBrand
     ? brandIndexes.filter(b => b.h === selectedBrand)
     : brandIndexes;
 
   brandsToRender.forEach(({ h, i }) => {
-    const cards = [];
-
-    data.forEach(row => {
+    // Filtrar filas según color y material
+    const filteredRows = data.filter(row => {
       const cellValue = row[i];
-      if (!cellValue) return;
+      if (!cellValue) return false;
 
-      const colorHex = getSwatchColor(cellValue);
-      if (colorHex === "#cccccc") return;
+      // Color
+      let colorMatch = true;
+      if (selectedColor) {
+        colorMatch = normalizeColorName(cellValue).includes(selectedColor);
+      }
 
-      cards.push({
-        brand: h,
-        name: cellValue,
-        color: colorHex
-      });
+      // Material
+      let materialMatch = true;
+      if (selectedMaterial) {
+        materialMatch = row[1] === selectedMaterial;
+      }
+
+      return colorMatch && materialMatch;
     });
 
-    if (!cards.length) return;
+    // Crear tarjetas
+    const cards = filteredRows.map(row => {
+      const cellValue = row[i];
+      return {
+        brand: h,
+        name: cellValue,
+        color: getSwatchColor(cellValue) || "#cccccc"
+      };
+    });
 
-    // 🔹 Brand section
+    // Brand section
     const section = document.createElement("div");
     section.className = "brand-section";
 
     const title = document.createElement("div");
     title.className = "brand-title";
     title.textContent = h;
+    section.appendChild(title);
 
     const grid = document.createElement("div");
     grid.className = "brand-grid";
 
-    cards.forEach(c => {
-      const card = document.createElement("div");
-      card.className = "color-card";
+    if (cards.length === 0) {
+      const empty = document.createElement("div");
+      empty.textContent = "No hay coincidencias";
+      empty.style.fontSize = "13px";
+      empty.style.color = "#999";
+      empty.style.gridColumn = "1 / -1";
+      grid.appendChild(empty);
+    } else {
+      cards.forEach(c => {
+        const card = document.createElement("div");
+        card.className = "color-card";
 
-      const swatch = document.createElement("div");
-      swatch.className = "color-swatch";
-      swatch.style.backgroundColor = c.color;
+        const swatch = document.createElement("div");
+        swatch.className = "color-swatch";
+        swatch.style.backgroundColor = c.color;
 
-      const brandLabel = document.createElement("div");
-      brandLabel.className = "color-brand";
-      brandLabel.textContent = c.brand;
+        const brandLabel = document.createElement("div");
+        brandLabel.className = "color-brand";
+        brandLabel.textContent = c.brand;
 
-      const colorName = document.createElement("div");
-      colorName.className = "color-name";
-      colorName.textContent = c.name;
+        const colorName = document.createElement("div");
+        colorName.className = "color-name";
+        colorName.textContent = c.name;
 
-      card.appendChild(swatch);
-      card.appendChild(brandLabel);
-      card.appendChild(colorName);
+        card.appendChild(swatch);
+        card.appendChild(brandLabel);
+        card.appendChild(colorName);
 
-      grid.appendChild(card);
-    });
+        grid.appendChild(card);
+      });
+    }
 
-    section.appendChild(title);
     section.appendChild(grid);
     container.appendChild(section);
   });

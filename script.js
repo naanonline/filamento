@@ -234,7 +234,7 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
     const filteredRows = data.filter(row => {
       // 🎯 Si hay marca seleccionada, tomamos esa columna
       // 🎯 Si no hay marca seleccionada, buscamos cualquier columna de marcas
-      const cellValue = selectedBrand ? row[i] : row.slice(2).find(c => c);
+      const cellValue = selectedBrand ? row[i] : row.slice(0).find(c => c);
       if (!cellValue) return false;
 
       let colorMatch = true;
@@ -247,7 +247,7 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
     });
 
     const cards = filteredRows.map(row => {
-      const cellValue = selectedBrand ? row[i] : row.slice(2).find(c => c);
+      const cellValue = selectedBrand ? row[i] : row.slice(0).find(c => c);
       return {
         brand: h,
         name: cellValue,

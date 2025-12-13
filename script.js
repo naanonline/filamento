@@ -211,17 +211,18 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
   const container = document.getElementById("results");
   container.innerHTML = "";
 
+  // 👇 Si no hay filtros activos, no mostramos nada
+  if (!selectedBrand && !selectedColor && !selectedMaterial) return;
+
   // Columnas de marcas: todas
   const brandIndexes = headers
     .map((h, i) => ({ h, i }))
-    .filter(col => col.i >= 0); // incluir todas las columnas
+    .filter(col => col.i >= 0);
 
-  // Filtramos las marcas a mostrar
   const brandsToRender = selectedBrand
     ? brandIndexes.filter(b => b.h === selectedBrand)
     : brandIndexes;
 
-  // Ordenar para que la marca seleccionada aparezca primero
   if (selectedBrand) {
     brandsToRender.sort((a, b) => {
       if (a.h === selectedBrand) return -1;
@@ -231,10 +232,9 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
   }
 
   brandsToRender.forEach(({ h, i }) => {
-    // Filtramos filas según la columna de la marca y filtros de color/material
     const filteredRows = data.filter(row => {
       const cellValue = row[i];
-      if (!cellValue) return false; // sin valor, no mostrar
+      if (!cellValue) return false;
 
       let colorMatch = true;
       if (selectedColor) colorMatch = normalizeColorName(cellValue).includes(selectedColor);
@@ -245,7 +245,6 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
       return colorMatch && materialMatch;
     });
 
-    // Generar tarjetas
     const cards = filteredRows.map(row => {
       const value = row[i];
       return {
@@ -255,7 +254,6 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
       };
     });
 
-    // 👇 Solo agregamos la sección si hay tarjetas
     if (cards.length > 0) {
       const section = document.createElement("div");
       section.className = "brand-section";

@@ -1,0 +1,44 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+.filters {
+  margin-bottom: 10px;
+}
+
+select {
+  margin-right: 10px;
+  padding: 6px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 15px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 6px 8px;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+th {
+  background: #f2f2f2;
+  text-align: left;
+}
+
+.swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 6px;
+  border: 1px solid #999;
+  vertical-align: middle;
+}

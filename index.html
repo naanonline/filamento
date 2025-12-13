@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Filament Match</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    h1 {
+      color: #222;
+    }
+    select, button {
+      padding: 8px;
+      margin-top: 10px;
+      width: 100%;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔎 Filament Match</h1>
+  <p>Encuentra alternativas de color entre marcas de filamento 3D.</p>
+
+  <label>Marca origen</label>
+  <select>
+    <option>Bambu Lab</option>
+    <option>Polymaker</option>
+    <option>eSUN</option>
+  </select>
+
+  <label>Color</label>
+  <select>
+    <option>Red</option>
+    <option>Black</option>
+    <option>White</option>
+  </select>
+
+  <button>Buscar alternativas</button>
+
+  <div class="result">
+    <strong>Ejemplo:</strong><br>
+    Bambu PLA Red → Polymaker PolyLite PLA Red
+  </div>
+
+</body>
+</html>

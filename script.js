@@ -214,7 +214,7 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
   // Columnas de marcas (a partir de la columna 2)
   const brandIndexes = headers
     .map((h, i) => ({ h, i }))
-    .filter(col => col.i >= 1);
+    .filter(col => col.i >= 0);
 
   // Filtramos las marcas a mostrar
   const brandsToRender = selectedBrand

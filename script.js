@@ -165,14 +165,21 @@ function renderTable(data, brand) {
     visibleColumns.forEach(col => {
       const td = document.createElement("td");
 
-      if (col.i === 0) {
-        const swatch = document.createElement("span");
-        swatch.className = "swatch";
-        swatch.style.backgroundColor = getSwatchColor(row[col.i]);
-        td.appendChild(swatch);
-        td.appendChild(document.createTextNode(row[col.i]));
-      } else {
-        td.textContent = row[col.i] || "";
+      const cellValue = row[col.i] || "";
+
+      if (cellValue) {
+        const color = getSwatchColor(cellValue);
+      
+        // Si detectamos color (no gris default), mostramos swatch
+        if (color !== "#cccccc") {
+          const swatch = document.createElement("span");
+          swatch.className = "swatch";
+          swatch.style.backgroundColor = color;
+      
+          td.appendChild(swatch);
+        }
+      
+        td.appendChild(document.createTextNode(cellValue));
       }
 
       tr.appendChild(td);

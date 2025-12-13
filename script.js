@@ -236,7 +236,7 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
   // 👉 Solo generar secciones si hay al menos un filtro activo
   brandsToRender.forEach(({ h, i }) => {
     const filteredRows = data.filter(row => {
-      const cellValue = row[i];
+      const cellValue = row[i] || "";
       if (!cellValue) return false;
 
       let colorMatch = true;

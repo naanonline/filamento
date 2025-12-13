@@ -231,50 +231,43 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
   }
 
   brandsToRender.forEach(({ h, i }) => {
+    // Filtramos filas según la columna de la marca y filtros de color/material
     const filteredRows = data.filter(row => {
-     const cellValue = row[i]; // siempre la columna de la marca
-     if (!cellValue) return false; // si no hay color, no mostrar
-   
-     // Filtros de color y material
-     let colorMatch = true;
-     if (selectedColor) colorMatch = normalizeColorName(cellValue).includes(selectedColor);
-   
-     let materialMatch = true;
-     if (selectedMaterial) materialMatch = row[1]?.trim() === selectedMaterial;
-   
-     return colorMatch && materialMatch;
-   });
-   
-   // Generar tarjetas
-   const cards = filteredRows.map(row => {
-     const value = row[i]; // nuevamente, columna de la marca
-     return {
-       brand: h,
-       name: value,
-       color: getSwatchColor(value)
-     };
-   });
+      const cellValue = row[i];
+      if (!cellValue) return false; // sin valor, no mostrar
 
-    // Sección de la marca
-    const section = document.createElement("div");
-    section.className = "brand-section";
+      let colorMatch = true;
+      if (selectedColor) colorMatch = normalizeColorName(cellValue).includes(selectedColor);
 
-    const title = document.createElement("div");
-    title.className = "brand-title";
-    title.textContent = h;
-    section.appendChild(title);
+      let materialMatch = true;
+      if (selectedMaterial) materialMatch = row[1]?.trim() === selectedMaterial;
 
-    const grid = document.createElement("div");
-    grid.className = "brand-grid";
+      return colorMatch && materialMatch;
+    });
 
-    if (cards.length === 0) {
-      const empty = document.createElement("div");
-      empty.textContent = "No hay coincidencias";
-      empty.style.fontSize = "13px";
-      empty.style.color = "#999";
-      empty.style.gridColumn = "1 / -1";
-      grid.appendChild(empty);
-    } else {
+    // Generar tarjetas
+    const cards = filteredRows.map(row => {
+      const value = row[i];
+      return {
+        brand: h,
+        name: value,
+        color: getSwatchColor(value)
+      };
+    });
+
+    // 👇 Solo agregamos la sección si hay tarjetas
+    if (cards.length > 0) {
+      const section = document.createElement("div");
+      section.className = "brand-section";
+
+      const title = document.createElement("div");
+      title.className = "brand-title";
+      title.textContent = h;
+      section.appendChild(title);
+
+      const grid = document.createElement("div");
+      grid.className = "brand-grid";
+
       cards.forEach(c => {
         const card = document.createElement("div");
         card.className = "color-card";
@@ -297,9 +290,9 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
 
         grid.appendChild(card);
       });
-    }
 
-    section.appendChild(grid);
-    container.appendChild(section);
+      section.appendChild(grid);
+      container.appendChild(section);
+    }
   });
 }

@@ -136,9 +136,9 @@ function initFilters() {
   const materialSelect = document.getElementById("materialSelect");
 
   brandSelect.innerHTML = `<option value="">Marca base</option>`;
-  headers.forEach(h => {
-    brandSelect.innerHTML += `<option value="${h}">${h}</option>`;
-  });
+   headers.forEach(h => {
+     brandSelect.innerHTML += `<option value="${h}">${h}</option>`;
+   });
 
   const colors = [
      ...new Set(

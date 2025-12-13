@@ -200,7 +200,7 @@ function applyFilters() {
     filtered = filtered.filter(r => r[1] === material);
   }
 
-  renderTable(filtered, brand);
+  renderCards(filtered, brand);
 }
 
 

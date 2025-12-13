@@ -11,39 +11,60 @@ let rawData = [];
 let headers = [];
 
 /* ============================
-   COLOR MAP
+   COLOR KEYWORDS (REAL DATA)
+   Orden: específicos → genéricos
 ============================ */
-const colorMap = {
-  white: "#fafafa",
-  black: "#212121",
-  gray: "#9e9e9e",
-  silver: "",
-  beige: "#f5f5dc",
-  red: "#c62828",
-  darkred: "#8e0000",
-  pink: "",
-  lightpink: "",
-  orange: "#ef6c00",
-  yellow: "#fbc02d",
-  lime: "",
-  green: "#2e7d32",
-  darkgreen: "",
-  olive: "",
-  blue: "#1565c0",
-  navyblue: "",
-  lightblue: "",
-  cyan: "",
-  purple: "",
-  lavender: "",
-  brown: "",
-  wood: "",
-  marble: "",
-  glowgreen: "",
-  silkgold: "",
-  silksilver: "",
-  matteblack: "",
-  mattewhite: ""
-};
+const colorKeywords = [
+
+  // ---- FINISH / SPECIAL ----
+  { key: "matteblack", hex: "#1c1c1c" },
+  { key: "mattewhite", hex: "#f2f2f2" },
+  { key: "silkgold", hex: "#d4af37" },
+  { key: "silksilver", hex: "#cfd8dc" },
+  { key: "glowgreen", hex: "#39ff14" },
+
+  // ---- PATTERNS / MATERIAL ----
+  { key: "marble", hex: "#e0e0e0" },
+  { key: "wood", hex: "#8d6e63" },
+
+  // ---- REDS / PINKS ----
+  { key: "darkred", hex: "#8e0000" },
+  { key: "red", hex: "#c62828" },
+  { key: "lightpink", hex: "#f8bbd0" },
+  { key: "pink", hex: "#ec407a" },
+
+  // ---- ORANGE / YELLOW ----
+  { key: "orange", hex: "#ef6c00" },
+  { key: "yellow", hex: "#fbc02d" },
+  { key: "lime", hex: "#cddc39" },
+
+  // ---- GREENS ----
+  { key: "darkgreen", hex: "#1b5e20" },
+  { key: "olive", hex: "#808000" },
+  { key: "green", hex: "#2e7d32" },
+
+  // ---- BLUES / CYAN ----
+  { key: "navyblue", hex: "#0d47a1" },
+  { key: "lightblue", hex: "#64b5f6" },
+  { key: "cyan", hex: "#00acc1" },
+  { key: "blue", hex: "#1565c0" },
+
+  // ---- PURPLES ----
+  { key: "lavender", hex: "#ce93d8" },
+  { key: "purple", hex: "#7b1fa2" },
+
+  // ---- BROWNS / NEUTRALS ----
+  { key: "brown", hex: "#6d4c41" },
+  { key: "beige", hex: "#f5f5dc" },
+
+  // ---- GRAYS / METALS ----
+  { key: "silver", hex: "#b0bec5" },
+  { key: "gray", hex: "#9e9e9e" },
+
+  // ---- BASICS ----
+  { key: "white", hex: "#fafafa" },
+  { key: "black", hex: "#212121" }
+];
 
 function normalizeColorName(name) {
   return name
@@ -52,13 +73,19 @@ function normalizeColorName(name) {
     .replace(/[-_]/g, "");
 }
 
-function getSwatchColor(colorName) {
-  if (!colorName) return "#cccccc";
+function getSwatchColor(cellValue) {
+  if (!cellValue) return "#cccccc";
 
-  const key = normalizeColorName(colorName);
-  return colorMap[key] || "#cccccc";
+  const normalized = normalizeText(cellValue);
+
+  for (const color of colorKeywords) {
+    if (normalized.includes(color.key)) {
+      return color.hex;
+    }
+  }
+
+  return "#cccccc"; // default si no detecta color
 }
-
 
 /* ============================
    INIT

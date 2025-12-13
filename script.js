@@ -110,6 +110,23 @@ fetch(CSV_URL)
     initFilters();
   });
 
+function baseColor(colorKey) {
+  return colorKey
+    .replace(/^dark/, "")
+    .replace(/^light/, "")
+    .replace(/^matte/, "")
+    .replace(/^silk/, "");
+}
+
+function toProperName(colorKey) {
+  return colorKey
+    .replace(/([a-z])([a-z]+)/g, "$1$2")
+    .replace(/(dark|light|matte|silk)/g, "$1 ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/\b\w/g, c => c.toUpperCase());
+}
+
 /* ============================
    FILTERS
 ============================ */
@@ -133,8 +150,8 @@ function initFilters() {
    ];
    
    colorSelect.innerHTML = `<option value="">Color</option>`;
-   colors.forEach(c => {
-     colorSelect.innerHTML += `<option value="${c}">${c}</option>`;
+  colors.forEach(c => {
+     colorSelect.innerHTML += `<option value="${c}">${toProperName(c)}</option>`;
    });
 
   const materials = [...new Set(rawData.map(r => r[1]).filter(Boolean))];
@@ -169,12 +186,12 @@ function applyFilters() {
    
        // 🎯 Hay marca base → match SOLO en esa columna
        if (brandIndex >= 0) {
-         return normalize(row[brandIndex] || "").includes(color);
+         return normalizeColorName(row[brandIndex] || "").includes(color);
        }
    
        // 🎯 Sin marca base → match en cualquier columna
        return row.some(cell =>
-         normalize(cell || "").includes(color)
+         normalizeColorName(cell || "").includes(color)
        );
      });
    }

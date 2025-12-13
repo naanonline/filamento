@@ -120,7 +120,7 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
   // Si no hay filtros activos, no mostramos nada
   if (!selectedBrand && !selectedColor && !selectedMaterial) return;
 
-  const brandIndexes = headers.map((h, i) => ({ h, i })).filter(col => col.i >= 0);
+  const brandIndexes = headers.map((h, i) => ({ h, i }));
 
   const brandsToRender = selectedBrand
     ? brandIndexes.filter(b => b.h === selectedBrand)

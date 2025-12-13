@@ -76,15 +76,27 @@ function normalizeColorName(name) {
 function getSwatchColor(cellValue) {
   if (!cellValue) return "#cccccc";
 
-  const normalized = normalizeText(cellValue);
+  const normalized = normalizeColorName(cellValue);
 
   for (const color of colorKeywords) {
     if (normalized.includes(color.key)) {
       return color.hex;
     }
   }
+  return "#cccccc";
+}
 
-  return "#cccccc"; // default si no detecta color
+function detectColor(cellValue) {
+  if (!cellValue) return null;
+
+  const normalized = normalizeColorName(cellValue);
+
+  for (const color of colorKeywords) {
+    if (normalized.includes(color.key)) {
+      return color.key;
+    }
+  }
+  return null;
 }
 
 /* ============================
@@ -111,11 +123,19 @@ function initFilters() {
     brandSelect.innerHTML += `<option value="${h}">${h}</option>`;
   });
 
-  const colors = [...new Set(rawData.map(r => r[0]).filter(Boolean))];
-  colorSelect.innerHTML = `<option value="">Color</option>`;
-  colors.forEach(c => {
-    colorSelect.innerHTML += `<option value="${c}">${c}</option>`;
-  });
+  const colors = [
+     ...new Set(
+       rawData
+         .flat()
+         .map(cell => detectColor(cell))
+         .filter(Boolean)
+     )
+   ];
+   
+   colorSelect.innerHTML = `<option value="">Color</option>`;
+   colors.forEach(c => {
+     colorSelect.innerHTML += `<option value="${c}">${c}</option>`;
+   });
 
   const materials = [...new Set(rawData.map(r => r[1]).filter(Boolean))];
   materialSelect.innerHTML = `<option value="">Material</option>`;
@@ -144,8 +164,10 @@ function applyFilters() {
   let filtered = rawData;
 
   if (color) {
-    filtered = filtered.filter(r => r[0] === color);
-  }
+     filtered = filtered.filter(row =>
+       row.some(cell => detectColor(cell) === color)
+     );
+   }
 
   if (material) {
     filtered = filtered.filter(r => r[1] === material);

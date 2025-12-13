@@ -110,13 +110,22 @@ fetch(CSV_URL)
     initFilters();
   });
 
-   function baseColor(colorKey) {
-     return colorKey
-       .replace(/^dark/, "")
-       .replace(/^light/, "")
-       .replace(/^matte/, "")
-       .replace(/^silk/, "");
-   }
+function baseColor(colorKey) {
+  return colorKey
+    .replace(/^dark/, "")
+    .replace(/^light/, "")
+    .replace(/^matte/, "")
+    .replace(/^silk/, "");
+}
+
+function toProperName(colorKey) {
+  return colorKey
+    .replace(/([a-z])([a-z]+)/g, "$1$2")
+    .replace(/(dark|light|matte|silk)/g, "$1 ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/\b\w/g, c => c.toUpperCase());
+}
 
 /* ============================
    FILTERS
@@ -127,9 +136,9 @@ function initFilters() {
   const materialSelect = document.getElementById("materialSelect");
 
   brandSelect.innerHTML = `<option value="">Marca base</option>`;
-   headers.forEach(h => {
-     brandSelect.innerHTML += `<option value="${h}">${h}</option>`;
-   });
+  headers.forEach(h => {
+    brandSelect.innerHTML += `<option value="${h}">${h}</option>`;
+  });
 
   const colors = [
      ...new Set(
@@ -137,13 +146,12 @@ function initFilters() {
          .flat()
          .map(cell => detectColor(cell))
          .filter(Boolean)
-         .map(c => baseColor(c))
      )
    ];
-
+   
    colorSelect.innerHTML = `<option value="">Color</option>`;
   colors.forEach(c => {
-     colorSelect.innerHTML += `<option value="${c}">${c}</option>`;
+     colorSelect.innerHTML += `<option value="${c}">${toProperName(c)}</option>`;
    });
 
   const materials = [...new Set(rawData.map(r => r[1]).filter(Boolean))];
@@ -175,12 +183,12 @@ function applyFilters() {
 
   if (color) {
      filtered = filtered.filter(row => {
-
+   
        // 🎯 Hay marca base → match SOLO en esa columna
        if (brandIndex >= 0) {
          return normalizeColorName(row[brandIndex] || "").includes(color);
        }
-
+   
        // 🎯 Sin marca base → match en cualquier columna
        return row.some(cell =>
          normalizeColorName(cell || "").includes(color)
@@ -194,6 +202,7 @@ function applyFilters() {
 
   renderTable(filtered, brand);
 }
+
 
 /* ============================
    TABLE
@@ -231,18 +240,21 @@ function renderTable(data, brand) {
 
     visibleColumns.forEach(col => {
       const td = document.createElement("td");
+
       const cellValue = row[col.i] || "";
 
       if (cellValue) {
         const color = getSwatchColor(cellValue);
-
+      
+        // Si detectamos color (no gris default), mostramos swatch
         if (color !== "#cccccc") {
           const swatch = document.createElement("span");
           swatch.className = "swatch";
           swatch.style.backgroundColor = color;
+      
           td.appendChild(swatch);
         }
-
+      
         td.appendChild(document.createTextNode(cellValue));
       }
 

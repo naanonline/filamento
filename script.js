@@ -83,7 +83,8 @@ fetch(CSV_URL)
   .then(res => res.text())
   .then(text => {
     rawData = text.trim().split("\n").map(r => r.split(","));
-    headers = rawData.shift();
+    // Normalizamos headers (trim)
+    headers = rawData.shift().map(h => h.trim());
     initFilters();
   });
 
@@ -121,7 +122,7 @@ function initFilters() {
     });
 
   // Materiales
-  const materials = [...new Set(rawData.map(r => r[1]).filter(Boolean))];
+  const materials = [...new Set(rawData.map(r => r[1]?.trim()).filter(Boolean))];
   materialSelect.innerHTML = `<option value="">Material</option>`;
   materials.forEach(m => {
     materialSelect.innerHTML += `<option value="${m}">${m}</option>`;
@@ -172,7 +173,7 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
       if (selectedColor) colorMatch = normalizeColorName(cellValue).includes(selectedColor);
 
       let materialMatch = true;
-      if (selectedMaterial) materialMatch = row[1] === selectedMaterial;
+      if (selectedMaterial) materialMatch = row[1]?.trim() === selectedMaterial;
 
       return colorMatch && materialMatch;
     });

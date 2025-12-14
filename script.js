@@ -139,10 +139,8 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
 
   brandsToRender.forEach(({ h, i }) => {
     const filteredRows = data.filter(row => {
-     const cellValue = row[i];
-   
-     // ⛔️ SOLO descartamos si es null/undefined, NO si es ""
-     if (cellValue == null) return false;
+     const cellValue = row[i] ?? "";
+     if (!cellValue.trim()) return false;
    
      let colorMatch = true;
      if (selectedColor) {

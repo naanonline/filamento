@@ -87,7 +87,7 @@ function initFilters() {
   const materialSelect = document.getElementById("materialSelect");
 
   // Marca
-  brandSelect.innerHTML = `<option value="">Marca base</option>` +
+  brandSelect.innerHTML = `<option value="">Brand</option>` +
     headers.map(h => `<option value="${h}">${h}</option>`).join("");
 
   // Color

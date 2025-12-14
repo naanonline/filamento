@@ -137,17 +137,23 @@ function renderCards(data, selectedBrand, selectedColor, selectedMaterial) {
 
   brandsToRender.forEach(({ h, i }) => {
     const filteredRows = data.filter(row => {
-      const cellValue = row[i] || ""; // nunca undefined
-      if (!cellValue) return false;
-
-      let colorMatch = true;
-      if (selectedColor) colorMatch = normalizeColorName(cellValue).includes(selectedColor);
-
-      let materialMatch = true;
-      if (selectedMaterial) materialMatch = row[1]?.trim() === selectedMaterial;
-
-      return colorMatch && materialMatch;
-    });
+     const cellValue = row[i];
+   
+     // ⛔️ SOLO descartamos si es null/undefined, NO si es ""
+     if (cellValue == null) return false;
+   
+     let colorMatch = true;
+     if (selectedColor) {
+       colorMatch = normalizeColorName(cellValue).includes(selectedColor);
+     }
+   
+     let materialMatch = true;
+     if (selectedMaterial) {
+       materialMatch = row[1]?.trim() === selectedMaterial;
+     }
+   
+     return colorMatch && materialMatch;
+   });
 
     const cards = filteredRows.map(row => ({
       brand: h,

@@ -25,6 +25,10 @@ function getBrandColumns() {
     );
 }
 
+function getCodeColumnIndex(brandHeader) {
+  return headers.indexOf(`${brandHeader} Code`);
+}
+
 // Columna HEX de una marca
 function getColorColumnIndex(brandHeader) {
   return headers.indexOf(`${brandHeader} Color`);
@@ -110,6 +114,7 @@ function renderCards(data, selectedBrand, selectedColor, selectedType) {
 
   brandsToRender.forEach(({ h, i }) => {
     const colorColIndex = getColorColumnIndex(h);
+    const codeColIndex = getCodeColumnIndex(h);
     const cards = [];
 
     data.forEach(row => {
@@ -129,7 +134,9 @@ function renderCards(data, selectedBrand, selectedColor, selectedType) {
 
       cards.push({
         brand: h,
-        name,
+        type: row[0],
+        name: colorName,
+        code: row[codeColIndex] || "",
         hex: hex || "#cccccc"
       });
     });
@@ -159,14 +166,24 @@ function renderCards(data, selectedBrand, selectedColor, selectedType) {
       const brandLabel = document.createElement("div");
       brandLabel.className = "color-brand";
       brandLabel.textContent = c.brand;
-
+      
+      const typeLabel = document.createElement("div");
+      typeLabel.className = "color-type";
+      typeLabel.textContent = c.type;
+      
       const colorName = document.createElement("div");
       colorName.className = "color-name";
       colorName.textContent = c.name;
+      
+      const colorCode = document.createElement("div");
+      colorCode.className = "color-code";
+      colorCode.textContent = c.code;
 
       card.appendChild(swatch);
       card.appendChild(brandLabel);
+      card.appendChild(typeLabel);
       card.appendChild(colorName);
+      card.appendChild(colorCode);
 
       grid.appendChild(card);
     });

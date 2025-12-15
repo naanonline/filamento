@@ -15,7 +15,7 @@ body {
 ============================ */
 header {
   text-align: center;
-  padding: 36px 16px 16px;
+  padding: 36px 16px 12px;
 }
 
 header h1 {
@@ -36,25 +36,32 @@ header p {
 .filters {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin: 24px auto 10px;
+  gap: 14px;
+  margin: 26px auto 10px;
   padding: 0 16px;
   flex-wrap: wrap;
 }
 
+.filter-wrap {
+  position: relative;
+}
+
+/* ============================
+   SELECT (UNIFIED)
+============================ */
 .filters select {
+  width: 240px;
+  padding: 10px 38px 10px 16px;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 999px;
-  padding: 10px 16px;
-  font-size: 14px;
-  color: #333;
-  min-width: 160px;
-  cursor: pointer;
 
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
@@ -69,13 +76,51 @@ header p {
   box-shadow: 0 0 0 2px rgba(0,0,0,0.08);
 }
 
+/* Placeholder gris cuando está vacío */
+.filters select:has(option[value=""]:checked) {
+  color: #aaa;
+}
+
 /* ============================
-   RESULTS CONTAINER
+   CLEAR BUTTON (✕)
+============================ */
+.clear-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  background: none;
+  border: none;
+  padding: 0;
+
+  font-size: 14px;
+  line-height: 1;
+  color: #aaa;
+  cursor: pointer;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+/* Mostrar ✕ solo cuando hay selección */
+.filter-wrap select:not(:has(option[value=""]:checked)) + .clear-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.clear-btn:hover {
+  color: #111;
+}
+
+/* ============================
+   RESULTS
 ============================ */
 #results {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 20px 16px 60px;
+  padding: 24px 16px 60px;
 }
 
 /* ============================
@@ -85,10 +130,9 @@ header p {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 18px;
-  justify-content: center;
 }
 
-/* Responsive grid */
+/* Responsive */
 @media (max-width: 1024px) {
   .brand-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -170,48 +214,4 @@ header p {
   margin-top: 60px;
   color: #777;
   font-style: italic;
-}
-
-/* ============================
-   FILTER WRAP
-============================ */
-.filter-wrap {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-}
-
-/* Select más largo */
-.filters select {
-  min-width: 220px;
-  padding-right: 36px;
-}
-
-/* Placeholder gris cuando está vacío */
-.filters select:has(option[value=""]:checked) {
-  color: #aaa;
-}
-
-/* ============================
-   CLEAR BUTTON (✕)
-============================ */
-.clear-btn {
-  position: absolute;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 14px;
-  color: #aaa;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.15s ease, color 0.15s ease;
-}
-
-/* Mostrar ✕ solo cuando hay selección */
-.filter-wrap select:not(:has(option[value=""]:checked)) + .clear-btn {
-  opacity: 1;
-}
-
-.clear-btn:hover {
-  color: #111;
 }

@@ -28,10 +28,12 @@ fetch(CSV_URL)
     );
 
     headers = data[0];
+    headers[0] = headers[0].replace(/^\uFEFF/, ""); // 🔥 FIX BOM
+
     rows = data.slice(1);
 
     TYPE_COL = headers.indexOf("Tipo");
-    BASE_COLOR_COL = headers.indexOf("Color Base"); // puede no existir
+    BASE_COLOR_COL = headers.indexOf("Color Base");
 
     initFilters();
     render();
@@ -74,16 +76,11 @@ function initFilters() {
     `<option value="">Tipo</option>` +
     types.map(t => `<option value="${t}">${t}</option>`).join("");
 
-  // Color Base (solo si existe)
-  if (BASE_COLOR_COL !== -1) {
-    const baseColors = [...new Set(rows.map(r => r[BASE_COLOR_COL]).filter(Boolean))];
-    colorFilter.innerHTML =
-      `<option value="">Color Base</option>` +
-      baseColors.map(c => `<option value="${c}">${c}</option>`).join("");
-  } else {
-    colorFilter.innerHTML = `<option value="">Color Base (no definido)</option>`;
-    colorFilter.disabled = true;
-  }
+  // Color Base
+  const baseColors = [...new Set(rows.map(r => r[BASE_COLOR_COL]).filter(Boolean))];
+  colorFilter.innerHTML =
+    `<option value="">Color Base</option>` +
+    baseColors.map(c => `<option value="${c}">${c}</option>`).join("");
 
   // Marca
   const brands = headers.filter(isBrandColumn);
@@ -118,7 +115,7 @@ function render() {
 
   rows.forEach(row => {
     if (typeValue && row[TYPE_COL] !== typeValue) return;
-    if (BASE_COLOR_COL !== -1 && colorValue && row[BASE_COLOR_COL] !== colorValue) return;
+    if (colorValue && row[BASE_COLOR_COL] !== colorValue) return;
 
     brands.forEach(brand => {
       const colIndex = headers.indexOf(brand);

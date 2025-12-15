@@ -73,20 +73,20 @@ function initFilters() {
   // Tipo
   const types = [...new Set(rows.map(r => r[TYPE_COL]).filter(Boolean))];
   typeFilter.innerHTML =
-    `<option value="">Tipo</option>` +
-    types.map(t => `<option value="${t}">${t}</option>`).join("");
+     `<option value="" disabled selected hidden>Tipo</option>` +
+     types.map(t => `<option value="${t}">${t}</option>`).join("");
 
   // Color Base
   const baseColors = [...new Set(rows.map(r => r[BASE_COLOR_COL]).filter(Boolean))];
   colorFilter.innerHTML =
-    `<option value="">Color Base</option>` +
-    baseColors.map(c => `<option value="${c}">${c}</option>`).join("");
+     `<option value="" disabled selected hidden>Color Base</option>` +
+     baseColors.map(c => `<option value="${c}">${c}</option>`).join("");
 
   // Marca
   const brands = headers.filter(isBrandColumn);
   brandFilter.innerHTML =
-    `<option value="">Marca</option>` +
-    brands.map(b => `<option value="${b}">${b}</option>`).join("");
+     `<option value="" disabled selected hidden>Marca</option>` +
+     brands.map(b => `<option value="${b}">${b}</option>`).join("");
 
   typeFilter.onchange = render;
   brandFilter.onchange = render;

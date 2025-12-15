@@ -108,16 +108,23 @@ function render() {
     ? [brandValue]
     : headers.filter(isBrandColumn);
 
-  const grid = document.createElement("div");
-  grid.className = "brand-grid";
-
   let hasResults = false;
 
-  rows.forEach(row => {
-    if (typeValue && row[TYPE_COL] !== typeValue) return;
-    if (colorValue && row[BASE_COLOR_COL] !== colorValue) return;
+  brands.forEach(brand => {
+    const section = document.createElement("section");
+    section.className = "brand-section";
 
-    brands.forEach(brand => {
+    const title = document.createElement("h2");
+    title.className = "brand-title";
+    title.textContent = brand;
+
+    const grid = document.createElement("div");
+    grid.className = "brand-grid";
+
+    rows.forEach(row => {
+      if (typeValue && row[TYPE_COL] !== typeValue) return;
+      if (BASE_COLOR_COL !== -1 && colorValue && row[BASE_COLOR_COL] !== colorValue) return;
+
       const colIndex = headers.indexOf(brand);
       const name = row[colIndex];
       if (!name) return;
@@ -131,30 +138,25 @@ function render() {
       swatch.className = "color-swatch";
       swatch.style.background = getHex(row, brand);
 
-      const brandDiv = document.createElement("div");
-      brandDiv.className = "color-brand";
-      brandDiv.textContent = brand;
+      card.innerHTML += `
+        <div class="color-brand">${brand}</div>
+        <div class="color-type">${row[TYPE_COL]}</div>
+        <div class="color-name">${name}</div>
+        <div class="color-code">${getCode(row, brand)}</div>
+      `;
 
-      const typeDiv = document.createElement("div");
-      typeDiv.className = "color-type";
-      typeDiv.textContent = row[TYPE_COL];
-
-      const nameDiv = document.createElement("div");
-      nameDiv.className = "color-name";
-      nameDiv.textContent = name;
-
-      const codeDiv = document.createElement("div");
-      codeDiv.className = "color-code";
-      codeDiv.textContent = getCode(row, brand);
-
-      card.append(swatch, brandDiv, typeDiv, nameDiv, codeDiv);
+      card.prepend(swatch);
       grid.appendChild(card);
     });
+
+    if (grid.children.length) {
+      section.append(title, grid);
+      results.appendChild(section);
+    }
   });
 
   if (!hasResults) {
     results.innerHTML = "<p>No hay resultados.</p>";
-    return;
   }
 
   results.appendChild(grid);

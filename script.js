@@ -1,7 +1,8 @@
 /* ============================
    CONFIG
 ============================ */
-const CSV_URL = "PEGA_AQUI_TU_URL_DEL_CSV";
+const CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSqQ7ZocXOFSN_kojnrH3dHhf2uHmQ2uFVVcG9FYNlbGg8YiTuS5piDSGyZ3-1P8hVUPcpazMHyOf18/pub?output=csv";
 
 /* ============================
    STATE

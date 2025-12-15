@@ -11,26 +11,39 @@ let headers = [];
 let rows = [];
 
 /* ============================
-   FETCH & PARSE CSV
+   FETCH CSV
 ============================ */
 fetch(CSV_URL)
   .then(res => res.text())
   .then(text => {
-    const data = text.trim().split("\n").map(r => r.split(","));
+    const lines = text
+      .trim()
+      .split("\n")
+      .map(l => l.replace(/\r/g, ""));
+
+    const data = lines.map(line =>
+      line.split(",").map(cell => cell.trim())
+    );
+
     headers = data[0];
     rows = data.slice(1);
+
     initFilters();
     render();
   });
 
 /* ============================
-   HELPERS
+   CONSTANTS
 ============================ */
 const TYPE_COL = 0;
 const BASE_COLOR_COL = 1;
 
+/* ============================
+   HELPERS
+============================ */
 function isBrandColumn(header) {
   return (
+    header &&
     header !== "Tipo" &&
     header !== "Color Base" &&
     !header.includes("Code") &&
@@ -38,18 +51,18 @@ function isBrandColumn(header) {
   );
 }
 
-function getColorHex(row, brand) {
-  const idx = headers.indexOf(`${brand} Color`);
-  return idx !== -1 ? row[idx] : "";
-}
-
 function getCode(row, brand) {
   const idx = headers.indexOf(`${brand} Code`);
   return idx !== -1 ? row[idx] : "";
 }
 
+function getHex(row, brand) {
+  const idx = headers.indexOf(`${brand} Color`);
+  return idx !== -1 ? row[idx] : "#cccccc";
+}
+
 /* ============================
-   FILTER SETUP
+   FILTERS
 ============================ */
 function initFilters() {
   const typeFilter = document.getElementById("typeFilter");
@@ -74,10 +87,9 @@ function initFilters() {
     `<option value="">Marca</option>` +
     brands.map(b => `<option value="${b}">${b}</option>`).join("");
 
-  // Events
-  typeFilter.addEventListener("change", render);
-  brandFilter.addEventListener("change", render);
-  colorFilter.addEventListener("change", render);
+  typeFilter.onchange = render;
+  brandFilter.onchange = render;
+  colorFilter.onchange = render;
 }
 
 /* ============================
@@ -95,62 +107,54 @@ function render() {
     ? [brandValue]
     : headers.filter(isBrandColumn);
 
-  const cards = [];
+  const grid = document.createElement("div");
+  grid.className = "brand-grid";
+
+  let hasResults = false;
 
   rows.forEach(row => {
     if (typeValue && row[TYPE_COL] !== typeValue) return;
     if (colorValue && row[BASE_COLOR_COL] !== colorValue) return;
 
     brands.forEach(brand => {
-      const name = row[headers.indexOf(brand)];
+      const colIndex = headers.indexOf(brand);
+      const name = row[colIndex];
       if (!name) return;
 
-      cards.push({
-        brand,
-        type: row[TYPE_COL],
-        baseColor: row[BASE_COLOR_COL],
-        name,
-        code: getCode(row, brand),
-        hex: getColorHex(row, brand) || "#cccccc"
-      });
+      hasResults = true;
+
+      const card = document.createElement("div");
+      card.className = "color-card";
+
+      const swatch = document.createElement("div");
+      swatch.className = "color-swatch";
+      swatch.style.background = getHex(row, brand);
+
+      const brandDiv = document.createElement("div");
+      brandDiv.className = "color-brand";
+      brandDiv.textContent = brand;
+
+      const typeDiv = document.createElement("div");
+      typeDiv.className = "color-type";
+      typeDiv.textContent = row[TYPE_COL];
+
+      const nameDiv = document.createElement("div");
+      nameDiv.className = "color-name";
+      nameDiv.textContent = name;
+
+      const codeDiv = document.createElement("div");
+      codeDiv.className = "color-code";
+      codeDiv.textContent = getCode(row, brand);
+
+      card.append(swatch, brandDiv, typeDiv, nameDiv, codeDiv);
+      grid.appendChild(card);
     });
   });
 
-  if (!cards.length) {
+  if (!hasResults) {
     results.innerHTML = "<p>No hay resultados.</p>";
     return;
   }
-
-  const grid = document.createElement("div");
-  grid.className = "brand-grid";
-
-  cards.forEach(c => {
-    const card = document.createElement("div");
-    card.className = "color-card";
-
-    const swatch = document.createElement("div");
-    swatch.className = "color-swatch";
-    swatch.style.background = c.hex;
-
-    const brand = document.createElement("div");
-    brand.className = "color-brand";
-    brand.textContent = c.brand;
-
-    const type = document.createElement("div");
-    type.className = "color-type";
-    type.textContent = c.type;
-
-    const name = document.createElement("div");
-    name.className = "color-name";
-    name.textContent = c.name;
-
-    const code = document.createElement("div");
-    code.className = "color-code";
-    code.textContent = c.code;
-
-    card.append(swatch, brand, type, name, code);
-    grid.appendChild(card);
-  });
 
   results.appendChild(grid);
 }

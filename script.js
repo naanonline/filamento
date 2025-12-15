@@ -104,6 +104,11 @@ function render() {
   const results = document.getElementById("results");
   results.innerHTML = "";
 
+   // 🚫 SI NO HAY FILTROS ACTIVOS, NO MOSTRAR NADA
+  if (!typeValue && !brandValue && !colorValue) {
+    return;
+  }
+   
   const brands = brandValue
     ? [brandValue]
     : headers.filter(isBrandColumn);

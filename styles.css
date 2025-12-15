@@ -171,3 +171,47 @@ header p {
   color: #777;
   font-style: italic;
 }
+
+/* ============================
+   FILTER WRAP
+============================ */
+.filter-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Select más largo */
+.filters select {
+  min-width: 220px;
+  padding-right: 36px;
+}
+
+/* Placeholder gris cuando está vacío */
+.filters select:has(option[value=""]:checked) {
+  color: #aaa;
+}
+
+/* ============================
+   CLEAR BUTTON (✕)
+============================ */
+.clear-btn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: #aaa;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+/* Mostrar ✕ solo cuando hay selección */
+.filter-wrap select:not(:has(option[value=""]:checked)) + .clear-btn {
+  opacity: 1;
+}
+
+.clear-btn:hover {
+  color: #111;
+}

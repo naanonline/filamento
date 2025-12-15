@@ -166,3 +166,12 @@ function render() {
 
   results.appendChild(grid);
 }
+
+
+document.querySelectorAll(".clear-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const select = document.getElementById(btn.dataset.target);
+    select.value = "";
+    select.dispatchEvent(new Event("change"));
+  });
+});

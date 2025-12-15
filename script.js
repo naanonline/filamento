@@ -14,7 +14,7 @@ let headers = [];
    HELPERS
 ============================ */
 
-// Columnas válidas de marca (ej. Bambu Lab, Polymaker, etc.)
+// Columnas de marca reales
 function getBrandColumns() {
   return headers
     .map((h, i) => ({ h, i }))
@@ -25,7 +25,7 @@ function getBrandColumns() {
     );
 }
 
-// Índice de la columna HEX correspondiente a la marca
+// Columna HEX de una marca
 function getColorColumnIndex(brandHeader) {
   return headers.indexOf(`${brandHeader} Color`);
 }
@@ -66,7 +66,7 @@ function initFilters() {
     `<option value="">Marca</option>` +
     brandColumns.map(b => `<option value="${b.h}">${b.h}</option>`).join("");
 
-  /* ===== COLOR ===== */
+  /* ===== COLOR (de todas las marcas) ===== */
   const colors = new Set();
   brandColumns.forEach(b => {
     rawData.forEach(r => {
@@ -85,15 +85,16 @@ function initFilters() {
 }
 
 function applyFilters() {
-  const selectedType = document.getElementById("materialSelect").value;
-  const selectedBrand = document.getElementById("brandSelect").value;
-  const selectedColor = document.getElementById("colorSelect").value;
-
-  renderCards(rawData, selectedBrand, selectedColor, selectedType);
+  renderCards(
+    rawData,
+    document.getElementById("brandSelect").value,
+    document.getElementById("colorSelect").value,
+    document.getElementById("materialSelect").value
+  );
 }
 
 /* ============================
-   CARDS
+   CARDS (EQUIVALENCIAS)
 ============================ */
 function renderCards(data, selectedBrand, selectedColor, selectedType) {
   const container = document.getElementById("results");
@@ -115,17 +116,20 @@ function renderCards(data, selectedBrand, selectedColor, selectedType) {
       /* ===== FILTRO TIPO ===== */
       if (selectedType && row[0] !== selectedType) return;
 
-      const colorName = row[i];
-      if (!colorName) return;
+      /* ===== FILTRO COLOR (POR FILA) ===== */
+      if (selectedColor) {
+        const rowHasColor = brandColumns.some(b => row[b.i] === selectedColor);
+        if (!rowHasColor) return;
+      }
 
-      /* ===== FILTRO COLOR ===== */
-      if (selectedColor && colorName !== selectedColor) return;
+      const name = row[i];
+      if (!name) return;
 
       const hex = row[colorColIndex];
 
       cards.push({
         brand: h,
-        name: colorName,
+        name,
         hex: hex || "#cccccc"
       });
     });

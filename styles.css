@@ -152,7 +152,7 @@ header p {
 /* ===== HIGHLIGHT CARD ===== */
 .highlight-card {
   grid-column: span 2;
-  height: 380px; /* 🔒 ALTURA FIJA DE LA TARJETA */
+  grid-row: span 2;  
   padding: 22px;
   border-radius: 18px;
   box-shadow: 0 12px 28px rgba(0,0,0,0.18);

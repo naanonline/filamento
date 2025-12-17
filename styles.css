@@ -1,48 +1,52 @@
-/* ===== BASE ===== */
+/* ============================
+   RESET BÁSICO
+============================ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-  font-family: system-ui, sans-serif;
-  background: #fafafa;
-  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f7f7f8;
   color: #222;
+  padding: 40px 20px 80px;
 }
 
-/* ===== HEADER ===== */
-header {
+/* ============================
+   HEADER
+============================ */
+h1 {
   text-align: center;
-  padding: 36px 16px 12px;
+  font-size: 2.2rem;
+  margin-bottom: 28px;
+  font-weight: 700;
 }
 
-header h1 {
-  font-size: 28px;
-  margin: 0 0 6px;
-}
-
-header p {
-  font-size: 14px;
-  color: #666;
-  margin: 0;
-}
-
-/* ===== FILTERS ===== */
+/* ============================
+   FILTERS
+============================ */
 .filters {
   display: flex;
   justify-content: center;
   gap: 14px;
-  margin: 26px auto;
   flex-wrap: wrap;
+  margin-bottom: 36px;
 }
 
-.filter-wrap {
+.filter-wrapper {
   position: relative;
 }
 
 .filters select {
-  width: 240px;
-  padding: 10px 38px 10px 16px;
-  border-radius: 999px;
-  border: 1px solid #ddd;
-  font-size: 14px;
   appearance: none;
+  width: 220px;
+  padding: 12px 36px 12px 14px;
+  font-size: 0.95rem;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #fff;
   cursor: pointer;
 }
 
@@ -50,128 +54,142 @@ header p {
   color: #aaa;
 }
 
-/* ===== CLEAR BUTTON ===== */
-.clear-btn {
+.filters select:focus {
+  outline: none;
+  border-color: #888;
+}
+
+/* Flechita */
+.filter-wrapper::after {
+  content: "▾";
   position: absolute;
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  background: none;
-  border: none;
-  font-size: 14px;
-  color: #aaa;
-  opacity: 0;
   pointer-events: none;
-  cursor: pointer;
+  color: #888;
+  font-size: 0.75rem;
 }
 
-.filter-wrap select:not(:has(option[value=""]:checked)) + .clear-btn {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.clear-btn:hover {
-  color: #111;
-}
-
-/* ===== RESULTS ===== */
+/* ============================
+   RESULTS LAYOUT
+============================ */
 #results {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px 16px 60px;
 }
 
-/* ===== COMPARISON LAYOUT ===== */
-.compare-layout {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 32px;
-}
-
-@media (max-width: 900px) {
-  .compare-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ===== COLUMNS ===== */
-.column-title {
-  font-weight: 800;
-  margin-bottom: 14px;
-}
-
+/* ============================
+   GRID
+============================ */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 16px;
-}
-.compare-layout > div:first-child .card-grid {
-  grid-template-columns: repeat(2, 1fr);
+  align-items: stretch;
 }
 
-/* ===== CARD ===== */
+/* ============================
+   CARD BASE
+============================ */
 .color-card {
   background: #fff;
   border-radius: 14px;
   padding: 14px;
-  text-align: center;
   box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
+.color-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+}
+
+/* ============================
+   SWATCH
+============================ */
 .color-swatch {
-  height: 90px;
+  width: 100%;
+  height: 80px;
   border-radius: 10px;
-  border: 1px solid #e0e0e0;
-  margin-bottom: 10px;
+  border: 1px solid rgba(0,0,0,0.08);
 }
 
+/* ============================
+   CARD TEXT
+============================ */
 .color-brand {
-  font-size: 12px;
-  font-weight: 600;
-  color: #666;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #444;
 }
 
 .color-type {
-  font-size: 11px;
-  text-transform: uppercase;
-  color: #999;
-}
-
-.color-name {
-  font-size: 15px;
-  font-weight: 800;
-}
-
-.color-code {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #777;
 }
 
-/* ===== HIGHLIGHT CARD ===== */
+.color-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.color-code {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+/* ============================
+   HIGHLIGHT CARD
+============================ */
 .highlight-card {
   grid-column: span 2;
+  grid-row: span 2;
   padding: 22px;
   border-radius: 18px;
   box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
+/* Swatch más grande */
 .highlight-card .color-swatch {
-  height: 160px;
-  margin-bottom: 16px;
+  height: 180px;
+  margin-bottom: 18px;
 }
 
 .highlight-card .color-brand {
-  font-size: 14px;
-}
-
-.highlight-card .color-type {
-  font-size: 12px;
+  font-size: 1rem;
 }
 
 .highlight-card .color-name {
-  font-size: 20px;
+  font-size: 1.1rem;
 }
 
-.highlight-card .color-code {
-  font-size: 14px;
+/* ============================
+   EMPTY STATE
+============================ */
+.no-results {
+  text-align: center;
+  color: #888;
+  margin-top: 40px;
+  font-size: 0.95rem;
+}
+
+/* ============================
+   RESPONSIVE
+============================ */
+@media (max-width: 768px) {
+  .highlight-card {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+  .highlight-card .color-swatch {
+    height: 120px;
+  }
 }

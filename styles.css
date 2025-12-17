@@ -105,6 +105,9 @@ header p {
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 16px;
 }
+.compare-layout > div:first-child .card-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
 
 /* ===== CARD ===== */
 .color-card {
@@ -142,4 +145,33 @@ header p {
 .color-code {
   font-size: 12px;
   color: #777;
+}
+
+/* ===== HIGHLIGHT CARD ===== */
+.highlight-card {
+  grid-column: span 2;
+  padding: 22px;
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+}
+
+.highlight-card .color-swatch {
+  height: 160px;
+  margin-bottom: 16px;
+}
+
+.highlight-card .color-brand {
+  font-size: 14px;
+}
+
+.highlight-card .color-type {
+  font-size: 12px;
+}
+
+.highlight-card .color-name {
+  font-size: 20px;
+}
+
+.highlight-card .color-code {
+  font-size: 14px;
 }

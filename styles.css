@@ -151,7 +151,7 @@ header p {
 /* ===== HIGHLIGHT CARD ===== */
 .highlight-card {
   grid-column: span 2;
-  height: 420px; /* 🔒 ALTURA FIJA DE LA TARJETA */
+  height: 380px; /* 🔒 ALTURA FIJA DE LA TARJETA */
   padding: 22px;
   border-radius: 18px;
   box-shadow: 0 12px 28px rgba(0,0,0,0.18);
@@ -161,7 +161,7 @@ header p {
 }
 
 .highlight-card .color-swatch {
-  height: 245px;
+  height: 240px;
   margin-bottom: 16px;
 }
 
@@ -179,6 +179,18 @@ header p {
 
 .highlight-card .color-code {
   font-size: 14px;
+}
+
+/* ===== FIXED HEIGHT FOR EQUIVALENCE CARDS ===== */
+.color-card:not(.highlight-card) {
+  height: 260px; /* 👈 ajusta si quieres */
+  display: flex;
+  flex-direction: column;
+}
+
+.color-card:not(.highlight-card) .color-swatch {
+  height: 90px; /* el que ya traes */
+  flex-shrink: 0;
 }
 
 /* ============================

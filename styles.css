@@ -151,10 +151,13 @@ header p {
 /* ===== HIGHLIGHT CARD ===== */
 .highlight-card {
   grid-column: span 2;
-  grid-row: span 2;              /* 🔥 ESTO ES LO NUEVO */
+  height: 420px; /* 🔒 ALTURA FIJA DE LA TARJETA */
   padding: 22px;
   border-radius: 18px;
   box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+
+  display: flex;
+  flex-direction: column;
 }
 
 .highlight-card .color-swatch {

@@ -2,35 +2,54 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Spool Finder</title>
+
+  <!-- CSS -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-<header>
-  <h1>🔎 Spool Finder</h1>
-  <p>Encuentra equivalencias entre marcas de filamento</p>
-</header>
+  <div class="page">
+    <!-- ===== HEADER ===== -->
+    <header>
+      <h1>Spool Finder</h1>
+      <p>
+        Encuentra equivalencias de color entre marcas de filamento para impresión 3D.
+      </p>
+    </header>
 
-<div class="filters">
-  <div class="filter-wrap">
-    <select id="typeFilter"></select>
-    <button class="clear-btn" data-target="typeFilter">✕</button>
+    <!-- ===== FILTERS ===== -->
+    <div class="filters">
+      <div class="filter-wrap">
+        <select id="typeFilter">
+          <option value="" selected disabled hidden>Tipo</option>
+        </select>
+        <button class="clear-btn" data-clear="type">✕</button>
+      </div>
+
+      <div class="filter-wrap">
+        <select id="baseColorFilter">
+          <option value="" selected disabled hidden>Color base</option>
+        </select>
+        <button class="clear-btn" data-clear="color">✕</button>
+      </div>
+
+      <div class="filter-wrap">
+        <select id="brandFilter">
+          <option value="" selected disabled hidden>Marca</option>
+        </select>
+        <button class="clear-btn" data-clear="brand">✕</button>
+      </div>
+    </div>
   </div>
 
-  <div class="filter-wrap">
-    <select id="colorFilter"></select>
-    <button class="clear-btn" data-target="colorFilter">✕</button>
+  <!-- ===== RESULTS ===== -->
+  <div id="results">
+    <!-- JS inyecta aquí -->
   </div>
 
-  <div class="filter-wrap">
-    <select id="brandFilter"></select>
-    <button class="clear-btn" data-target="brandFilter">✕</button>
-  </div>
-</div>
-
-<div id="results"></div>
-
-<script src="script.js"></script>
+  <!-- JS -->
+  <script src="script.js"></script>
 </body>
 </html>

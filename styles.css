@@ -1,9 +1,9 @@
 /* ===== BASE ===== */
 body {
   font-family: system-ui, sans-serif;
-  background: #fafafa;
+  background: #f4f5f6; /* blanco suave */
   margin: 0;
-  color: #222;
+  color: #1f2933;
 }
 
 /* ===== HEADER ===== */
@@ -19,7 +19,7 @@ header h1 {
 
 header p {
   font-size: 14px;
-  color: #666;
+  color: #6b7280;
   margin: 0;
 }
 
@@ -40,10 +40,12 @@ header p {
   width: 240px;
   padding: 10px 38px 10px 16px;
   border-radius: 999px;
-  border: 1px solid #ddd;
+  border: 1px solid rgba(0,0,0,0.08);
   font-size: 14px;
   appearance: none;
   cursor: pointer;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
 }
 
 .filters select:has(option[value=""]:checked) {
@@ -112,50 +114,60 @@ header p {
 
 /* ===== CARD ===== */
 .color-card {
-  background: #fff;
-  border-radius: 14px;
-  padding: 14px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
   text-align: center;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.04),
+    0 8px 24px rgba(0,0,0,0.06);
 }
 
+/* ===== SWATCH ===== */
 .color-swatch {
   height: 90px;
-  border-radius: 10px;
-  border: 1px solid #e0e0e0;
+  border-radius: 12px;
   margin-bottom: 10px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
 }
 
+/* ===== TEXT ===== */
 .color-brand {
   font-size: 12px;
   font-weight: 600;
-  color: #666;
+  color: #6b7280;
 }
 
 .color-type {
   font-size: 11px;
   text-transform: uppercase;
-  color: #999;
+  letter-spacing: 0.04em;
+  color: #9ca3af;
 }
 
 .color-name {
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 700;
+  color: #111827;
 }
 
 .color-code {
   font-size: 12px;
-  color: #777;
+  color: #6b7280;
   min-height: 1em;
 }
 
 /* ===== HIGHLIGHT CARD ===== */
 .highlight-card {
   grid-column: span 2;
-  grid-row: span 2;  
-  padding: 22px;
-  border-radius: 18px;
-  box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+  grid-row: span 2;
+  padding: 24px;
+  border-radius: 20px;
+  background: #ffffff;
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.08),
+    0 20px 40px rgba(0,0,0,0.12);
 
   display: flex;
   flex-direction: column;
@@ -163,7 +175,8 @@ header p {
 
 .highlight-card .color-swatch {
   height: 260px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
 }
 
 .highlight-card .color-brand {
@@ -183,9 +196,7 @@ header p {
   min-height: 1em;
 }
 
-/* ============================
-   EMPTY STATE
-============================ */
+/* ===== EMPTY STATE ===== */
 .no-results {
   text-align: center;
   color: #888;
@@ -193,9 +204,7 @@ header p {
   font-size: 0.95rem;
 }
 
-/* ============================
-   RESPONSIVE
-============================ */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .highlight-card {
     grid-column: span 1;

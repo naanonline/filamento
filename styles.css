@@ -180,6 +180,7 @@ header p {
 
 .highlight-card .color-code {
   font-size: 14px;
+  min-height: 1em;
 }
 
 /* ============================

@@ -47,7 +47,6 @@ header p {
   margin: 48px 0 64px;
   flex-wrap: wrap;
   justify-content: flex-start;
-  width: 100%;
 }
 
 .filter-wrap {
@@ -55,8 +54,10 @@ header p {
 }
 
 .filters select {
-  width: 280px;
-  max-width: 100%;
+  flex: 1 1 260px;   /* ← clave */
+  min-width: 220px;
+  max-width: 320px;
+
   padding: 14px 44px 14px 20px;
   border-radius: 999px;
   border: 1px solid rgba(0,0,0,0.08);

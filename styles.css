@@ -23,7 +23,7 @@ header h1 {
   font-family: "BBH Bartle", system-ui, sans-serif;
   font-weight: 800;
   font-size: clamp(56px, 6.5vw, 92px);
-  letter-spacing: -0.035em;
+  letter-spacing: -0.01em;
   line-height: 0.9;
   max-width: 640px;
 }
@@ -34,7 +34,7 @@ header h1 span {
 
 header p {
   font-family: "Open Sans", system-ui, sans-serif;
-  font-size: 32px;
+  font-size: 24px;
   color: #6b7280;
   max-width: 520px;
   margin: 0;
@@ -47,6 +47,7 @@ header p {
   margin: 48px 0 64px;
   flex-wrap: wrap;
   justify-content: flex-start;
+  width: 100%;
 }
 
 .filter-wrap {
@@ -54,7 +55,8 @@ header p {
 }
 
 .filters select {
-  width: 260px;
+  width: 280px;
+  max-width: 100%;
   padding: 14px 44px 14px 20px;
   border-radius: 999px;
   border: 1px solid rgba(0,0,0,0.08);

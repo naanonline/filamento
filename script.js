@@ -113,6 +113,10 @@ function buildColumn(title, brands, row) {
 
     const card = document.createElement("div");
     card.className = "color-card";
+    
+    if (title === "Seleccionado") {
+      card.classList.add("highlight-card");
+    }
 
     card.innerHTML = `
       <div class="color-swatch" style="background:${getHex(row, brand)}"></div>

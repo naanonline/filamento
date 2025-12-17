@@ -181,18 +181,6 @@ header p {
   font-size: 14px;
 }
 
-/* ===== FIXED HEIGHT FOR EQUIVALENCE CARDS ===== */
-.color-card:not(.highlight-card) {
-  height: 260px; /* 👈 ajusta si quieres */
-  display: flex;
-  flex-direction: column;
-}
-
-.color-card:not(.highlight-card) .color-swatch {
-  height: 90px; /* el que ya traes */
-  flex-shrink: 0;
-}
-
 /* ============================
    EMPTY STATE
 ============================ */

@@ -1,35 +1,45 @@
 /* ===== BASE ===== */
 body {
-  font-family: system-ui, sans-serif;
-  background: #f4f5f6; /* blanco suave */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f2f3f5; /* blanco suave */
   margin: 0;
   color: #1f2933;
 }
 
+/* ===== PAGE WRAPPER ===== */
+.page {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 48px 32px 0;
+}
+
 /* ===== HEADER ===== */
 header {
-  text-align: center;
-  padding: 36px 16px 12px;
+  text-align: left;
+  margin-bottom: 32px;
 }
 
 header h1 {
-  font-size: 28px;
-  margin: 0 0 6px;
+  font-size: 48px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
 }
 
 header p {
-  font-size: 14px;
+  font-size: 15px;
   color: #6b7280;
+  max-width: 520px;
   margin: 0;
 }
 
 /* ===== FILTERS ===== */
 .filters {
   display: flex;
-  justify-content: center;
-  gap: 14px;
-  margin: 26px auto;
+  gap: 18px;
+  margin: 36px 0 48px;
   flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .filter-wrap {
@@ -37,31 +47,34 @@ header p {
 }
 
 .filters select {
-  width: 240px;
-  padding: 10px 38px 10px 16px;
+  width: 260px;
+  padding: 14px 44px 14px 20px;
   border-radius: 999px;
   border: 1px solid rgba(0,0,0,0.08);
-  font-size: 14px;
+  font-size: 15px;
   appearance: none;
   cursor: pointer;
-  background: #ffffff;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+
+  background: #f8f9fa;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.4),
+    0 1px 2px rgba(0,0,0,0.04);
 }
 
 .filters select:has(option[value=""]:checked) {
-  color: #aaa;
+  color: #9ca3af;
 }
 
 /* ===== CLEAR BUTTON ===== */
 .clear-btn {
   position: absolute;
-  right: 12px;
+  right: 16px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
   font-size: 14px;
-  color: #aaa;
+  color: #9ca3af;
   opacity: 0;
   pointer-events: none;
   cursor: pointer;
@@ -73,21 +86,21 @@ header p {
 }
 
 .clear-btn:hover {
-  color: #111;
+  color: #111827;
 }
 
-/* ===== RESULTS ===== */
+/* ===== RESULTS WRAPPER ===== */
 #results {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px 16px 60px;
+  padding: 0 16px 80px;
 }
 
 /* ===== COMPARISON LAYOUT ===== */
 .compare-layout {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  gap: 32px;
+  gap: 40px;
 }
 
 @media (max-width: 900px) {
@@ -99,55 +112,69 @@ header p {
 /* ===== COLUMNS ===== */
 .column-title {
   font-weight: 800;
-  margin-bottom: 14px;
+  font-size: 16px;
+  margin-bottom: 16px;
 }
 
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 16px;
+  gap: 18px;
 }
 
 .compare-layout > div:first-child .card-grid {
   grid-template-columns: repeat(2, 1fr);
 }
 
-/* ===== CARD ===== */
+/* ===== CARD BASE ===== */
 .color-card {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 18px;
+  padding: 18px;
   text-align: center;
+
   box-shadow:
     0 1px 2px rgba(0,0,0,0.04),
-    0 8px 24px rgba(0,0,0,0.06);
+    0 10px 24px rgba(0,0,0,0.06);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+/* ===== CARD HOVER (SUTIL PREMIUM) ===== */
+.color-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.08),
+    0 18px 36px rgba(0,0,0,0.12);
 }
 
 /* ===== SWATCH ===== */
 .color-swatch {
   height: 90px;
-  border-radius: 12px;
-  margin-bottom: 10px;
+  border-radius: 14px;
+  margin-bottom: 12px;
   box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
 }
 
 /* ===== TEXT ===== */
 .color-brand {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   color: #6b7280;
 }
 
 .color-type {
   font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   color: #9ca3af;
 }
 
 .color-name {
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 800;
   color: #111827;
 }
 
@@ -161,13 +188,13 @@ header p {
 .highlight-card {
   grid-column: span 2;
   grid-row: span 2;
-  padding: 24px;
-  border-radius: 20px;
-  background: #ffffff;
+  padding: 26px;
+  border-radius: 24px;
+  background: #f9fafb;
 
   box-shadow:
-    0 4px 12px rgba(0,0,0,0.08),
-    0 20px 40px rgba(0,0,0,0.12);
+    0 6px 16px rgba(0,0,0,0.10),
+    0 28px 48px rgba(0,0,0,0.18);
 
   display: flex;
   flex-direction: column;
@@ -176,7 +203,6 @@ header p {
 .highlight-card .color-swatch {
   height: 260px;
   margin-bottom: 18px;
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
 }
 
 .highlight-card .color-brand {
@@ -188,30 +214,37 @@ header p {
 }
 
 .highlight-card .color-name {
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .highlight-card .color-code {
   font-size: 14px;
-  min-height: 1em;
 }
 
 /* ===== EMPTY STATE ===== */
 .no-results {
   text-align: center;
-  color: #888;
-  margin-top: 40px;
+  color: #9ca3af;
+  margin-top: 48px;
   font-size: 0.95rem;
 }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
+  .page {
+    padding: 32px 20px 0;
+  }
+
+  header h1 {
+    font-size: 36px;
+  }
+
   .highlight-card {
     grid-column: span 1;
     grid-row: span 1;
   }
 
   .highlight-card .color-swatch {
-    height: 120px;
+    height: 140px;
   }
 }

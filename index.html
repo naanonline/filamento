@@ -7,43 +7,30 @@
 </head>
 <body>
 
-  <header>
-    <h1>Spool Finder</h1>
-    <p>Encuentra equivalencias de filamento entre marcas</p>
-  </header>
+<header>
+  <h1>🔎 Spool Finder</h1>
+  <p>Encuentra equivalencias entre marcas de filamento</p>
+</header>
 
-  <!-- FILTROS -->
-  <section class="filters">
-    <select id="tipoSelect">
-      <option value="" disabled selected hidden>Tipo</option>
-    </select>
+<div class="filters">
+  <div class="filter-wrap">
+    <select id="typeFilter"></select>
+    <button class="clear-btn" data-target="typeFilter">✕</button>
+  </div>
 
-    <select id="colorSelect">
-      <option value="" disabled selected hidden>Color Base</option>
-    </select>
+  <div class="filter-wrap">
+    <select id="colorFilter"></select>
+    <button class="clear-btn" data-target="colorFilter">✕</button>
+  </div>
 
-    <select id="marcaSelect">
-      <option value="" disabled selected hidden>Marca</option>
-    </select>
-  </section>
+  <div class="filter-wrap">
+    <select id="brandFilter"></select>
+    <button class="clear-btn" data-target="brandFilter">✕</button>
+  </div>
+</div>
 
-  <!-- RESULTADOS -->
-  <section id="results" class="results hidden">
-    <div class="compare-wrapper">
+<div id="results"></div>
 
-      <div class="selected-column">
-        <h3>Seleccionado</h3>
-        <div id="selectedCard"></div>
-      </div>
-
-      <div class="alternatives-column">
-        <h3>Otras marcas</h3>
-        <div id="alternativeCards" class="cards-grid"></div>
-      </div>
-
-    </div>
-  </section>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

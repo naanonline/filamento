@@ -1,135 +1,139 @@
-/* ============================
-   CONFIG
-============================ */
-const CSV_URL = "PEGA_AQUI_TU_URL_DEL_CSV";
+/* ===== CONFIG ===== */
+const CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSqQ7ZocXOFSN_kojnrH3dHhf2uHmQ2uFVVcG9FYNlbGg8YiTuS5piDSGyZ3-1P8hVUPcpazMHyOf18/pub?output=csv";
 
-/* ============================
-   ELEMENTS
-============================ */
-const tipoSelect = document.getElementById("tipoSelect");
-const colorSelect = document.getElementById("colorSelect");
-const marcaSelect = document.getElementById("marcaSelect");
+/* ===== STATE ===== */
+let headers = [];
+let rows = [];
+let TYPE_COL = -1;
+let BASE_COLOR_COL = -1;
 
-const results = document.getElementById("results");
-const selectedCard = document.getElementById("selectedCard");
-const alternativeCards = document.getElementById("alternativeCards");
-
-/* ============================
-   DATA
-============================ */
-let data = [];
-
-/* ============================
-   INIT
-============================ */
+/* ===== FETCH ===== */
 fetch(CSV_URL)
   .then(res => res.text())
   .then(text => {
-    data = parseCSV(text);
-    populateFilters();
+    const data = text
+      .trim()
+      .split("\n")
+      .map(l => l.replace(/\r/g, "").split(",").map(c => c.trim()));
+
+    headers = data[0];
+    rows = data.slice(1);
+
+    TYPE_COL = headers.indexOf("Tipo");
+    BASE_COLOR_COL = headers.indexOf("Color Base");
+
+    initFilters();
   });
 
-/* ============================
-   CSV PARSER
-============================ */
-function parseCSV(text) {
-  const lines = text.trim().split("\n");
-  const headers = lines.shift().split(",");
+/* ===== HELPERS ===== */
+function isBrandColumn(h) {
+  return h && h !== "Tipo" && h !== "Color Base" && !h.includes("Code") && !h.includes("Color");
+}
 
-  return lines.map(line => {
-    const values = line.split(",");
-    const obj = {};
-    headers.forEach((h, i) => obj[h.trim()] = values[i]?.trim());
-    return obj;
+function getCode(row, brand) {
+  return row[headers.indexOf(`${brand} Code`)] || "";
+}
+
+function getHex(row, brand) {
+  return row[headers.indexOf(`${brand} Color`)] || "#ccc";
+}
+
+/* ===== FILTERS ===== */
+function initFilters() {
+  const typeFilter = document.getElementById("typeFilter");
+  const colorFilter = document.getElementById("colorFilter");
+  const brandFilter = document.getElementById("brandFilter");
+
+  typeFilter.innerHTML =
+    `<option value="" disabled selected hidden>Tipo</option>` +
+    [...new Set(rows.map(r => r[TYPE_COL]).filter(Boolean))]
+      .map(v => `<option value="${v}">${v}</option>`).join("");
+
+  colorFilter.innerHTML =
+    `<option value="" disabled selected hidden>Color Base</option>` +
+    [...new Set(rows.map(r => r[BASE_COLOR_COL]).filter(Boolean))]
+      .map(v => `<option value="${v}">${v}</option>`).join("");
+
+  brandFilter.innerHTML =
+    `<option value="" disabled selected hidden>Marca</option>` +
+    headers.filter(isBrandColumn)
+      .map(v => `<option value="${v}">${v}</option>`).join("");
+
+  typeFilter.onchange = render;
+  colorFilter.onchange = render;
+  brandFilter.onchange = render;
+}
+
+/* ===== RENDER ===== */
+function render() {
+  const type = typeFilter.value;
+  const color = colorFilter.value;
+  const brand = brandFilter.value;
+
+  const results = document.getElementById("results");
+  results.innerHTML = "";
+
+  // 🔒 Solo render si los 3 filtros están activos
+  if (!type || !color || !brand) return;
+
+  const row = rows.find(
+    r => r[TYPE_COL] === type && r[BASE_COLOR_COL] === color
+  );
+  if (!row) return;
+
+  const layout = document.createElement("div");
+  layout.className = "compare-layout";
+
+  // LEFT (selected brand)
+  layout.appendChild(buildColumn("Seleccionado", [brand], row));
+
+  // RIGHT (others)
+  const others = headers.filter(isBrandColumn).filter(b => b !== brand);
+  layout.appendChild(buildColumn("Equivalencias", others, row));
+
+  results.appendChild(layout);
+}
+
+/* ===== COLUMN BUILDER ===== */
+function buildColumn(title, brands, row) {
+  const col = document.createElement("div");
+
+  const h = document.createElement("div");
+  h.className = "column-title";
+  h.textContent = title;
+  col.appendChild(h);
+
+  const grid = document.createElement("div");
+  grid.className = "card-grid";
+
+  brands.forEach(brand => {
+    const name = row[headers.indexOf(brand)];
+    if (!name) return;
+
+    const card = document.createElement("div");
+    card.className = "color-card";
+
+    card.innerHTML = `
+      <div class="color-swatch" style="background:${getHex(row, brand)}"></div>
+      <div class="color-brand">${brand}</div>
+      <div class="color-type">${row[TYPE_COL]}</div>
+      <div class="color-name">${name}</div>
+      <div class="color-code">${getCode(row, brand)}</div>
+    `;
+
+    grid.appendChild(card);
   });
+
+  col.appendChild(grid);
+  return col;
 }
 
-/* ============================
-   FILTERS
-============================ */
-function populateFilters() {
-  fillSelect(tipoSelect, [...new Set(data.map(d => d.Tipo))]);
-  fillSelect(colorSelect, [...new Set(data.map(d => d["Color Base"]))]);
-  fillSelect(marcaSelect, [...new Set(data.map(d => d.Marca))]);
-}
-
-function fillSelect(select, values) {
-  values.sort().forEach(val => {
-    const opt = document.createElement("option");
-    opt.value = val;
-    opt.textContent = val;
-    select.appendChild(opt);
+/* ===== CLEAR BUTTON ===== */
+document.querySelectorAll(".clear-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const select = document.getElementById(btn.dataset.target);
+    select.value = "";
+    select.dispatchEvent(new Event("change"));
   });
-}
-
-/* ============================
-   EVENTS
-============================ */
-[tipoSelect, colorSelect, marcaSelect].forEach(sel =>
-  sel.addEventListener("change", applyFilters)
-);
-
-/* ============================
-   LOGIC
-============================ */
-function allFiltersSelected() {
-  return tipoSelect.value && colorSelect.value && marcaSelect.value;
-}
-
-function applyFilters() {
-  if (!allFiltersSelected()) {
-    results.classList.add("hidden");
-    return;
-  }
-
-  results.classList.remove("hidden");
-  renderComparison();
-}
-
-function renderComparison() {
-  selectedCard.innerHTML = "";
-  alternativeCards.innerHTML = "";
-
-  const selected = data.find(d =>
-    d.Tipo === tipoSelect.value &&
-    d["Color Base"] === colorSelect.value &&
-    d.Marca === marcaSelect.value
-  );
-
-  if (!selected) return;
-
-  selectedCard.appendChild(createCard(selected, true));
-
-  const alternatives = data.filter(d =>
-    d.Tipo === tipoSelect.value &&
-    d["Color Base"] === colorSelect.value &&
-    d.Marca !== marcaSelect.value
-  );
-
-  if (alternatives.length === 0) {
-    alternativeCards.innerHTML =
-      "<p>No se encontraron equivalentes.</p>";
-    return;
-  }
-
-  alternatives.forEach(d =>
-    alternativeCards.appendChild(createCard(d))
-  );
-}
-
-/* ============================
-   CARD
-============================ */
-function createCard(row, isSelected = false) {
-  const card = document.createElement("div");
-  card.className = `card ${isSelected ? "selected" : ""}`;
-
-  card.innerHTML = `
-    <div class="swatch" style="background:${row.ColorHex}"></div>
-    <div class="brand">${row.Marca}</div>
-    <div class="name">${row.Color}</div>
-    <div class="code">${row.Code}</div>
-  `;
-
-  return card;
-}
+});

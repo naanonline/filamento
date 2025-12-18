@@ -221,7 +221,7 @@ function buildColumn(title, brands, row, baseHex) {
     const card = document.createElement("div");
     card.className = "color-card";
 
-    if (title === "Seleccionado") {
+    if (title === "My Spool") {
       card.classList.add("highlight-card");
     }
 
@@ -232,7 +232,7 @@ function buildColumn(title, brands, row, baseHex) {
       <div class="color-name">${name}</div>
       <div class="color-code">${getCode(row, brand)}</div>
       ${
-        title === "Equivalencias"
+        title === "Substitutes"
           ? `<div class="color-similarity">${similarity}% match</div>`
           : ""
       }

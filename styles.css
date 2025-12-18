@@ -1,7 +1,7 @@
 /* ===== BASE ===== */
 body {
   font-family: "Open Sans", system-ui, sans-serif;
-  background: #f2f3f5; /* blanco suave */
+  background: #f2f3f5;
   margin: 0;
   color: #1f2933;
   overflow-y: scroll;
@@ -33,24 +33,15 @@ header h1 {
   max-width: 640px;
 }
 
-header h1 span {
-  display: block;
-}
-
 header p {
-  font-family: "Open Sans", system-ui, sans-serif;
   font-size: 18px;
   color: #6b7280;
-  max-width: 520px;
   margin: 48px 0 96px;
 }
 
 header p2 {
-  font-family: "Open Sans", system-ui, sans-serif;
   font-size: 15px;
   color: #1f2933;
-  max-width: 520px;
-  margin: 0;
 }
 
 /* ===== FILTERS ===== */
@@ -59,7 +50,6 @@ header p2 {
   gap: 18px;
   margin: -24px 0 64px;
   flex-wrap: wrap;
-  justify-content: flex-start;
 }
 
 .filter-wrap {
@@ -77,25 +67,7 @@ header p2 {
   font-size: 15px;
   appearance: none;
   cursor: pointer;
-
   background: #f8f9fa;
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.4),
-    0 1px 2px rgba(0,0,0,0.04);
-}
-
-.filters select:has(option[value=""]:checked) {
-  color: #9ca3af;
-}
-
-.filters select:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-  background-color: #eef0f3;
-}
-
-.filters select:disabled:hover {
-  background-color: #eef0f3;
 }
 
 /* ===== CLEAR BUTTON ===== */
@@ -118,11 +90,7 @@ header p2 {
   pointer-events: auto;
 }
 
-.clear-btn:hover {
-  color: #111827;
-}
-
-/* ===== RESULTS WRAPPER ===== */
+/* ===== RESULTS ===== */
 #results {
   max-width: 1200px;
   margin: 0 auto;
@@ -165,30 +133,27 @@ header p2 {
   border-radius: 18px;
   padding: 18px;
   text-align: center;
-
   box-shadow:
     0 1px 2px rgba(0,0,0,0.04),
     0 10px 24px rgba(0,0,0,0.06);
-
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease;
 }
 
-/* ===== CARD HOVER (SUTIL PREMIUM) ===== */
-.color-card:hover {
-  transform: translateY(-4px);
-  box-shadow:
-    0 4px 10px rgba(0,0,0,0.08),
-    0 18px 36px rgba(0,0,0,0.12);
+/* ===== HIGHLIGHT CARD (FIXED) ===== */
+.highlight-card {
+  grid-column: span 2;
+  grid-row: span 2;
+  padding: 26px;
+  border-radius: 24px;
 }
 
-/* ===== SWATCH ===== */
 .color-swatch {
   height: 90px;
   border-radius: 14px;
   margin-bottom: 12px;
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+}
+
+.highlight-card .color-swatch {
+  height: 260px;
 }
 
 /* ===== TEXT ===== */
@@ -201,65 +166,25 @@ header p2 {
 .color-type {
   font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
   color: #9ca3af;
 }
 
 .color-name {
   font-size: 15px;
   font-weight: 800;
-  color: #111827;
 }
 
 .color-code {
   font-size: 12px;
   color: #6b7280;
-  min-height: 1em;
 }
 
-/* ===== COLOR SIMILARITY ===== */
+/* ===== SIMILARITY ===== */
 .color-similarity {
   margin-top: 6px;
   font-size: 12px;
-  font-weight: 700;
-  color: #2563eb; /* azul elegante */
-}
-
-/* ===== HIGHLIGHT CARD ===== */
-.highlight-card {
-  grid-column: span 2;
-  grid-row: span 2;
-  padding: 26px;
-  border-radius: 24px;
-  background: #f9fafb;
-
-  box-shadow:
-    0 6px 16px rgba(0,0,0,0.10),
-    0 28px 48px rgba(0,0,0,0.18);
-
-  display: flex;
-  flex-direction: column;
-}
-
-.highlight-card .color-swatch {
-  height: 260px;
-  margin-bottom: 18px;
-}
-
-.highlight-card .color-brand {
-  font-size: 14px;
-}
-
-.highlight-card .color-type {
-  font-size: 12px;
-}
-
-.highlight-card .color-name {
-  font-size: 22px;
-}
-
-.highlight-card .color-code {
-  font-size: 14px;
+  font-weight: 800;
+  color: #2563eb;
 }
 
 /* ===== EMPTY STATE ===== */

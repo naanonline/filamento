@@ -59,9 +59,9 @@ header p {
 }
 
 .filters select {
-  flex: 1 1 320px;   /* ← clave */
+  flex: 1 1 400px;   /* ← clave */
   min-width: 220px;
-  max-width: 320px;
+  max-width: 400px;
 
   padding: 14px 44px 14px 20px;
   border-radius: 999px;

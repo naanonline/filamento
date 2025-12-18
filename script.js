@@ -68,7 +68,7 @@ function colorSimilarity(hex1, hex2) {
   );
 
   const maxDist = Math.sqrt(255 * 255 * 3);
-  return Math.round((1 - dist / maxDist) * 100);
+  return +( (1 - dist / maxDist) * 100 ).toFixed(1);
 }
 
 /* ============================

@@ -295,21 +295,21 @@ document.querySelectorAll(".clear-btn").forEach(btn => {
           rgba(0,0,0,0.035) 0,
           rgba(0,0,0,0.035) 1px,
           transparent 1px,
-          transparent 3px
+          transparent 120px
         ),
         repeating-linear-gradient(
           75deg,
           rgba(0,0,0,0.02) 0,
           rgba(0,0,0,0.02) 1px,
           transparent 1px,
-          transparent 4px
+          transparent 160px
         ),
         repeating-linear-gradient(
           -35deg,
           rgba(0,0,0,0.02) 0,
           rgba(0,0,0,0.02) 1px,
           transparent 1px,
-          transparent 5px
+          transparent 200px
         );
 
       opacity: 1;

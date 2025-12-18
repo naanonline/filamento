@@ -290,13 +290,27 @@ document.querySelectorAll(".clear-btn").forEach(btn => {
       inset: 0;
 
       background-image:
-        repeating-radial-gradient(
-          circle,
+        repeating-linear-gradient(
+          120deg,
           rgba(0,0,0,0.035) 0,
-          rgba(0,0,0,0.5) 1px,
+          rgba(0,0,0,0.035) 1px,
+          transparent 1px,
+          transparent 3px
+        ),
+        repeating-linear-gradient(
+          75deg,
+          rgba(0,0,0,0.02) 0,
+          rgba(0,0,0,0.02) 1px,
+          transparent 1px,
+          transparent 4px
+        ),
+        repeating-linear-gradient(
+          -35deg,
+          rgba(0,0,0,0.02) 0,
+          rgba(0,0,0,0.02) 1px,
           transparent 1px,
           transparent 5px
-      );
+        );
 
       opacity: 1;
       pointer-events: none;

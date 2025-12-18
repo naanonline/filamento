@@ -312,7 +312,7 @@ document.querySelectorAll(".clear-btn").forEach(btn => {
           transparent 320px
         );
 
-      opacity: 1;
+      opacity: 0.22;
       pointer-events: none;
       z-index: 0;
     }

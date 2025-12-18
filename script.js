@@ -291,12 +291,26 @@ document.querySelectorAll(".clear-btn").forEach(btn => {
 
       background-image:
         repeating-radial-gradient(
-          circle at 0 0,
-          rgba(0, 0, 0, 0.035),
-          rgba(0, 0, 0, 0.035) 1px,
+          circle,
+          rgba(0,0,0,0.035) 0,
+          rgba(0,0,0,0.035) 1px,
+          transparent 1px,
+          transparent 3px
+        ),
+        repeating-linear-gradient(
+          45deg,
+          rgba(0,0,0,0.02) 0,
+          rgba(0,0,0,0.02) 1px,
           transparent 1px,
           transparent 2px
-        );
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          rgba(0,0,0,0.02) 0,
+          rgba(0,0,0,0.02) 1px,
+          transparent 1px,
+          transparent 2px
+      );
 
       opacity: 1;
       pointer-events: none;

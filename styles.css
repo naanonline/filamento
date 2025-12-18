@@ -42,7 +42,7 @@ header p {
   font-size: 18px;
   color: #6b7280;
   max-width: 520px;
-  margin: 48px 0 64px;
+  margin: 48px 0 96px;
 }
 
 header p2 {
@@ -57,7 +57,7 @@ header p2 {
 .filters {
   display: flex;
   gap: 18px;
-  margin: 48px 0 64px;
+  margin: 12px 0 64px;
   flex-wrap: wrap;
   justify-content: flex-start;
 }

@@ -57,7 +57,7 @@ header p2 {
 .filters {
   display: flex;
   gap: 18px;
-  margin: -12px 0 64px;
+  margin: -24px 0 64px;
   flex-wrap: wrap;
   justify-content: flex-start;
 }

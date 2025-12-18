@@ -290,6 +290,8 @@ function buildSubstitutesColumn(title, brands, rows) {
   const grid = document.createElement("div");
   grid.className = "card-grid";
 
+  const seen = new Set(); // 🔒 candado anti-duplicados
+
   brands.forEach(obj => {
     const brand = obj.brand;
     const similarity = obj.similarity;
@@ -298,15 +300,24 @@ function buildSubstitutesColumn(title, brands, rows) {
       const name = row[headers.indexOf(brand)];
       if (!name) return;
 
+      const hex = getHex(row, brand);
+      const code = getCode(row, brand);
+
+      // 🔑 clave única por substitute real
+      const key = `${brand}|${name}|${hex}|${code}`;
+      if (seen.has(key)) return;
+
+      seen.add(key);
+
       const card = document.createElement("div");
       card.className = "color-card";
 
       card.innerHTML = `
-        <div class="color-swatch" style="background:${getHex(row, brand)}"></div>
+        <div class="color-swatch" style="background:${hex}"></div>
         <div class="color-brand">${brand}</div>
         <div class="color-type">${row[TYPE_COL]}</div>
         <div class="color-name">${name}</div>
-        <div class="color-code">${getCode(row, brand)}</div>
+        <div class="color-code">${code}</div>
         <div class="color-similarity">
           <div class="similarity-value">${similarity}%</div>
           <div class="similarity-label">Color Match</div>

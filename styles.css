@@ -42,6 +42,14 @@ header p {
   font-size: 18px;
   color: #6b7280;
   max-width: 520px;
+  margin: 48px 0 64px;
+}
+
+header p2 {
+  font-family: "Open Sans", system-ui, sans-serif;
+  font-size: 15px;
+  color: #1f2933;
+  max-width: 520px;
   margin: 0;
 }
 

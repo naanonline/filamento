@@ -205,7 +205,7 @@ header p2 {
 /* ===== SIMILARITY BADGE ===== */
 .color-similarity {
   position: absolute;
-  top: -14px; /* ajusta si cambias altura del swatch */
+  top: 8px; /* ajusta si cambias altura del swatch */
   left: 50%;
   transform: translateX(-50%);
 

@@ -126,16 +126,16 @@ function onTypeChange() {
   }
 
   const colors = [
-    ...new Set(
-      rows
-        .filter(r =>
-          r[TYPE_COL] === type &&
-          hasBrandValue(r, brand)
-        )
-        .map(r => r[headers.indexOf(brand)])
-        .filter(Boolean)
-    )
-  ];
+  ...new Set(
+    rows
+      .filter(r =>
+        r[TYPE_COL] === type &&
+        hasBrandValue(r, brand)
+      )
+      .map(r => r[headers.indexOf(brand)])
+      .filter(Boolean)
+  )
+].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
 
   colorFilter.innerHTML += colors
     .map(c => `<option value="${c}">${c}</option>`)

@@ -193,7 +193,9 @@ function render() {
   }))
   .sort((a, b) => b.similarity - a.similarity);
 
-  layout.appendChild(buildColumn("Substitutes", others, row, baseHex));
+  layout.appendChild(
+     buildSubstitutesColumn("Substitutes", others, matchedRows, baseHex)
+   );
 
   results.appendChild(layout);
 }

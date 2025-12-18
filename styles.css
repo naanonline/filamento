@@ -59,7 +59,7 @@ header p {
 }
 
 .filters select {
-  flex: 1 1 260px;   /* ← clave */
+  flex: 1 1 320px;   /* ← clave */
   min-width: 220px;
   max-width: 320px;
 

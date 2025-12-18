@@ -69,6 +69,10 @@ header p {
   }
 }
 
+header * {
+  will-change: transform, opacity;
+}
+
 header p2 {
   font-size: 15px;
   color: #1f2933;

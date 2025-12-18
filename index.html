@@ -18,14 +18,6 @@
     <p>The perfect substitute.</p>
     <p2>Select your spool:</p2>
   </header>
-
-  <div class="custom-select" id="colorSelect">
-    <button class="select-trigger">
-      <span class="swatch"></span>
-      <span class="label">Color</span>
-    </button>
-    <div class="select-options"></div>
-  </div>
   
   <div class="filters">
     <div class="filter-wrap">
@@ -39,8 +31,14 @@
     </div>
   
     <div class="filter-wrap">
-      <select id="colorFilter"></select>
-      <button class="clear-btn" data-target="colorFilter">✕</button>
+      <div class="custom-select disabled" id="colorSelect">
+        <button type="button" class="select-trigger">
+          <span class="swatch"></span>
+          <span class="label">Color</span>
+        </button>
+        <div class="select-options"></div>
+      </div>
+      <button class="clear-btn" onclick="clearFilter('color')">✕</button>
     </div>
   </div>
 </div>  

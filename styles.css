@@ -56,7 +56,7 @@ header p {
 
 .filter-wrap {
   position: relative;
-  flex: 1 1 520px;
+  flex: 1 1 360px;
   min-width: 280px;
   max-width: 520px;
 }

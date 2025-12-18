@@ -20,7 +20,11 @@ fetch(CSV_URL)
     const data = text
       .trim()
       .split("\n")
-      .map(l => l.replace(/\r/g, "").split(",").map(c => c.trim()));
+      .map(l =>
+        l.replace(/\r/g, "")
+         .split(",")
+         .map(c => c.trim())
+      );
 
     headers = data[0];
     rows = data.slice(1);
@@ -33,7 +37,13 @@ fetch(CSV_URL)
    HELPERS
 ============================ */
 function isBrandColumn(h) {
-  return h && h !== "Tipo" && h !== "Color Base" && !h.includes("Code") && !h.includes("Color");
+  return (
+    h &&
+    h !== "Tipo" &&
+    h !== "Color Base" &&
+    !h.includes("Code") &&
+    !h.includes("Color")
+  );
 }
 
 function hasBrandValue(row, brand) {
@@ -49,11 +59,13 @@ function getHex(row, brand) {
   return row[headers.indexOf(`${brand} Color`)] || "#ccc";
 }
 
-/* ===== COLOR SIMILARITY ===== */
+/* ============================
+   COLOR SIMILARITY
+============================ */
 function hexToRgb(hex) {
   if (!hex || hex === "#ccc") return null;
-  const n = parseInt(hex.replace("#",""), 16);
-  return { r:(n>>16)&255, g:(n>>8)&255, b:n&255 };
+  const n = parseInt(hex.replace("#", ""), 16);
+  return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
 }
 
 function colorSimilarity(hex1, hex2) {
@@ -68,7 +80,7 @@ function colorSimilarity(hex1, hex2) {
   );
 
   const maxDist = Math.sqrt(255 * 255 * 3);
-  return +( (1 - dist / maxDist) * 100 ).toFixed(1);
+  return +((1 - dist / maxDist) * 100).toFixed(1);
 }
 
 /* ============================
@@ -77,12 +89,15 @@ function colorSimilarity(hex1, hex2) {
 function initFilters() {
   brandFilter.innerHTML =
     `<option value="" disabled selected hidden>Marca</option>` +
-    headers.filter(isBrandColumn)
+    headers
+      .filter(isBrandColumn)
       .map(b => `<option value="${b}">${b}</option>`)
       .join("");
 
-  typeFilter.innerHTML = `<option value="" disabled selected hidden>Material</option>`;
-  colorFilter.innerHTML = `<option value="" disabled selected hidden>Color</option>`;
+  typeFilter.innerHTML =
+    `<option value="" disabled selected hidden>Material</option>`;
+  colorFilter.innerHTML =
+    `<option value="" disabled selected hidden>Color</option>`;
 
   typeFilter.disabled = true;
   colorFilter.disabled = true;
@@ -98,8 +113,10 @@ function initFilters() {
 function onBrandChange() {
   const brand = brandFilter.value;
 
-  typeFilter.innerHTML = `<option value="" disabled selected hidden>Material</option>`;
-  colorFilter.innerHTML = `<option value="" disabled selected hidden>Color</option>`;
+  typeFilter.innerHTML =
+    `<option value="" disabled selected hidden>Material</option>`;
+  colorFilter.innerHTML =
+    `<option value="" disabled selected hidden>Color</option>`;
   colorFilter.disabled = true;
 
   if (!brand) {
@@ -117,7 +134,10 @@ function onBrandChange() {
     )
   ];
 
-  typeFilter.innerHTML += types.map(t => `<option value="${t}">${t}</option>`).join("");
+  typeFilter.innerHTML += types
+    .map(t => `<option value="${t}">${t}</option>`)
+    .join("");
+
   typeFilter.disabled = false;
   render();
 }
@@ -129,7 +149,8 @@ function onTypeChange() {
   const brand = brandFilter.value;
   const type = typeFilter.value;
 
-  colorFilter.innerHTML = `<option value="" disabled selected hidden>Color</option>`;
+  colorFilter.innerHTML =
+    `<option value="" disabled selected hidden>Color</option>`;
 
   if (!brand || !type) {
     colorFilter.disabled = true;
@@ -144,9 +165,14 @@ function onTypeChange() {
         .map(r => r[headers.indexOf(brand)])
         .filter(Boolean)
     )
-  ].sort((a,b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+  ].sort((a, b) =>
+    a.localeCompare(b, undefined, { sensitivity: "base" })
+  );
 
-  colorFilter.innerHTML += colors.map(c => `<option value="${c}">${c}</option>`).join("");
+  colorFilter.innerHTML += colors
+    .map(c => `<option value="${c}">${c}</option>`)
+    .join("");
+
   colorFilter.disabled = false;
   render();
 }
@@ -165,8 +191,11 @@ function render() {
   if (!brand || !type || !color) return;
 
   const matchedRows = rows.filter(
-    r => r[TYPE_COL] === type && r[headers.indexOf(brand)] === color
+    r =>
+      r[TYPE_COL] === type &&
+      r[headers.indexOf(brand)] === color
   );
+
   if (!matchedRows.length) return;
 
   const baseRow = matchedRows[0];
@@ -176,34 +205,43 @@ function render() {
   layout.className = "compare-layout";
 
   /* ---- Seleccionado ---- */
-  layout.appendChild(buildColumn(
-    "My Spool",
-    [{ brand }],
-    matchedRows[0],
-    baseHex
-  ));
+  layout.appendChild(
+    buildColumn(
+      "My Spool",
+      [{ brand }],
+      baseRow,
+      baseHex
+    )
+  );
 
-  /* ---- Equivalencias (ordenadas por similitud) ---- */
+  /* ---- Substitutes ---- */
   const others = headers
-  .filter(isBrandColumn)
-  .filter(b => b !== brand)
-  .map(b => ({
-    brand: b,
-    similarity: colorSimilarity(baseHex, getHex(baseRow, b))
-  }))
-  .sort((a, b) => b.similarity - a.similarity);
+    .filter(isBrandColumn)
+    .filter(b => b !== brand)
+    .map(b => ({
+      brand: b,
+      similarity: colorSimilarity(
+        baseHex,
+        getHex(baseRow, b)
+      )
+    }))
+    .sort((a, b) => b.similarity - a.similarity);
 
   layout.appendChild(
-     buildSubstitutesColumn("Substitutes", others, matchedRows, baseHex)
-   );
+    buildSubstitutesColumn(
+      "Substitutes",
+      others,
+      matchedRows
+    )
+  );
 
   results.appendChild(layout);
 }
 
 /* ============================
-   COLUMN BUILDER
+   COLUMN BUILDER (SELECTED)
 ============================ */
-function buildColumn(title, brands, row, baseHex) {
+function buildColumn(title, brands, row) {
   const col = document.createElement("div");
 
   const h = document.createElement("div");
@@ -216,17 +254,12 @@ function buildColumn(title, brands, row, baseHex) {
 
   brands.forEach(obj => {
     const brand = obj.brand || obj;
-    const similarity = obj.similarity;
 
     const name = row[headers.indexOf(brand)];
     if (!name) return;
 
     const card = document.createElement("div");
-    card.className = "color-card";
-
-    if (title === "My Spool") {
-      card.classList.add("highlight-card");
-    }
+    card.className = "color-card highlight-card";
 
     card.innerHTML = `
       <div class="color-swatch" style="background:${getHex(row, brand)}"></div>
@@ -234,18 +267,54 @@ function buildColumn(title, brands, row, baseHex) {
       <div class="color-type">${row[TYPE_COL]}</div>
       <div class="color-name">${name}</div>
       <div class="color-code">${getCode(row, brand)}</div>
-      ${
-        title === "Substitutes"
-          ? `<div class="color-similarity">
-              <div class="similarity-value">${similarity}%</div>
-              <div class="similarity-label">Color Match</div>
-            </div>
-            `
-          : ""
-      }
     `;
 
     grid.appendChild(card);
+  });
+
+  col.appendChild(grid);
+  return col;
+}
+
+/* ============================
+   COLUMN BUILDER (SUBSTITUTES)
+============================ */
+function buildSubstitutesColumn(title, brands, rows) {
+  const col = document.createElement("div");
+
+  const h = document.createElement("div");
+  h.className = "column-title";
+  h.textContent = title;
+  col.appendChild(h);
+
+  const grid = document.createElement("div");
+  grid.className = "card-grid";
+
+  brands.forEach(obj => {
+    const brand = obj.brand;
+    const similarity = obj.similarity;
+
+    rows.forEach(row => {
+      const name = row[headers.indexOf(brand)];
+      if (!name) return;
+
+      const card = document.createElement("div");
+      card.className = "color-card";
+
+      card.innerHTML = `
+        <div class="color-swatch" style="background:${getHex(row, brand)}"></div>
+        <div class="color-brand">${brand}</div>
+        <div class="color-type">${row[TYPE_COL]}</div>
+        <div class="color-name">${name}</div>
+        <div class="color-code">${getCode(row, brand)}</div>
+        <div class="color-similarity">
+          <div class="similarity-value">${similarity}%</div>
+          <div class="similarity-label">Color Match</div>
+        </div>
+      `;
+
+      grid.appendChild(card);
+    });
   });
 
   col.appendChild(grid);

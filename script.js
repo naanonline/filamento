@@ -77,34 +77,6 @@ function initFilters() {
   colorFilter.addEventListener("change", render);
 }
 
-/* ---- CustomSwatch ---- */
-function buildColorDropdown(colors, brand) {
-  const wrapper = document.getElementById("colorSelect");
-  const list = wrapper.querySelector(".select-options");
-  list.innerHTML = "";
-
-  colors.forEach(c => {
-    const hex = getHexForColor(brand, c);
-
-    const opt = document.createElement("div");
-    opt.className = "select-option";
-    opt.innerHTML = `
-      <span class="swatch" style="background:${hex}"></span>
-      <span>${c}</span>
-    `;
-
-    opt.onclick = () => {
-      wrapper.querySelector(".label").textContent = c;
-      wrapper.querySelector(".swatch").style.background = hex;
-      wrapper.classList.remove("open");
-      colorFilter.value = c;
-      render();
-    };
-
-    list.appendChild(opt);
-  });
-}
-
 /* ============================
    BRAND CHANGE
 ============================ */

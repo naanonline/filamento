@@ -31,19 +31,33 @@ header h1 {
   letter-spacing: -0.01em;
   line-height: 0.9;
   max-width: 640px;
+
+  animation: softReveal 1s ease-out both;
 }
 
 header p {
   font-family: "Montserrat", system-ui, sans-serif;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 800;
   letter-spacing: -0.01em;
-
   color: #374151;
   max-width: 520px;
   margin: 48px 0 144px;
 
-  animation: fadeUp 0.8s ease-out both;
+  animation: fadeUp 1.5s ease-out both;
+}
+
+@keyframes softReveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
 }
 
 @keyframes fadeUp {

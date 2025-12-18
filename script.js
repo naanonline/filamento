@@ -272,3 +272,43 @@ document.querySelectorAll(".clear-btn").forEach(btn => {
     }
   });
 });
+
+/* ============================
+   BACKGROUND NOISE
+============================ */
+(function addNoiseBackground() {
+  const style = document.createElement("style");
+
+  style.innerHTML = `
+    body {
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+
+      background-image:
+        repeating-radial-gradient(
+          circle at 0 0,
+          rgba(0, 0, 0, 0.035),
+          rgba(0, 0, 0, 0.035) 1px,
+          transparent 1px,
+          transparent 2px
+        );
+
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page,
+    #results {
+      position: relative;
+      z-index: 1;
+    }
+  `;
+
+  document.head.appendChild(style);
+})();

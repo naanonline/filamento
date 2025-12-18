@@ -34,38 +34,27 @@ header h1 {
 }
 
 header p {
-  font-family: "Open Sans", system-ui, sans-serif;
-  font-size: 19px;
-  font-weight: 500;
-  line-height: 1.55;
-  color: #374151;
+  font-family: "BBH Bartle", system-ui, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 
+  color: #111827;
   max-width: 520px;
   margin: 48px 0 144px;
-  letter-spacing: 0.01em;
+
+  animation: fadeUp 0.8s ease-out both;
 }
 
-.hero-subtitle {
-  position: relative;
-  padding-left: 18px;
-
-  font-size: 18px;
-  font-weight: 600;
-  color: #1f2933;
-  line-height: 1.5;
-}
-
-.hero-subtitle::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.4em;
-
-  width: 4px;
-  height: 1.2em;
-  border-radius: 999px;
-  background: #111827;
-  opacity: 0.35;
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 header p2 {

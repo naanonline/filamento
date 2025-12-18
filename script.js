@@ -164,10 +164,10 @@ function render() {
 
   if (!brand || !type || !color) return;
 
-  const row = rows.find(
+  const matchedRows = rows.filter(
     r => r[TYPE_COL] === type && r[headers.indexOf(brand)] === color
   );
-  if (!row) return;
+  if (!matchedRows.length) return;
 
   const baseHex = getHex(row, brand);
 
@@ -178,7 +178,7 @@ function render() {
   layout.appendChild(buildColumn(
     "My Spool",
     [{ brand }],
-    row,
+    matchedRows[0],
     baseHex
   ));
 

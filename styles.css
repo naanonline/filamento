@@ -304,4 +304,22 @@ header p2 {
   .highlight-card .color-swatch {
     height: 140px;
   }
+
+  .clear-btn {
+    right: 8px;
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 16px; /* el ícono un poquito más legible */
+  }
+
+  .clear-btn::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+  }
 }

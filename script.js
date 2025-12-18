@@ -298,7 +298,7 @@ document.querySelectorAll(".clear-btn").forEach(btn => {
           transparent 2px
         );
 
-      opacity: 0.35;
+      opacity: 1;
       pointer-events: none;
       z-index: 0;
     }

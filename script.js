@@ -169,7 +169,8 @@ function render() {
   );
   if (!matchedRows.length) return;
 
-  const baseHex = getHex(row, brand);
+  const baseRow = matchedRows[0];
+  const baseHex = getHex(baseRow, brand);
 
   const layout = document.createElement("div");
   layout.className = "compare-layout";
@@ -184,13 +185,13 @@ function render() {
 
   /* ---- Equivalencias (ordenadas por similitud) ---- */
   const others = headers
-    .filter(isBrandColumn)
-    .filter(b => b !== brand)
-    .map(b => ({
-      brand: b,
-      similarity: colorSimilarity(baseHex, getHex(row, b))
-    }))
-    .sort((a, b) => b.similarity - a.similarity);
+  .filter(isBrandColumn)
+  .filter(b => b !== brand)
+  .map(b => ({
+    brand: b,
+    similarity: colorSimilarity(baseHex, getHex(baseRow, b))
+  }))
+  .sort((a, b) => b.similarity - a.similarity);
 
   layout.appendChild(buildColumn("Substitutes", others, row, baseHex));
 

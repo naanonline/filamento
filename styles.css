@@ -34,12 +34,12 @@ header h1 {
 }
 
 header p {
-  font-family: "BBH Bartle", system-ui, sans-serif;
+  font-family: "Montserrat", system-ui, sans-serif;
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.01em;
 
-  color: #111827;
+  color: #374151;
   max-width: 520px;
   margin: 48px 0 144px;
 

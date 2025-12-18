@@ -4,6 +4,11 @@ body {
   background: #f2f3f5; /* blanco suave */
   margin: 0;
   color: #1f2933;
+  overflow-y: scroll;
+}
+
+html {
+  scrollbar-gutter: stable;
 }
 
 /* ===== PAGE WRAPPER ===== */

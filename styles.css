@@ -51,7 +51,7 @@ header p {
   from {
     opacity: 0;
     transform: translateY(12px);
-    filter: blur(6px);
+    filter: blur(2px);
   }
   to {
     opacity: 1;

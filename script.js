@@ -249,12 +249,17 @@ function buildColumn(title, brands, row, baseHex = null) {
        : null;
 
     card.innerHTML = `
-      <div class="color-swatch" style="background:${getHex(row, brand)}"></div>
-      <div class="color-brand">${brand}</div>
-      <div class="color-type">${row[TYPE_COL]}</div>
-      <div class="color-name">${name}</div>
-      <div class="color-code">${getCode(row, brand)}</div>
-    `;
+     <div class="color-swatch" style="background:${getHex(row, brand)}"></div>
+     <div class="color-brand">${brand}</div>
+     <div class="color-type">${row[TYPE_COL]}</div>
+     <div class="color-name">${name}</div>
+     <div class="color-code">${getCode(row, brand)}</div>
+     ${
+       similarity !== null
+         ? `<div class="color-similarity">${similarity}% match</div>`
+         : ""
+     }
+   `;
 
     grid.appendChild(card);
   });

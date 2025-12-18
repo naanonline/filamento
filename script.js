@@ -24,7 +24,6 @@ fetch(CSV_URL)
 
     headers = data[0];
     rows = data.slice(1);
-
     TYPE_COL = headers.indexOf("Tipo");
 
     initFilters();
@@ -50,17 +49,11 @@ function getHex(row, brand) {
   return row[headers.indexOf(`${brand} Color`)] || "#ccc";
 }
 
+/* ===== COLOR SIMILARITY ===== */
 function hexToRgb(hex) {
   if (!hex || hex === "#ccc") return null;
-
-  const clean = hex.replace("#", "");
-  const bigint = parseInt(clean, 16);
-
-  return {
-    r: (bigint >> 16) & 255,
-    g: (bigint >> 8) & 255,
-    b: bigint & 255
-  };
+  const n = parseInt(hex.replace("#",""), 16);
+  return { r:(n>>16)&255, g:(n>>8)&255, b:n&255 };
 }
 
 function colorSimilarity(hex1, hex2) {
@@ -82,18 +75,12 @@ function colorSimilarity(hex1, hex2) {
    FILTERS INIT
 ============================ */
 function initFilters() {
-  window.brandFilter = document.getElementById("brandFilter");
-  window.typeFilter = document.getElementById("typeFilter");
-  window.colorFilter = document.getElementById("colorFilter");
-
-  /* ---- Marca ---- */
   brandFilter.innerHTML =
     `<option value="" disabled selected hidden>Marca</option>` +
     headers.filter(isBrandColumn)
       .map(b => `<option value="${b}">${b}</option>`)
       .join("");
 
-  /* ---- Inicial ---- */
   typeFilter.innerHTML = `<option value="" disabled selected hidden>Material</option>`;
   colorFilter.innerHTML = `<option value="" disabled selected hidden>Color</option>`;
 
@@ -130,10 +117,7 @@ function onBrandChange() {
     )
   ];
 
-  typeFilter.innerHTML += types
-    .map(t => `<option value="${t}">${t}</option>`)
-    .join("");
-
+  typeFilter.innerHTML += types.map(t => `<option value="${t}">${t}</option>`).join("");
   typeFilter.disabled = false;
   render();
 }
@@ -154,21 +138,15 @@ function onTypeChange() {
   }
 
   const colors = [
-  ...new Set(
-    rows
-      .filter(r =>
-        r[TYPE_COL] === type &&
-        hasBrandValue(r, brand)
-      )
-      .map(r => r[headers.indexOf(brand)])
-      .filter(Boolean)
-  )
-].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+    ...new Set(
+      rows
+        .filter(r => r[TYPE_COL] === type && hasBrandValue(r, brand))
+        .map(r => r[headers.indexOf(brand)])
+        .filter(Boolean)
+    )
+  ].sort((a,b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
 
-  colorFilter.innerHTML += colors
-    .map(c => `<option value="${c}">${c}</option>`)
-    .join("");
-
+  colorFilter.innerHTML += colors.map(c => `<option value="${c}">${c}</option>`).join("");
   colorFilter.disabled = false;
   render();
 }
@@ -187,33 +165,34 @@ function render() {
   if (!brand || !type || !color) return;
 
   const row = rows.find(
-    r =>
-      r[TYPE_COL] === type &&
-      r[headers.indexOf(brand)] === color
+    r => r[TYPE_COL] === type && r[headers.indexOf(brand)] === color
   );
-
   if (!row) return;
+
+  const baseHex = getHex(row, brand);
 
   const layout = document.createElement("div");
   layout.className = "compare-layout";
 
   /* ---- Seleccionado ---- */
-  layout.appendChild(buildColumn("My Spool", [brand], row));
+  layout.appendChild(buildColumn(
+    "Seleccionado",
+    [{ brand }],
+    row,
+    baseHex
+  ));
 
-  /* ---- Equivalencias ---- */
-  const baseHex = getHex(row, brand);
+  /* ---- Equivalencias (ordenadas por similitud) ---- */
+  const others = headers
+    .filter(isBrandColumn)
+    .filter(b => b !== brand)
+    .map(b => ({
+      brand: b,
+      similarity: colorSimilarity(baseHex, getHex(row, b))
+    }))
+    .sort((a, b) => b.similarity - a.similarity);
 
-   const others = headers
-     .filter(isBrandColumn)
-     .filter(b => b !== brand)
-     .map(b => ({
-       brand: b,
-       similarity: colorSimilarity(baseHex, getHex(row, b))
-     }))
-     .sort((a, b) => b.similarity - a.similarity)
-     .map(o => o.brand);
-   
-   layout.appendChild(buildColumn("Substitutes", others, row, baseHex));
+  layout.appendChild(buildColumn("Equivalencias", others, row, baseHex));
 
   results.appendChild(layout);
 }
@@ -221,7 +200,7 @@ function render() {
 /* ============================
    COLUMN BUILDER
 ============================ */
-function buildColumn(title, brands, row, baseHex = null) {
+function buildColumn(title, brands, row, baseHex) {
   const col = document.createElement("div");
 
   const h = document.createElement("div");
@@ -232,7 +211,10 @@ function buildColumn(title, brands, row, baseHex = null) {
   const grid = document.createElement("div");
   grid.className = "card-grid";
 
-  brands.forEach(brand => {
+  brands.forEach(obj => {
+    const brand = obj.brand || obj;
+    const similarity = obj.similarity;
+
     const name = row[headers.indexOf(brand)];
     if (!name) return;
 
@@ -243,23 +225,18 @@ function buildColumn(title, brands, row, baseHex = null) {
       card.classList.add("highlight-card");
     }
 
-    const similarity =
-     baseHex && title === "Equivalencias"
-       ? colorSimilarity(baseHex, getHex(row, brand))
-       : null;
-
     card.innerHTML = `
-     <div class="color-swatch" style="background:${getHex(row, brand)}"></div>
-     <div class="color-brand">${brand}</div>
-     <div class="color-type">${row[TYPE_COL]}</div>
-     <div class="color-name">${name}</div>
-     <div class="color-code">${getCode(row, brand)}</div>
-     ${
-       similarity !== null
-         ? `<div class="color-similarity">${similarity}% match</div>`
-         : ""
-     }
-   `;
+      <div class="color-swatch" style="background:${getHex(row, brand)}"></div>
+      <div class="color-brand">${brand}</div>
+      <div class="color-type">${row[TYPE_COL]}</div>
+      <div class="color-name">${name}</div>
+      <div class="color-code">${getCode(row, brand)}</div>
+      ${
+        title === "Equivalencias"
+          ? `<div class="color-similarity">${similarity}% match</div>`
+          : ""
+      }
+    `;
 
     grid.appendChild(card);
   });

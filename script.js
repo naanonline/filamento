@@ -293,23 +293,9 @@ document.querySelectorAll(".clear-btn").forEach(btn => {
         repeating-radial-gradient(
           circle,
           rgba(0,0,0,0.035) 0,
-          rgba(0,0,0,0.035) 1px,
+          rgba(0,0,0,0.5) 1px,
           transparent 1px,
-          transparent 3px
-        ),
-        repeating-linear-gradient(
-          45deg,
-          rgba(0,0,0,0.02) 0,
-          rgba(0,0,0,0.02) 1px,
-          transparent 1px,
-          transparent 2px
-        ),
-        repeating-linear-gradient(
-          -45deg,
-          rgba(0,0,0,0.02) 0,
-          rgba(0,0,0,0.02) 1px,
-          transparent 1px,
-          transparent 2px
+          transparent 5px
       );
 
       opacity: 1;

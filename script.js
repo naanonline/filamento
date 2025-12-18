@@ -289,28 +289,14 @@ document.querySelectorAll(".clear-btn").forEach(btn => {
       position: fixed;
       inset: 0;
 
-      background-image:
-        repeating-linear-gradient(
-          120deg,
-          rgba(0,0,0,0.035) 0,
-          rgba(0,0,0,0.035) 1px,
-          transparent 1px,
-          transparent 120px
-        ),
-        repeating-linear-gradient(
-          75deg,
-          rgba(0,0,0,0.02) 0,
-          rgba(0,0,0,0.02) 1px,
-          transparent 1px,
-          transparent 160px
-        ),
-        repeating-linear-gradient(
-          -35deg,
-          rgba(0,0,0,0.02) 0,
-          rgba(0,0,0,0.02) 1px,
-          transparent 1px,
-          transparent 200px
-        );
+      background-image: url("data:image/svg+xml;utf8,\
+         <svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'>\
+           <filter id='noise'>\
+             <feTurbulence type='fractalNoise' baseFrequency='0.008' numOctaves='2'/>\
+             <feDisplacementMap in='SourceGraphic' scale='60'/>\
+           </filter>\
+           <rect width='100%' height='100%' filter='url(%23noise)' opacity='0.08'/>\
+         </svg>");
 
       opacity: 1;
       pointer-events: none;

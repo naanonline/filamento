@@ -138,6 +138,12 @@ header p2 {
     0 10px 24px rgba(0,0,0,0.06);
 }
 
+.color-card:hover .color-swatch {
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,0.12),
+    0 4px 8px rgba(0,0,0,0.08);
+}
+
 /* ===== HIGHLIGHT CARD (FIXED) ===== */
 .highlight-card {
   grid-column: span 2;
@@ -146,10 +152,16 @@ header p2 {
   border-radius: 24px;
 }
 
+/* ===== SWATCH (VISIBILIDAD EN COLORES CLAROS) ===== */
 .color-swatch {
   height: 90px;
   border-radius: 14px;
   margin-bottom: 12px;
+
+  /* mini borde tipo cápsula */
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,0.08),
+    0 1px 2px rgba(0,0,0,0.04);
 }
 
 .highlight-card .color-swatch {

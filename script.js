@@ -176,7 +176,7 @@ function render() {
 
   /* ---- Seleccionado ---- */
   layout.appendChild(buildColumn(
-    "Seleccionado",
+    "My Spool",
     [{ brand }],
     row,
     baseHex
@@ -192,7 +192,7 @@ function render() {
     }))
     .sort((a, b) => b.similarity - a.similarity);
 
-  layout.appendChild(buildColumn("Equivalencias", others, row, baseHex));
+  layout.appendChild(buildColumn("Substitutes", others, row, baseHex));
 
   results.appendChild(layout);
 }

@@ -50,6 +50,34 @@ function getHex(row, brand) {
   return row[headers.indexOf(`${brand} Color`)] || "#ccc";
 }
 
+function hexToRgb(hex) {
+  if (!hex || hex === "#ccc") return null;
+
+  const clean = hex.replace("#", "");
+  const bigint = parseInt(clean, 16);
+
+  return {
+    r: (bigint >> 16) & 255,
+    g: (bigint >> 8) & 255,
+    b: bigint & 255
+  };
+}
+
+function colorSimilarity(hex1, hex2) {
+  const c1 = hexToRgb(hex1);
+  const c2 = hexToRgb(hex2);
+  if (!c1 || !c2) return 0;
+
+  const dist = Math.sqrt(
+    Math.pow(c1.r - c2.r, 2) +
+    Math.pow(c1.g - c2.g, 2) +
+    Math.pow(c1.b - c2.b, 2)
+  );
+
+  const maxDist = Math.sqrt(255 * 255 * 3);
+  return Math.round((1 - dist / maxDist) * 100);
+}
+
 /* ============================
    FILTERS INIT
 ============================ */
@@ -170,11 +198,22 @@ function render() {
   layout.className = "compare-layout";
 
   /* ---- Seleccionado ---- */
-  layout.appendChild(buildColumn("Seleccionado", [brand], row));
+  layout.appendChild(buildColumn("My Spool", [brand], row));
 
   /* ---- Equivalencias ---- */
-  const others = headers.filter(isBrandColumn).filter(b => b !== brand);
-  layout.appendChild(buildColumn("Equivalencias", others, row));
+  const baseHex = getHex(row, brand);
+
+   const others = headers
+     .filter(isBrandColumn)
+     .filter(b => b !== brand)
+     .map(b => ({
+       brand: b,
+       similarity: colorSimilarity(baseHex, getHex(row, b))
+     }))
+     .sort((a, b) => b.similarity - a.similarity)
+     .map(o => o.brand);
+   
+   layout.appendChild(buildColumn("Substitutes", others, row, baseHex));
 
   results.appendChild(layout);
 }
@@ -182,7 +221,7 @@ function render() {
 /* ============================
    COLUMN BUILDER
 ============================ */
-function buildColumn(title, brands, row) {
+function buildColumn(title, brands, row, baseHex = null) {
   const col = document.createElement("div");
 
   const h = document.createElement("div");
@@ -203,6 +242,11 @@ function buildColumn(title, brands, row) {
     if (title === "Seleccionado") {
       card.classList.add("highlight-card");
     }
+
+    const similarity =
+     baseHex && title === "Equivalencias"
+       ? colorSimilarity(baseHex, getHex(row, brand))
+       : null;
 
     card.innerHTML = `
       <div class="color-swatch" style="background:${getHex(row, brand)}"></div>

@@ -41,12 +41,17 @@ function getHex(row, brand) {
 
 /* ===== FILTERS ===== */
 function initFilters() {
-  const typeFilter = document.getElementById("typeFilter");
-  const colorFilter = document.getElementById("colorFilter");
-  const brandFilter = document.getElementById("brandFilter");
+  window.brandFilter = document.getElementById("brandFilter");
+  window.typeFilter = document.getElementById("typeFilter");
+  window.colorFilter = document.getElementById("colorFilter");
+
+  brandFilter.innerHTML =
+    `<option value="" disabled selected hidden>Marca</option>` +
+    headers.filter(isBrandColumn)
+      .map(v => `<option value="${v}">${v}</option>`).join("");
 
   typeFilter.innerHTML =
-    `<option value="" disabled selected hidden>Tipo</option>` +
+    `<option value="" disabled selected hidden>Material</option>` +
     [...new Set(rows.map(r => r[TYPE_COL]).filter(Boolean))]
       .map(v => `<option value="${v}">${v}</option>`).join("");
 
@@ -55,14 +60,25 @@ function initFilters() {
     [...new Set(rows.map(r => r[BASE_COLOR_COL]).filter(Boolean))]
       .map(v => `<option value="${v}">${v}</option>`).join("");
 
-  brandFilter.innerHTML =
-    `<option value="" disabled selected hidden>Marca</option>` +
-    headers.filter(isBrandColumn)
-      .map(v => `<option value="${v}">${v}</option>`).join("");
+  // 🔒 estados iniciales
+  typeFilter.disabled = true;
+  colorFilter.disabled = true;
 
-  typeFilter.onchange = render;
-  colorFilter.onchange = render;
-  brandFilter.onchange = render;
+  brandFilter.addEventListener("change", () => {
+    typeFilter.disabled = !brandFilter.value;
+    typeFilter.value = "";
+    colorFilter.value = "";
+    colorFilter.disabled = true;
+    render();
+  });
+
+  typeFilter.addEventListener("change", () => {
+    colorFilter.disabled = !typeFilter.value;
+    colorFilter.value = "";
+    render();
+  });
+
+  colorFilter.addEventListener("change", render);
 }
 
 /* ===== RENDER ===== */
@@ -137,7 +153,20 @@ function buildColumn(title, brands, row) {
 document.querySelectorAll(".clear-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const select = document.getElementById(btn.dataset.target);
+
     select.value = "";
     select.dispatchEvent(new Event("change"));
+
+    if (select.id === "brandFilter") {
+      typeFilter.disabled = true;
+      colorFilter.disabled = true;
+      typeFilter.value = "";
+      colorFilter.value = "";
+    }
+
+    if (select.id === "typeFilter") {
+      colorFilter.disabled = true;
+      colorFilter.value = "";
+    }
   });
 });

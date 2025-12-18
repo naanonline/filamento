@@ -217,6 +217,14 @@ header p2 {
   min-height: 1em;
 }
 
+/* ===== COLOR SIMILARITY ===== */
+.color-similarity {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #2563eb; /* azul elegante */
+}
+
 /* ===== HIGHLIGHT CARD ===== */
 .highlight-card {
   grid-column: span 2;

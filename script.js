@@ -233,7 +233,11 @@ function buildColumn(title, brands, row, baseHex) {
       <div class="color-code">${getCode(row, brand)}</div>
       ${
         title === "Substitutes"
-          ? `<div class="color-similarity">${similarity}% match</div>`
+          ? `<div class="color-similarity">
+              <div class="similarity-value">${similarity}%</div>
+              <div class="similarity-label">Color Match</div>
+            </div>
+            `
           : ""
       }
     `;

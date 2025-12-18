@@ -1,14 +1,19 @@
-/* ===== CONFIG ===== */
+/* ============================
+   CONFIG
+============================ */
 const CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vSqQ7ZocXOFSN_kojnrH3dHhf2uHmQ2uFVVcG9FYNlbGg8YiTuS5piDSGyZ3-1P8hVUPcpazMHyOf18/pub?output=csv";
 
-/* ===== STATE ===== */
+/* ============================
+   STATE
+============================ */
 let headers = [];
 let rows = [];
 let TYPE_COL = -1;
-let BASE_COLOR_COL = -1;
 
-/* ===== FETCH ===== */
+/* ============================
+   FETCH
+============================ */
 fetch(CSV_URL)
   .then(res => res.text())
   .then(text => {
@@ -21,14 +26,20 @@ fetch(CSV_URL)
     rows = data.slice(1);
 
     TYPE_COL = headers.indexOf("Tipo");
-    BASE_COLOR_COL = headers.indexOf("Color Base");
 
     initFilters();
   });
 
-/* ===== HELPERS ===== */
+/* ============================
+   HELPERS
+============================ */
 function isBrandColumn(h) {
   return h && h !== "Tipo" && h !== "Color Base" && !h.includes("Code") && !h.includes("Color");
+}
+
+function hasBrandValue(row, brand) {
+  const val = row[headers.indexOf(brand)];
+  return val && val.trim() !== "";
 }
 
 function getCode(row, brand) {
@@ -39,79 +50,138 @@ function getHex(row, brand) {
   return row[headers.indexOf(`${brand} Color`)] || "#ccc";
 }
 
-/* ===== FILTERS ===== */
+/* ============================
+   FILTERS INIT
+============================ */
 function initFilters() {
   window.brandFilter = document.getElementById("brandFilter");
   window.typeFilter = document.getElementById("typeFilter");
   window.colorFilter = document.getElementById("colorFilter");
 
+  /* ---- Marca ---- */
   brandFilter.innerHTML =
     `<option value="" disabled selected hidden>Marca</option>` +
     headers.filter(isBrandColumn)
-      .map(v => `<option value="${v}">${v}</option>`).join("");
+      .map(b => `<option value="${b}">${b}</option>`)
+      .join("");
 
-  typeFilter.innerHTML =
-    `<option value="" disabled selected hidden>Material</option>` +
-    [...new Set(rows.map(r => r[TYPE_COL]).filter(Boolean))]
-      .map(v => `<option value="${v}">${v}</option>`).join("");
+  /* ---- Inicial ---- */
+  typeFilter.innerHTML = `<option value="" disabled selected hidden>Material</option>`;
+  colorFilter.innerHTML = `<option value="" disabled selected hidden>Color</option>`;
 
-  colorFilter.innerHTML =
-    `<option value="" disabled selected hidden>Color Base</option>` +
-    [...new Set(rows.map(r => r[BASE_COLOR_COL]).filter(Boolean))]
-      .map(v => `<option value="${v}">${v}</option>`).join("");
-
-  // 🔒 estados iniciales
   typeFilter.disabled = true;
   colorFilter.disabled = true;
 
-  brandFilter.addEventListener("change", () => {
-    typeFilter.disabled = !brandFilter.value;
-    typeFilter.value = "";
-    colorFilter.value = "";
-    colorFilter.disabled = true;
-    render();
-  });
-
-  typeFilter.addEventListener("change", () => {
-    colorFilter.disabled = !typeFilter.value;
-    colorFilter.value = "";
-    render();
-  });
-
+  brandFilter.addEventListener("change", onBrandChange);
+  typeFilter.addEventListener("change", onTypeChange);
   colorFilter.addEventListener("change", render);
 }
 
-/* ===== RENDER ===== */
+/* ============================
+   BRAND CHANGE
+============================ */
+function onBrandChange() {
+  const brand = brandFilter.value;
+
+  typeFilter.innerHTML = `<option value="" disabled selected hidden>Material</option>`;
+  colorFilter.innerHTML = `<option value="" disabled selected hidden>Color</option>`;
+  colorFilter.disabled = true;
+
+  if (!brand) {
+    typeFilter.disabled = true;
+    render();
+    return;
+  }
+
+  const types = [
+    ...new Set(
+      rows
+        .filter(r => hasBrandValue(r, brand))
+        .map(r => r[TYPE_COL])
+        .filter(Boolean)
+    )
+  ];
+
+  typeFilter.innerHTML += types
+    .map(t => `<option value="${t}">${t}</option>`)
+    .join("");
+
+  typeFilter.disabled = false;
+  render();
+}
+
+/* ============================
+   TYPE CHANGE
+============================ */
+function onTypeChange() {
+  const brand = brandFilter.value;
+  const type = typeFilter.value;
+
+  colorFilter.innerHTML = `<option value="" disabled selected hidden>Color</option>`;
+
+  if (!brand || !type) {
+    colorFilter.disabled = true;
+    render();
+    return;
+  }
+
+  const colors = [
+    ...new Set(
+      rows
+        .filter(r =>
+          r[TYPE_COL] === type &&
+          hasBrandValue(r, brand)
+        )
+        .map(r => r[headers.indexOf(brand)])
+        .filter(Boolean)
+    )
+  ];
+
+  colorFilter.innerHTML += colors
+    .map(c => `<option value="${c}">${c}</option>`)
+    .join("");
+
+  colorFilter.disabled = false;
+  render();
+}
+
+/* ============================
+   RENDER
+============================ */
 function render() {
+  const brand = brandFilter.value;
   const type = typeFilter.value;
   const color = colorFilter.value;
-  const brand = brandFilter.value;
 
   const results = document.getElementById("results");
   results.innerHTML = "";
 
-  // 🔒 Solo render si los 3 filtros están activos
-  if (!type || !color || !brand) return;
+  if (!brand || !type || !color) return;
 
   const row = rows.find(
-    r => r[TYPE_COL] === type && r[BASE_COLOR_COL] === color
+    r =>
+      r[TYPE_COL] === type &&
+      r[headers.indexOf(brand)] === color
   );
+
   if (!row) return;
 
   const layout = document.createElement("div");
   layout.className = "compare-layout";
 
-  // LEFT (selected brand)
+  /* ---- Seleccionado ---- */
   layout.appendChild(buildColumn("Seleccionado", [brand], row));
 
-  // RIGHT (others)
+  /* ---- Equivalencias ---- */
   const others = headers.filter(isBrandColumn).filter(b => b !== brand);
   layout.appendChild(buildColumn("Equivalencias", others, row));
 
   results.appendChild(layout);
 }
 
-/* ===== COLUMN BUILDER ===== */
+/* ============================
+   COLUMN BUILDER
+============================ */
 function buildColumn(title, brands, row) {
   const col = document.createElement("div");
 
@@ -129,7 +199,7 @@ function buildColumn(title, brands, row) {
 
     const card = document.createElement("div");
     card.className = "color-card";
-    
+
     if (title === "Seleccionado") {
       card.classList.add("highlight-card");
     }
@@ -149,7 +219,9 @@ function buildColumn(title, brands, row) {
   return col;
 }
 
-/* ===== CLEAR BUTTON ===== */
+/* ============================
+   CLEAR BUTTONS
+============================ */
 document.querySelectorAll(".clear-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const select = document.getElementById(btn.dataset.target);

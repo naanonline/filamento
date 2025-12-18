@@ -56,12 +56,13 @@ header p {
 
 .filter-wrap {
   position: relative;
-  flex: 1 1 520px;   /* ← clave */
+  flex: 1 1 520px;
   min-width: 280px;
   max-width: 520px;
 }
 
 .filters select {
+  width: 100%;
   padding: 14px 44px 14px 20px;
   border-radius: 999px;
   border: 1px solid rgba(0,0,0,0.08);

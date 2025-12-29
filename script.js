@@ -48,19 +48,60 @@ function hexToRgb(hex) {
   return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
 }
 
+function rgbToHsl(r, g, b) {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h, s, l = (max + min) / 2;
+
+  if (max === min) {
+    h = s = 0; // gris
+  } else {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      case b: h = (r - g) / d + 4; break;
+    }
+
+    h *= 60;
+  }
+
+  return { h, s, l };
+}
+
 function colorSimilarity(hex1, hex2) {
   const c1 = hexToRgb(hex1);
   const c2 = hexToRgb(hex2);
   if (!c1 || !c2) return 0;
 
-  const dist = Math.sqrt(
-    Math.pow(c1.r - c2.r, 2) +
-    Math.pow(c1.g - c2.g, 2) +
-    Math.pow(c1.b - c2.b, 2)
-  );
+  const hsl1 = rgbToHsl(c1.r, c1.g, c1.b);
+  const hsl2 = rgbToHsl(c2.r, c2.g, c2.b);
 
-  const maxDist = Math.sqrt(255 * 255 * 3);
-  return +((1 - dist / maxDist) * 100).toFixed(1);
+  // Diferencia de Hue (circular)
+  let dh = Math.abs(hsl1.h - hsl2.h);
+  dh = Math.min(dh, 360 - dh) / 180; // 0–1
+
+  const ds = Math.abs(hsl1.s - hsl2.s); // 0–1
+  const dl = Math.abs(hsl1.l - hsl2.l); // 0–1
+
+  // Pesos (ajustables)
+  const WEIGHT_H = 0.6;
+  const WEIGHT_S = 0.2;
+  const WEIGHT_L = 0.2;
+
+  const distance =
+    dh * WEIGHT_H +
+    ds * WEIGHT_S +
+    dl * WEIGHT_L;
+
+  const similarity = (1 - distance) * 100;
+  return Math.max(0, Math.min(100, similarity)).toFixed(1);
 }
 
 /* ============================

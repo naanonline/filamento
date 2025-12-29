@@ -29,11 +29,12 @@ fetch(CSV_URL)
     const headers = data[0];
 
     rows = data.slice(1).map(r => ({
-      tipo: r[headers.indexOf("Tipo")],
-      marca: r[headers.indexOf("Marca")],
-      nombre: r[headers.indexOf("Nombre Color")],
-      code: r[headers.indexOf("Code")],
-      hex: r[headers.indexOf("Color Hex")] || "#ccc"
+      tipo: r[headers.indexOf("Tipo")]?.trim(),
+      tipoUnico: r[headers.indexOf("Tipo Unico")]?.trim().toUpperCase(),
+      marca: r[headers.indexOf("Marca")]?.trim(),
+      nombre: r[headers.indexOf("Nombre Color")]?.trim(),
+      code: r[headers.indexOf("Code")]?.trim(),
+      hex: r[headers.indexOf("Color Hex")]?.trim() || "#ccc"
     }));
 
     initFilters();
@@ -229,7 +230,7 @@ function render() {
   const substitutes = rows
     .filter(
       r =>
-        r.tipo === baseRow.tipo &&
+        r.tipoUnico === baseRow.tipoUnico &&
         r.marca !== baseRow.marca
     )
     .map(r => ({

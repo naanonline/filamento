@@ -222,7 +222,7 @@ header p2 {
 
 .color-type {
   font-size: 11px;
-  text-transform: uppercase;
+  text-transform: none;
   color: #9ca3af;
 }
 

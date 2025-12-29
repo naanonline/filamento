@@ -4,11 +4,12 @@
 const CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vSqQ7ZocXOFSN_kojnrH3dHhf2uHmQ2uFVVcG9FYNlbGg8YiTuS5piDSGyZ3-1P8hVUPcpazMHyOf18/pub?output=csv";
 
+const SIMILARITY_THRESHOLD = 80;
+
 /* ============================
    STATE
 ============================ */
 let rows = [];
-let COL = {};
 
 /* ============================
    FETCH
@@ -26,9 +27,9 @@ fetch(CSV_URL)
       );
 
     const headers = data[0];
+
     rows = data.slice(1).map(r => ({
       tipo: r[headers.indexOf("Tipo")],
-      colorBase: r[headers.indexOf("Color Base")],
       marca: r[headers.indexOf("Marca")],
       nombre: r[headers.indexOf("Nombre Color")],
       code: r[headers.indexOf("Code")],
@@ -181,22 +182,20 @@ function render() {
   layout.className = "compare-layout";
 
   /* ---- My Spool ---- */
-  layout.appendChild(
-    buildColumn("My Spool", baseRow)
-  );
+  layout.appendChild(buildMySpool("My Spool", baseRow));
 
   /* ---- Substitutes ---- */
   const substitutes = rows
     .filter(
       r =>
         r.tipo === baseRow.tipo &&
-        r.colorBase === baseRow.colorBase &&
         r.marca !== baseRow.marca
     )
     .map(r => ({
       ...r,
       similarity: colorSimilarity(baseRow.hex, r.hex)
     }))
+    .filter(r => r.similarity >= SIMILARITY_THRESHOLD)
     .sort((a, b) => b.similarity - a.similarity);
 
   layout.appendChild(
@@ -207,9 +206,9 @@ function render() {
 }
 
 /* ============================
-   COLUMN BUILDER (MY SPOOL)
+   MY SPOOL COLUMN
 ============================ */
-function buildColumn(title, row) {
+function buildMySpool(title, row) {
   const col = document.createElement("div");
 
   const h = document.createElement("div");
@@ -238,7 +237,7 @@ function buildColumn(title, row) {
 }
 
 /* ============================
-   COLUMN BUILDER (SUBSTITUTES)
+   SUBSTITUTES COLUMN
 ============================ */
 function buildSubstitutesColumn(title, items) {
   const col = document.createElement("div");

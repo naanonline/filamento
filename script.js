@@ -41,6 +41,24 @@ fetch(CSV_URL)
   });
 
 /* ============================
+   HUE SIMILARITY
+============================ */
+
+function isSameHueFamily(h1, h2) {
+  let dh = Math.abs(h1 - h2);
+  dh = Math.min(dh, 360 - dh);
+  return dh <= 25; // tolerancia perceptual
+}
+
+function isSimilarLightness(l1, l2) {
+  return Math.abs(l1 - l2) <= 0.18;
+}
+
+function isSimilarSaturation(s1, s2) {
+  return Math.abs(s1 - s2) <= 0.35;
+}
+
+/* ============================
    COLOR SIMILARITY
 ============================ */
 function hexToRgb(hex) {
@@ -84,22 +102,29 @@ function colorSimilarity(hex1, hex2) {
   const hsl1 = rgbToHsl(c1.r, c1.g, c1.b);
   const hsl2 = rgbToHsl(c2.r, c2.g, c2.b);
 
-  // Diferencia de Hue (circular)
+  // ---------- GATES VISUALES ----------
+  if (!isSameHueFamily(hsl1.h, hsl2.h)) return 0;
+  if (!isSimilarLightness(hsl1.l, hsl2.l)) return 0;
+  if (!isSimilarSaturation(hsl1.s, hsl2.s)) return 0;
+
+  // ---------- DISTANCIAS ----------
   let dh = Math.abs(hsl1.h - hsl2.h);
-  dh = Math.min(dh, 360 - dh) / 180; // 0–1
+  dh = Math.min(dh, 360 - dh) / 180;
 
-  const ds = Math.abs(hsl1.s - hsl2.s); // 0–1
-  const dl = Math.abs(hsl1.l - hsl2.l); // 0–1
+  const ds = Math.abs(hsl1.s - hsl2.s);
+  const dl = Math.abs(hsl1.l - hsl2.l);
 
-  // Pesos (ajustables)
-  const WEIGHT_H = 0.6;
-  const WEIGHT_S = 0.2;
-  const WEIGHT_L = 0.2;
+  // ---------- PESOS PERCEPTUALES ----------
+  const satFactor = (hsl1.s + hsl2.s) / 2;
+
+  const WEIGHT_H = 0.6 * satFactor;
+  const WEIGHT_S = 0.25;
+  const WEIGHT_L = 0.15;
 
   const distance =
     dh * WEIGHT_H +
-    ds * WEIGHT_S +
-    dl * WEIGHT_L;
+    Math.pow(ds, 0.8) * WEIGHT_S +
+    Math.pow(dl, 1.4) * WEIGHT_L;
 
   const similarity = (1 - distance) * 100;
   return Math.max(0, Math.min(100, similarity)).toFixed(1);

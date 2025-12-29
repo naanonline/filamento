@@ -41,33 +41,12 @@ fetch(CSV_URL)
   });
 
 /* ============================
-   HUE / LIGHT / SAT GATES
-============================ */
-function isSameHueFamily(h1, h2) {
-  let dh = Math.abs(h1 - h2);
-  dh = Math.min(dh, 360 - dh);
-  return dh <= 25;
-}
-
-function isSimilarLightness(l1, l2) {
-  return Math.abs(l1 - l2) <= 0.18;
-}
-
-function isSimilarSaturation(s1, s2) {
-  return Math.abs(s1 - s2) <= 0.35;
-}
-
-/* ============================
-   COLOR HELPERS
+   COLOR SIMILARITY
 ============================ */
 function hexToRgb(hex) {
   if (!hex || hex === "#ccc") return null;
   const n = parseInt(hex.replace("#", ""), 16);
-  return {
-    r: (n >> 16) & 255,
-    g: (n >> 8) & 255,
-    b: n & 255
-  };
+  return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
 }
 
 function rgbToHsl(r, g, b) {
@@ -80,7 +59,7 @@ function rgbToHsl(r, g, b) {
   let h, s, l = (max + min) / 2;
 
   if (max === min) {
-    h = s = 0;
+    h = s = 0; // gris
   } else {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
@@ -97,9 +76,6 @@ function rgbToHsl(r, g, b) {
   return { h, s, l };
 }
 
-/* ============================
-   COLOR SIMILARITY (PERCEPTUAL)
-============================ */
 function colorSimilarity(hex1, hex2) {
   const c1 = hexToRgb(hex1);
   const c2 = hexToRgb(hex2);
@@ -108,29 +84,22 @@ function colorSimilarity(hex1, hex2) {
   const hsl1 = rgbToHsl(c1.r, c1.g, c1.b);
   const hsl2 = rgbToHsl(c2.r, c2.g, c2.b);
 
-  // ---- Gates perceptuales
-  if (!isSameHueFamily(hsl1.h, hsl2.h)) return 0;
-  if (!isSimilarLightness(hsl1.l, hsl2.l)) return 0;
-  if (!isSimilarSaturation(hsl1.s, hsl2.s)) return 0;
-
-  // ---- Distancias
+  // Diferencia de Hue (circular)
   let dh = Math.abs(hsl1.h - hsl2.h);
-  dh = Math.min(dh, 360 - dh) / 180;
+  dh = Math.min(dh, 360 - dh) / 180; // 0–1
 
-  const ds = Math.abs(hsl1.s - hsl2.s);
-  const dl = Math.abs(hsl1.l - hsl2.l);
+  const ds = Math.abs(hsl1.s - hsl2.s); // 0–1
+  const dl = Math.abs(hsl1.l - hsl2.l); // 0–1
 
-  // ---- Pesos perceptuales
-  const satFactor = (hsl1.s + hsl2.s) / 2;
-
-  const WEIGHT_H = 0.6 * satFactor;
-  const WEIGHT_S = 0.25;
-  const WEIGHT_L = 0.15;
+  // Pesos (ajustables)
+  const WEIGHT_H = 0.6;
+  const WEIGHT_S = 0.2;
+  const WEIGHT_L = 0.2;
 
   const distance =
     dh * WEIGHT_H +
-    Math.pow(ds, 0.8) * WEIGHT_S +
-    Math.pow(dl, 1.4) * WEIGHT_L;
+    ds * WEIGHT_S +
+    dl * WEIGHT_L;
 
   const similarity = (1 - distance) * 100;
   return Math.max(0, Math.min(100, similarity)).toFixed(1);
@@ -251,22 +220,19 @@ function render() {
 
   if (!baseRow) return;
 
-  const baseKey = `${baseRow.marca}|${baseRow.nombre}|${baseRow.hex}|${baseRow.code}`;
-
   const layout = document.createElement("div");
   layout.className = "compare-layout";
 
+  /* ---- My Spool ---- */
   layout.appendChild(buildMySpool("My Spool", baseRow));
 
+  /* ---- Substitutes ---- */
   const substitutes = rows
-    .filter(r => {
-      if (r.tipoUnico !== baseRow.tipoUnico) return false;
-
-      const key = `${r.marca}|${r.nombre}|${r.hex}|${r.code}`;
-      if (key === baseKey) return false;
-
-      return true;
-    })
+    .filter(
+      r =>
+        r.tipoUnico === baseRow.tipoUnico &&
+        r.marca !== baseRow.marca
+    )
     .map(r => ({
       ...r,
       similarity: colorSimilarity(baseRow.hex, r.hex)

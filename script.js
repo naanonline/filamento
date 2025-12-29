@@ -41,13 +41,12 @@ fetch(CSV_URL)
   });
 
 /* ============================
-   HUE SIMILARITY
+   HUE / LIGHT / SAT GATES
 ============================ */
-
 function isSameHueFamily(h1, h2) {
   let dh = Math.abs(h1 - h2);
   dh = Math.min(dh, 360 - dh);
-  return dh <= 25; // tolerancia perceptual
+  return dh <= 25;
 }
 
 function isSimilarLightness(l1, l2) {
@@ -59,12 +58,16 @@ function isSimilarSaturation(s1, s2) {
 }
 
 /* ============================
-   COLOR SIMILARITY
+   COLOR HELPERS
 ============================ */
 function hexToRgb(hex) {
   if (!hex || hex === "#ccc") return null;
   const n = parseInt(hex.replace("#", ""), 16);
-  return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+  return {
+    r: (n >> 16) & 255,
+    g: (n >> 8) & 255,
+    b: n & 255
+  };
 }
 
 function rgbToHsl(r, g, b) {
@@ -77,7 +80,7 @@ function rgbToHsl(r, g, b) {
   let h, s, l = (max + min) / 2;
 
   if (max === min) {
-    h = s = 0; // gris
+    h = s = 0;
   } else {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
@@ -94,6 +97,9 @@ function rgbToHsl(r, g, b) {
   return { h, s, l };
 }
 
+/* ============================
+   COLOR SIMILARITY (PERCEPTUAL)
+============================ */
 function colorSimilarity(hex1, hex2) {
   const c1 = hexToRgb(hex1);
   const c2 = hexToRgb(hex2);
@@ -102,19 +108,19 @@ function colorSimilarity(hex1, hex2) {
   const hsl1 = rgbToHsl(c1.r, c1.g, c1.b);
   const hsl2 = rgbToHsl(c2.r, c2.g, c2.b);
 
-  // ---------- GATES VISUALES ----------
+  // ---- Gates perceptuales
   if (!isSameHueFamily(hsl1.h, hsl2.h)) return 0;
   if (!isSimilarLightness(hsl1.l, hsl2.l)) return 0;
   if (!isSimilarSaturation(hsl1.s, hsl2.s)) return 0;
 
-  // ---------- DISTANCIAS ----------
+  // ---- Distancias
   let dh = Math.abs(hsl1.h - hsl2.h);
   dh = Math.min(dh, 360 - dh) / 180;
 
   const ds = Math.abs(hsl1.s - hsl2.s);
   const dl = Math.abs(hsl1.l - hsl2.l);
 
-  // ---------- PESOS PERCEPTUALES ----------
+  // ---- Pesos perceptuales
   const satFactor = (hsl1.s + hsl2.s) / 2;
 
   const WEIGHT_H = 0.6 * satFactor;
@@ -245,19 +251,22 @@ function render() {
 
   if (!baseRow) return;
 
+  const baseKey = `${baseRow.marca}|${baseRow.nombre}|${baseRow.hex}|${baseRow.code}`;
+
   const layout = document.createElement("div");
   layout.className = "compare-layout";
 
-  /* ---- My Spool ---- */
   layout.appendChild(buildMySpool("My Spool", baseRow));
 
-  /* ---- Substitutes ---- */
   const substitutes = rows
-    .filter(
-      r =>
-        r.tipoUnico === baseRow.tipoUnico &&
-        r.marca !== baseRow.marca
-    )
+    .filter(r => {
+      if (r.tipoUnico !== baseRow.tipoUnico) return false;
+
+      const key = `${r.marca}|${r.nombre}|${r.hex}|${r.code}`;
+      if (key === baseKey) return false;
+
+      return true;
+    })
     .map(r => ({
       ...r,
       similarity: colorSimilarity(baseRow.hex, r.hex)

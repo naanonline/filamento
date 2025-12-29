@@ -59,7 +59,7 @@ function rgbToHsl(r, g, b) {
   let h, s, l = (max + min) / 2;
 
   if (max === min) {
-    h = s = 0; // gris
+    h = s = 0;
   } else {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
@@ -84,25 +84,18 @@ function colorSimilarity(hex1, hex2) {
   const hsl1 = rgbToHsl(c1.r, c1.g, c1.b);
   const hsl2 = rgbToHsl(c2.r, c2.g, c2.b);
 
-  // Diferencia de Hue (circular)
   let dh = Math.abs(hsl1.h - hsl2.h);
-  dh = Math.min(dh, 360 - dh) / 180; // 0–1
+  dh = Math.min(dh, 360 - dh) / 180;
 
-  const ds = Math.abs(hsl1.s - hsl2.s); // 0–1
-  const dl = Math.abs(hsl1.l - hsl2.l); // 0–1
-
-  // Pesos (ajustables)
-  const WEIGHT_H = 0.6;
-  const WEIGHT_S = 0.2;
-  const WEIGHT_L = 0.2;
+  const ds = Math.abs(hsl1.s - hsl2.s);
+  const dl = Math.abs(hsl1.l - hsl2.l);
 
   const distance =
-    dh * WEIGHT_H +
-    ds * WEIGHT_S +
-    dl * WEIGHT_L;
+    dh * 0.6 +
+    ds * 0.2 +
+    dl * 0.2;
 
-  const similarity = (1 - distance) * 100;
-  return Math.max(0, Math.min(100, similarity)).toFixed(1);
+  return Math.max(0, Math.min(100, (1 - distance) * 100)).toFixed(1);
 }
 
 /* ============================
@@ -155,10 +148,7 @@ function onBrandChange() {
     )
   ];
 
-  typeFilter.innerHTML += types
-    .map(t => `<option value="${t}">${t}</option>`)
-    .join("");
-
+  typeFilter.innerHTML += types.map(t => `<option value="${t}">${t}</option>`).join("");
   typeFilter.disabled = false;
   render();
 }
@@ -186,14 +176,9 @@ function onTypeChange() {
         .map(r => r.nombre)
         .filter(Boolean)
     )
-  ].sort((a, b) =>
-    a.localeCompare(b, undefined, { sensitivity: "base" })
-  );
+  ].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
 
-  colorFilter.innerHTML += colors
-    .map(c => `<option value="${c}">${c}</option>`)
-    .join("");
-
+  colorFilter.innerHTML += colors.map(c => `<option value="${c}">${c}</option>`).join("");
   colorFilter.disabled = false;
   render();
 }
@@ -212,27 +197,26 @@ function render() {
   if (!brand || !type || !colorName) return;
 
   const baseRow = rows.find(
-    r =>
-      r.marca === brand &&
-      r.tipo === type &&
-      r.nombre === colorName
+    r => r.marca === brand && r.tipo === type && r.nombre === colorName
   );
-
   if (!baseRow) return;
+
+  const baseKey = `${baseRow.marca}|${baseRow.nombre}|${baseRow.hex}|${baseRow.code}`; // NUEVO
 
   const layout = document.createElement("div");
   layout.className = "compare-layout";
 
-  /* ---- My Spool ---- */
   layout.appendChild(buildMySpool("My Spool", baseRow));
 
-  /* ---- Substitutes ---- */
   const substitutes = rows
-    .filter(
-      r =>
-        r.tipoUnico === baseRow.tipoUnico &&
-        r.marca !== baseRow.marca
-    )
+    .filter(r => {
+      if (r.tipoUnico !== baseRow.tipoUnico) return false;
+
+      const key = `${r.marca}|${r.nombre}|${r.hex}|${r.code}`;
+      if (key === baseKey) return false; // NUEVO (excluir solo el base exacto)
+
+      return true;
+    })
     .map(r => ({
       ...r,
       similarity: colorSimilarity(baseRow.hex, r.hex)
@@ -240,10 +224,7 @@ function render() {
     .filter(r => r.similarity >= SIMILARITY_THRESHOLD)
     .sort((a, b) => b.similarity - a.similarity);
 
-  layout.appendChild(
-    buildSubstitutesColumn("Substitutes", substitutes)
-  );
-
+  layout.appendChild(buildSubstitutesColumn("Substitutes", substitutes));
   results.appendChild(layout);
 }
 
@@ -252,29 +233,17 @@ function render() {
 ============================ */
 function buildMySpool(title, row) {
   const col = document.createElement("div");
-
-  const h = document.createElement("div");
-  h.className = "column-title";
-  h.textContent = title;
-  col.appendChild(h);
-
-  const grid = document.createElement("div");
-  grid.className = "card-grid";
-
-  const card = document.createElement("div");
-  card.className = "color-card highlight-card";
-
-  card.innerHTML = `
-    <div class="color-swatch" style="background:${row.hex}"></div>
-    <div class="color-brand">${row.marca}</div>
-    <div class="color-type">${row.tipo}</div>
-    <div class="color-name">${row.nombre}</div>
-    <div class="color-code">${row.code || ""}</div>
-  `;
-
-  grid.appendChild(card);
-  col.appendChild(grid);
-
+  col.innerHTML = `
+    <div class="column-title">${title}</div>
+    <div class="card-grid">
+      <div class="color-card highlight-card">
+        <div class="color-swatch" style="background:${row.hex}"></div>
+        <div class="color-brand">${row.marca}</div>
+        <div class="color-type">${row.tipo}</div>
+        <div class="color-name">${row.nombre}</div>
+        <div class="color-code">${row.code || ""}</div>
+      </div>
+    </div>`;
   return col;
 }
 
@@ -283,12 +252,6 @@ function buildMySpool(title, row) {
 ============================ */
 function buildSubstitutesColumn(title, items) {
   const col = document.createElement("div");
-
-  const h = document.createElement("div");
-  h.className = "column-title";
-  h.textContent = title;
-  col.appendChild(h);
-
   const grid = document.createElement("div");
   grid.className = "card-grid";
 
@@ -301,7 +264,6 @@ function buildSubstitutesColumn(title, items) {
 
     const card = document.createElement("div");
     card.className = "color-card";
-
     card.innerHTML = `
       <div class="color-swatch" style="background:${r.hex}"></div>
       <div class="color-brand">${r.marca}</div>
@@ -311,12 +273,11 @@ function buildSubstitutesColumn(title, items) {
       <div class="color-similarity">
         <div class="similarity-value">${r.similarity}%</div>
         <div class="similarity-label">Color Match</div>
-      </div>
-    `;
-
+      </div>`;
     grid.appendChild(card);
   });
 
+  col.innerHTML = `<div class="column-title">${title}</div>`;
   col.appendChild(grid);
   return col;
 }

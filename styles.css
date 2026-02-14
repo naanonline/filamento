@@ -21,7 +21,7 @@ html {
 /* ===== HEADER ===== */
 header {
   text-align: left;
-  margin-bottom: 48px;
+  margin-bottom: 144px;
 }
 
 header h1 {
@@ -42,7 +42,7 @@ header p {
   letter-spacing: -0.01em;
   color: #374151;
   max-width: 520px;
-  margin: 48px 0 144px;
+  margin: 48px 0 48px;
 
   animation: fadeUp 1.5s ease-out both;
 }
@@ -71,11 +71,6 @@ header p {
 
 header * {
   will-change: transform, opacity;
-}
-
-header p2 {
-  font-size: 15px;
-  color: #1f2933;
 }
 
 /* ===== STICKY BAR ===== */

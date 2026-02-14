@@ -222,7 +222,8 @@ function render() {
       similarity: colorSimilarity(baseRow.hex, r.hex)
     }))
     .filter(r => r.similarity >= SIMILARITY_THRESHOLD)
-    .sort((a, b) => b.similarity - a.similarity);
+    .sort((a, b) => b.similarity - a.similarity)
+    .slice(0, 24);
 
   layout.appendChild(buildSubstitutesColumn("Substitutes", substitutes));
   results.appendChild(layout);

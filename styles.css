@@ -163,6 +163,11 @@ header * {
   align-self: start;
 }
 
+.compare-layout > div:first-child .column-title {
+  position: relative;
+  z-index: 1000;
+}
+
 /* ===== RIGHT COLUMN: SUBSTITUTES SCROLL AREA ===== */
 .compare-layout > div:last-child {
   display: flex;
@@ -254,6 +259,8 @@ header * {
   grid-row: span 2;
   padding: 26px;
   border-radius: 24px;
+  position: relative;
+  z-index: 1000;
 }
 
 /* ===== SWATCH (VISIBILIDAD EN COLORES CLAROS) ===== */

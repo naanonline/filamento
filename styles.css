@@ -189,8 +189,7 @@ header * {
   mask-image: linear-gradient(
     to bottom,
     transparent 0px,
-    black 40px,
-    black 100%
+    black 240px
   );
 }
 

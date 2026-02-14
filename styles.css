@@ -236,6 +236,7 @@ header * {
 
 /* ===== HIGHLIGHT CARD (FIXED) ===== */
 .highlight-card {
+  padding-top: 24px;
   grid-column: span 2;
   grid-row: span 2;
   padding: 26px;

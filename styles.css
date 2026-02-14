@@ -161,6 +161,30 @@ header * {
   align-self: start;
 }
 
+/* ===== RIGHT COLUMN: SUBSTITUTES SCROLL AREA ===== */
+.compare-layout > div:last-child {
+  max-height: calc(100vh - 240px); /* mismo offset que MySpool */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Sticky título "Substitutes" */
+.compare-layout > div:last-child .column-title {
+  position: sticky;
+  top: 0;
+  background: #f2f3f5;
+  z-index: 5;
+  padding-bottom: 12px;
+}
+
+/* Solo el grid hace scroll */
+.compare-layout > div:last-child .card-grid {
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 6px; /* opcional para espacio del scrollbar */
+}
+
 @media (max-width: 900px) {
   .compare-layout {
     grid-template-columns: 1fr;

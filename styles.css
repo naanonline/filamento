@@ -161,6 +161,7 @@ header * {
   position: sticky;
   top: 240px; /* ajusta si el header es más alto */
   align-self: start;
+  z-index: 1001;
 }
 
 .compare-layout > div:first-child .column-title {
@@ -178,7 +179,7 @@ header * {
 .compare-layout > div:last-child .column-title {
   position: sticky;
   top: 240px;
-  z-index: 999;
+  z-index: 500;
   padding: 0 0 20px;
   background: #f2f3f5;
 }

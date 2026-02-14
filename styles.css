@@ -160,9 +160,6 @@ header * {
   position: sticky;
   top: 280px; /* ajusta si el header es más alto */
   align-self: start;
-
-  max-height: calc(100vh - 280px);
-  overflow: hidden;
 }
 
 @media (max-width: 900px) {

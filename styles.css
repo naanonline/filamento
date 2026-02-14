@@ -16,6 +16,11 @@ html {
   max-width: 1320px;
   margin: 0 auto;
   padding: 96px 48px 0;
+
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #f2f3f5;
 }
 
 /* ===== HEADER ===== */
@@ -137,6 +142,21 @@ header p2 {
   grid-template-columns: 1fr 2fr;
   gap: 40px;
 }
+
+/* ===== STICKY MY SPOOL ===== */
+.compare-layout > div:first-child {
+  position: sticky;
+  top: 320px; /* ajusta si el header es más alto */
+  align-self: start;
+}
+
+/* ===== SCROLL SOLO EN SUBSTITUTES ===== */
+.compare-layout > div:last-child {
+  max-height: calc(100vh - 320px);
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
 
 @media (max-width: 900px) {
   .compare-layout {
@@ -321,5 +341,17 @@ header p2 {
     content: "";
     position: absolute;
     inset: -6px;
+  }
+
+  /* ===== DESACTIVAR STICKY EN MOBILE ===== */
+  .page {
+    position: relative;
+  }
+
+  .compare-layout > div:first-child,
+  .compare-layout > div:last-child {
+    position: relative;
+    max-height: none;
+    overflow: visible;
   }
 }

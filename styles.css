@@ -191,7 +191,8 @@ header * {
 .column-title {
   font-weight: 800;
   font-size: 16px;
-  margin-bottom: 16px;
+  padding-bottom: 16px;
+  background: #f2f3f5;
 }
 
 .card-grid {

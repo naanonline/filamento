@@ -77,7 +77,7 @@ header * {
 .sticky-bar {
   position: sticky;
   top: 0px;
-  padding-top: 72px;
+  padding-top: 58px;
   background: #f2f3f5;
   z-index: 999;
   padding-bottom: 48px;

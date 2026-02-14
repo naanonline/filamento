@@ -259,7 +259,7 @@ function buildSubstitutesColumn(title, items) {
   if (items.length === 0) {
      const empty = document.createElement("div");
      empty.className = "no-results";
-     empty.textContent = "No strong substitutes found.";
+     empty.textContent = "💬 Sorry! Can't find a reliable substitute for this request.";
      grid.appendChild(empty);
   }
   

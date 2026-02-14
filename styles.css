@@ -191,12 +191,13 @@ header * {
 .column-title {
   font-weight: 800;
   font-size: 18px;
-  padding-bottom: 24px;
+  padding-bottom: 20px;
   background: #f2f3f5;
 }
 
 .card-grid {
   display: grid;
+  padding-top: 20px;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 20px;
 }

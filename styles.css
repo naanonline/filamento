@@ -145,7 +145,7 @@ header * {
 #results {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 16px 80px;
+  padding: 8px 16px 80px;
 }
 
 /* ===== COMPARISON LAYOUT ===== */
@@ -153,6 +153,7 @@ header * {
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 40px;
+  margin-top: 0;
 }
 
 /* ===== STICKY MY SPOOL ===== */

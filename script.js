@@ -223,7 +223,7 @@ function render() {
     }))
     .filter(r => r.similarity >= SIMILARITY_THRESHOLD)
     .sort((a, b) => b.similarity - a.similarity)
-    .slice(0, 24);
+    /*.slice(0, 24);*/
 
   layout.appendChild(buildSubstitutesColumn("Substitutes", substitutes));
   results.appendChild(layout);

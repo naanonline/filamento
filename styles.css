@@ -165,20 +165,6 @@ header * {
 .compare-layout > div:last-child {
   display: flex;
   flex-direction: column;
-
-  /* 👇 máscara aplicada aquí, no en el grid */
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    black 0px,
-    transparent 40px,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    black 0px,
-    transparent 40px,
-    transparent 100%
-  );
 }
 
 /* Sticky título "Substitutes" */

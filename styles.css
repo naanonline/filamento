@@ -200,7 +200,6 @@ header * {
   padding-top: 8px;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 20px;
-  background: #f2f3f5;
 }
 
 .compare-layout > div:first-child .card-grid {

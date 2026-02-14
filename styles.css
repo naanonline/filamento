@@ -26,8 +26,7 @@ header {
 }
 
 header h1 {
-  font-family: "BBH Bartle", system-ui, sans-serif;
-  font-weight: 800;
+  font-family: "Climate Crisis", system-ui, sans-serif;
   font-size: clamp(56px, 6.5vw, 92px);
   letter-spacing: -0.01em;
   line-height: 0.9;

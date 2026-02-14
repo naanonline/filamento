@@ -180,6 +180,17 @@ header * {
   overflow-y: auto;
   flex: 1;
   padding-right: 6px; /* opcional para espacio del scrollbar */
+
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0px,
+    black 24px
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0px,
+    black 24px
+  );
 }
 
 @media (max-width: 900px) {

@@ -80,8 +80,7 @@ header * {
   padding-top: 72px;
   background: #f2f3f5;
   z-index: 999;
-  padding-bottom: 24px;
-  margin-bottom: 24px;
+  padding-bottom: 48px;
 }
 
 /* Label arriba de filtros */

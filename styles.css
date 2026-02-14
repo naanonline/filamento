@@ -21,7 +21,7 @@ html {
 /* ===== HEADER ===== */
 header {
   text-align: left;
-  margin-bottom: 48px;
+  margin-bottom: 144px;
 }
 
 header h1 {
@@ -42,7 +42,7 @@ header p {
   letter-spacing: -0.01em;
   color: #374151;
   max-width: 520px;
-  margin: 48px 0 144px;
+  margin: 48px 0 48px;
 
   animation: fadeUp 1.5s ease-out both;
 }
@@ -86,7 +86,7 @@ header p2 {
   flex-wrap: wrap;
   
   position: sticky;
-  top: 72px;
+  top: 0;
   z-index: 30;
   background: #f2f3f5;
   padding: 16px 0;

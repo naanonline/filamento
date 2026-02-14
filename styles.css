@@ -190,15 +190,15 @@ header * {
 /* ===== COLUMNS ===== */
 .column-title {
   font-weight: 800;
-  font-size: 16px;
-  padding-bottom: 16px;
+  font-size: 18px;
+  padding-bottom: 24px;
   background: #f2f3f5;
 }
 
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 22px;
+  gap: 20px;
 }
 
 .compare-layout > div:first-child .card-grid {

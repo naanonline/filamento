@@ -150,14 +150,6 @@ header p2 {
   align-self: start;
 }
 
-/* ===== SCROLL SOLO EN SUBSTITUTES ===== */
-.compare-layout > div:last-child {
-  max-height: calc(100vh - 320px);
-  overflow-y: auto;
-  padding-right: 6px;
-}
-
-
 @media (max-width: 900px) {
   .compare-layout {
     grid-template-columns: 1fr;

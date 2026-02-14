@@ -185,7 +185,7 @@ header * {
 .compare-layout > div:last-child .column-title {
   position: sticky;
   top: 240px;
-  z-index: 5;
+  z-index: 999;
   padding-bottom: 12px;
 }
 

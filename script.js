@@ -11,6 +11,10 @@ const SIMILARITY_THRESHOLD = 80;
 ============================ */
 let rows = [];
 
+const brandFilter = document.getElementById("brandFilter");
+const typeFilter = document.getElementById("typeFilter");
+const colorFilter = document.getElementById("colorFilter");
+
 /* ============================
    FETCH
 ============================ */

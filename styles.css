@@ -93,7 +93,7 @@ header * {
 .filters {
   display: flex;
   gap: 18px;
-  margin: 0px 0 64px;
+  margin: 0px 0 32px;
   flex-wrap: wrap;
   
   top: 0;
@@ -144,7 +144,7 @@ header * {
 #results {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 48px 16px 80px;
+  padding: 24px 16px 80px;
 }
 
 /* ===== COMPARISON LAYOUT ===== */

@@ -76,7 +76,8 @@ header * {
 /* ===== STICKY BAR ===== */
 .sticky-bar {
   position: sticky;
-  top: 0;
+  top: 72px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
   z-index: 40;
   background: #f2f3f5;
   padding-bottom: 24px;
@@ -157,7 +158,7 @@ header * {
 /* ===== STICKY MY SPOOL ===== */
 .compare-layout > div:first-child {
   position: sticky;
-  top: 100px; /* ajusta si el header es más alto */
+  top: 160px; /* ajusta si el header es más alto */
   align-self: start;
 }
 

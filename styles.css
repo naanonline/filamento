@@ -182,18 +182,9 @@ header * {
   z-index: 500;
   padding: 0 0 20px;
   background: #f2f3f5;
-}
 
-/* fondo extendido sin romper layout */
-.compare-layout > div:last-child .column-title::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100vw;
-  background: #f2f3f5;
-  z-index: -1;
+  box-shadow: 0 0 0 100vw #f2f3f5;
+  clip-path: inset(0 -100vw);
 }
 
 /* Solo el grid hace scroll */

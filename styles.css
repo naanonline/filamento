@@ -173,7 +173,7 @@ header * {
   position: sticky;
   top: 240px;
   z-index: 999;
-  padding-bottom: 12px;
+  padding-bottom: 22px;
 }
 
 /* Solo el grid hace scroll */
@@ -191,13 +191,13 @@ header * {
 .column-title {
   font-weight: 800;
   font-size: 18px;
-  padding-bottom: 14px;
+  padding-bottom: 10px;
   background: #f2f3f5;
 }
 
 .card-grid {
   display: grid;
-  padding-top: 10px;
+  padding-top: 5px;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 20px;
 }

@@ -165,22 +165,8 @@ header * {
 .compare-layout > div:last-child {
   display: flex;
   flex-direction: column;
-}
 
-/* Sticky título "Substitutes" */
-.compare-layout > div:last-child .column-title {
-  position: sticky;
-  top: 240px;
-  z-index: 5;
-  padding-bottom: 12px;
-}
-
-/* Solo el grid hace scroll */
-.compare-layout > div:last-child .card-grid {
-  overflow-y: auto;
-  flex: 1;
-  padding-right: 6px; /* opcional para espacio del scrollbar */
-
+  /* 👇 máscara aplicada aquí, no en el grid */
   -webkit-mask-image: linear-gradient(
     to bottom,
     transparent 0px,
@@ -193,6 +179,19 @@ header * {
     transparent 240px,
     black 240px
   );
+}
+
+/* Sticky título "Substitutes" */
+.compare-layout > div:last-child .column-title {
+  position: sticky;
+  top: 240px;
+  z-index: 5;
+  padding-bottom: 12px;
+}
+
+/* Solo el grid hace scroll */
+.compare-layout > div:last-child .card-grid {
+  padding-right: 6px; /* opcional para espacio del scrollbar */
 }
 
 @media (max-width: 900px) {

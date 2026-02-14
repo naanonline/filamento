@@ -91,9 +91,9 @@ function colorSimilarity(hex1, hex2) {
   const dl = Math.abs(hsl1.l - hsl2.l);
 
   const distance =
-    dh * 0.6 +
-    ds * 0.2 +
-    dl * 0.2;
+    dh * 0.5 +
+    ds * 0.25 +
+    dl * 0.25;
 
   return Math.max(0, Math.min(100, (1 - distance) * 100)).toFixed(1);
 }

@@ -165,6 +165,9 @@ header * {
 .compare-layout > div:last-child {
   display: flex;
   flex-direction: column;
+
+  max-height: calc(100vh - 240px);
+  overflow: hidden;
 }
 
 /* Sticky título "Substitutes" */

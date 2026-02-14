@@ -78,6 +78,22 @@ header p2 {
   color: #1f2933;
 }
 
+/* ===== STICKY BAR ===== */
+.sticky-bar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: #f2f3f5;
+  padding-bottom: 24px;
+}
+
+/* Label arriba de filtros */
+.section-label {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
 /* ===== FILTERS ===== */
 .filters {
   display: flex;
@@ -85,7 +101,6 @@ header p2 {
   margin: 0px 0 64px;
   flex-wrap: wrap;
   
-  position: sticky;
   top: 0;
   z-index: 30;
   background: #f2f3f5;

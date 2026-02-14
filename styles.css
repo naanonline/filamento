@@ -173,7 +173,8 @@ header * {
   position: sticky;
   top: 240px;
   z-index: 999;
-  padding-bottom: 20px;
+  paddong: 0 0 20px;
+  background: #f2f3f5;
 }
 
 /* Solo el grid hace scroll */

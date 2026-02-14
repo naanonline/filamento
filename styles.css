@@ -15,7 +15,7 @@ html {
 .page {
   max-width: 1320px;
   margin: 0 auto;
-  padding: 96px 48px 0;
+  padding: 72px 48px 0;
 }
 
 /* ===== HEADER ===== */
@@ -82,11 +82,11 @@ header p2 {
 .filters {
   display: flex;
   gap: 18px;
-  margin: -24px 0 64px;
+  margin: 0px 0 64px;
   flex-wrap: wrap;
   
   position: sticky;
-  top: 0;
+  top: 16px;
   z-index: 30;
   background: #f2f3f5;
   padding-top: 16px;

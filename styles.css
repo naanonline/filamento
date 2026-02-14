@@ -159,7 +159,7 @@ header * {
 /* ===== STICKY MY SPOOL ===== */
 .compare-layout > div:first-child {
   position: sticky;
-  top: 240px; /* ajusta si el header es más alto */
+  top: 250px; /* ajusta si el header es más alto */
   align-self: start;
   z-index: 1001;
 }
@@ -178,7 +178,7 @@ header * {
 /* Sticky título "Substitutes" */
 .compare-layout > div:last-child .column-title {
   position: sticky;
-  top: 240px;
+  top: 250px;
   z-index: 500;
   padding: 0 0 20px;
   background: #f2f3f5;

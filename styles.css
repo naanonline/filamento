@@ -152,7 +152,7 @@ header * {
 .compare-layout {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  gap: 40px;
+  gap: 20px;
 }
 
 /* ===== STICKY MY SPOOL ===== */

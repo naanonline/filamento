@@ -198,7 +198,7 @@ header * {
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 18px;
+  gap: 22px;
 }
 
 .compare-layout > div:first-child .card-grid {

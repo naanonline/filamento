@@ -80,7 +80,6 @@ header * {
   z-index: 999;
   padding-bottom: 24px;
   margin-bottom: 24px;
-  isolation: isolate;
 }
 
 /* Label arriba de filtros */

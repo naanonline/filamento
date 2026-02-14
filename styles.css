@@ -144,7 +144,7 @@ header * {
 /* ===== RESULTS ===== */
 #results {
   max-width: 1200px;
-  margin: 0;
+  margin: 0 auto;
   padding: 24px 16px 80px;
 }
 
@@ -200,6 +200,7 @@ header * {
   padding-top: 8px;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 20px;
+  background: #f2f3f5;
 }
 
 .compare-layout > div:first-child .card-grid {

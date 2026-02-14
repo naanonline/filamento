@@ -197,7 +197,7 @@ header * {
 
 .card-grid {
   display: grid;
-  padding-top: 5px;
+  padding-top: 8px;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 20px;
 }
@@ -238,7 +238,7 @@ header * {
 .highlight-card {
   grid-column: span 2;
   grid-row: span 2;
-  padding: 60px;
+  padding: 26px;
   border-radius: 24px;
 }
 

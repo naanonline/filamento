@@ -11,10 +11,6 @@ const SIMILARITY_THRESHOLD = 80;
 ============================ */
 let rows = [];
 
-const brandFilter = document.getElementById("brandFilter");
-const typeFilter = document.getElementById("typeFilter");
-const colorFilter = document.getElementById("colorFilter");
-
 /* ============================
    FETCH
 ============================ */
@@ -227,7 +223,6 @@ function render() {
     }))
     .filter(r => r.similarity >= SIMILARITY_THRESHOLD)
     .sort((a, b) => b.similarity - a.similarity);
-   .slice(0, 24);
 
   layout.appendChild(buildSubstitutesColumn("Substitutes", substitutes));
   results.appendChild(layout);

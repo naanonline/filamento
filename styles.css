@@ -78,7 +78,6 @@ header * {
   position: sticky;
   top: 72px;
   z-index: 999;
-  background: #f2f3f5;
   padding-bottom: 24px;
   margin-bottom: 24px;
   isolation: isolate;

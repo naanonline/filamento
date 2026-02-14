@@ -145,7 +145,7 @@ header * {
 #results {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0px 16px 80px;
+  padding: 48px 16px 80px;
 }
 
 /* ===== COMPARISON LAYOUT ===== */
@@ -162,9 +162,7 @@ header * {
   align-self: start;
 
   max-height: calc(100vh - 280px);
-  overflow-y: auto;
-  padding: 12px;
-  margin: 12px;
+  overflow: hidden;
 }
 
 @media (max-width: 900px) {

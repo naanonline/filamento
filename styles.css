@@ -16,11 +16,6 @@ html {
   max-width: 1320px;
   margin: 0 auto;
   padding: 96px 48px 0;
-
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: #f2f3f5;
 }
 
 /* ===== HEADER ===== */
@@ -89,6 +84,13 @@ header p2 {
   gap: 18px;
   margin: -24px 0 64px;
   flex-wrap: wrap;
+  
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: #f2f3f5;
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
 
 .filter-wrap {
@@ -146,7 +148,7 @@ header p2 {
 /* ===== STICKY MY SPOOL ===== */
 .compare-layout > div:first-child {
   position: sticky;
-  top: 320px; /* ajusta si el header es más alto */
+  top: 100px; /* ajusta si el header es más alto */
   align-self: start;
 }
 

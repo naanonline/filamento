@@ -163,17 +163,14 @@ header * {
 
 /* ===== RIGHT COLUMN: SUBSTITUTES SCROLL AREA ===== */
 .compare-layout > div:last-child {
-  max-height: calc(100vh - 240px); /* mismo offset que MySpool */
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
 /* Sticky título "Substitutes" */
 .compare-layout > div:last-child .column-title {
   position: sticky;
-  top: 0;
-  background: #f2f3f5;
+  top: 240px;
   z-index: 5;
   padding-bottom: 12px;
 }

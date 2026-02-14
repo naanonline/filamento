@@ -223,6 +223,7 @@ function render() {
     }))
     .filter(r => r.similarity >= SIMILARITY_THRESHOLD)
     .sort((a, b) => b.similarity - a.similarity);
+   .slice(0, 24);
 
   layout.appendChild(buildSubstitutesColumn("Substitutes", substitutes));
   results.appendChild(layout);
@@ -255,6 +256,13 @@ function buildSubstitutesColumn(title, items) {
   const grid = document.createElement("div");
   grid.className = "card-grid";
 
+  if (items.length === 0) {
+     const empty = document.createElement("div");
+     empty.className = "no-results";
+     empty.textContent = "No strong substitutes found.";
+     grid.appendChild(empty);
+  }
+  
   const seen = new Set();
 
   items.forEach(r => {

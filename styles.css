@@ -181,8 +181,18 @@ header * {
   flex: 1;
   padding-right: 6px; /* opcional para espacio del scrollbar */
 
-  max-height: calc(100vh - 240px);
-  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 240px,
+    black 240px
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 240px,
+    black 240px
+  );
 }
 
 @media (max-width: 900px) {

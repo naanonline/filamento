@@ -111,6 +111,10 @@ header * {
   font-size: 22px;
 }
 
+.logo-reset {
+  cursor: pointer;
+}
+
 /* ===== STICKY BAR ===== */
 .sticky-bar {
   position: sticky;

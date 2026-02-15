@@ -111,7 +111,7 @@ header * {
 /* ===== STICKY BAR ===== */
 .sticky-bar {
   position: sticky;
-  top: 0px;
+  top: 50px;
   padding-top: 58px;
   background: #f2f3f5;
   z-index: 999;
@@ -194,7 +194,7 @@ header * {
 /* ===== STICKY MY SPOOL ===== */
 .compare-layout > div:first-child {
   position: sticky;
-  top: 250px; /* ajusta si el header es más alto */
+  top: 300px; /* ajusta si el header es más alto */
   align-self: start;
   z-index: 1001;
 }
@@ -213,7 +213,7 @@ header * {
 /* Sticky título "Substitutes" */
 .compare-layout > div:last-child .column-title {
   position: sticky;
-  top: 250px;
+  top: 300px;
   z-index: 500;
   padding: 0 0 20px;
   background: #f2f3f5;

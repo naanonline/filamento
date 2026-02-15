@@ -190,6 +190,12 @@ header * {
   padding: 0px 16px 80px;
 }
 
+.result-count {
+  font-weight: 400;
+  font-size: 0.85em;
+  color: #9ca3af;
+}
+
 /* ===== COMPARISON LAYOUT ===== */
 .compare-layout {
   display: grid;

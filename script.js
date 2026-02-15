@@ -313,3 +313,31 @@ document.querySelectorAll(".clear-btn").forEach(btn => {
     }
   });
 });
+
+/* ============================
+   NAVBAR VISIBILITY
+============================ */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const nav = document.querySelector(".main-nav");
+  const heroTitle = document.querySelector("header h1");
+
+  if (!nav || !heroTitle) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) {
+          nav.classList.add("visible");
+        } else {
+          nav.classList.remove("visible");
+        }
+      });
+    },
+    {
+      threshold: 0
+    }
+  );
+
+  observer.observe(heroTitle);
+});

@@ -4,7 +4,7 @@
 const CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vSqQ7ZocXOFSN_kojnrH3dHhf2uHmQ2uFVVcG9FYNlbGg8YiTuS5piDSGyZ3-1P8hVUPcpazMHyOf18/pub?output=csv";
 
-const SIMILARITY_THRESHOLD = 80;
+const SIMILARITY_THRESHOLD = 85;
 
 /* ============================
    STATE

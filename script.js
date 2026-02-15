@@ -237,7 +237,6 @@ function buildMySpool(title, row) {
   col.innerHTML = `
      <div class="column-title">
        ${title}
-       <span class="result-count">(${items.length || 0})</span>
      </div>
      <div class="card-grid">
        <div class="color-card highlight-card">
@@ -289,7 +288,12 @@ function buildSubstitutesColumn(title, items) {
     grid.appendChild(card);
   });
 
-  col.innerHTML = `<div class="column-title">${title}</div>`;
+  col.innerHTML = `
+     <div class="column-title">
+       ${title}
+       <span class="result-count">(${items.length})</span>
+     </div>
+   `;
   col.appendChild(grid);
   return col;
 }

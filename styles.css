@@ -96,7 +96,8 @@ header * {
 }
 
 .main-nav.visible {
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  opacity: 1;
 }
 
 .nav-inner {
@@ -385,6 +386,8 @@ header * {
   color: #9ca3af;
   margin-top: 48px;
   font-size: 0.95rem;
+  animation: fadeUp 0.5s ease-out both;
+  font-style: italic;
 }
 
 /* ===== RESPONSIVE ===== */

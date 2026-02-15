@@ -341,3 +341,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   observer.observe(heroTitle);
 });
+
+/* ============================
+   LOGO RESET
+============================ */
+
+function resetFilters() {
+  brandFilter.value = "";
+  typeFilter.value = "";
+  colorFilter.value = "";
+
+  typeFilter.disabled = true;
+  colorFilter.disabled = true;
+
+  document.getElementById("results").innerHTML = "";
+}
+
+document.querySelectorAll(".logo-reset").forEach(el => {
+  el.style.cursor = "pointer";
+
+  el.addEventListener("click", () => {
+    resetFilters();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+});

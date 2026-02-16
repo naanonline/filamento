@@ -200,8 +200,8 @@ function updateStats() {
   const brandsEl = document.getElementById("stats-brands");
   const recordsEl = document.getElementById("stats-records");
 
-  if (brandsEl) brandsEl.textContent = uniqueBrands;
-  if (recordsEl) recordsEl.textContent = totalRecords;
+  if (brandsEl) brandsEl.textContent = uniqueBrands.toLocaleString("en-US");
+  if (recordsEl) recordsEl.textContent = totalRecords.toLocaleString("en-US");
 }
 
 /* ============================

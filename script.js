@@ -38,6 +38,7 @@ fetch(CSV_URL)
     }));
 
     initFilters();
+    updateStats();
   });
 
 /* ============================
@@ -181,6 +182,26 @@ function onTypeChange() {
   colorFilter.innerHTML += colors.map(c => `<option value="${c}">${c}</option>`).join("");
   colorFilter.disabled = false;
   render();
+}
+
+/* ============================
+   STATS
+============================ */
+
+function updateStats() {
+  if (!rows || rows.length === 0) return;
+
+  const totalRecords = rows.length;
+
+  const uniqueBrands = new Set(
+    rows.map(r => r.marca).filter(Boolean)
+  ).size;
+
+  const brandsEl = document.getElementById("stats-brands");
+  const recordsEl = document.getElementById("stats-records");
+
+  if (brandsEl) brandsEl.textContent = uniqueBrands;
+  if (recordsEl) recordsEl.textContent = totalRecords;
 }
 
 /* ============================

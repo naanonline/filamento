@@ -301,7 +301,7 @@ header * {
   padding: 26px;
   border-radius: 24px;
   position: relative;
-  z-index: 1000;
+  z-index: 500;
 }
 
 /* ===== SWATCH (VISIBILIDAD EN COLORES CLAROS) ===== */

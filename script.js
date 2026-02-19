@@ -197,10 +197,16 @@ function updateStats() {
     rows.map(r => r.marca).filter(Boolean)
   ).size;
 
+  const uniqueTypes = new Set(
+    rows.map(r => r.tipoUnico).filter(Boolean)
+  ).size;
+
   const brandsEl = document.getElementById("stats-brands");
+  const typesEl = document.getElementById("stats-types");
   const recordsEl = document.getElementById("stats-records");
 
   if (brandsEl) brandsEl.textContent = uniqueBrands.toLocaleString("en-US");
+  if (typesEl) typesEl.textContent = uniqueTypes.toLocaleString("en-US");
   if (recordsEl) recordsEl.textContent = totalRecords.toLocaleString("en-US");
 }
 

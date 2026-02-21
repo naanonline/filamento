@@ -446,7 +446,7 @@ header * {
   font-size: 0.8rem;
   font-family: "Monserrat", system-ui, sans-serif;
   color: #6b7280;
-  text-transform: uppercase;
+  text-transform: proper;
 }
 
 /* ===== RESPONSIVE ===== */

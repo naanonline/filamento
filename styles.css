@@ -482,24 +482,30 @@ header * {
     font-size: 16px;
   }
 
-  .card-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
   .color-card {
     border-radius: 22px;
   }
 
   .highlight-card {
-    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 18px;
   }
 
   .highlight-card .color-swatch {
-    height: 200px;
-    border-radius: 18px;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 0;
+    flex-shrink: 0;
   }
 
+  .highlight-card .color-brand,
+  .highlight-card .color-type,
+  .highlight-card .color-name,
+  .highlight-card .color-code {
+    text-align: left;
+  }
 
   .clear-btn {
     right: 8px;
@@ -537,8 +543,7 @@ header * {
   }
 
   .stats-section {
-    opacity: 0.6;
-    transform: scale(0.96);
+    transform: scale(0.9);
     order: 99;
   }
 
@@ -553,6 +558,17 @@ header * {
     top: auto;
     max-height: none;
     overflow: visible;
+  }
+
+  /* My Spool se mantiene 1 sola */
+  .compare-layout > div:first-child .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Substitutes 2 por fila */
+  .compare-layout > div:last-child .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
   }
 
   .compare-layout > div:last-child .column-title {

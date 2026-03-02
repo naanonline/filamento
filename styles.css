@@ -459,6 +459,10 @@ header * {
     flex-direction: column;
   }
 
+  .main-nav {
+    height: 88px;
+  }
+
   .nav-inner {
     padding: 0 20px;
   }
@@ -592,19 +596,19 @@ header * {
   /* ===== CARD TYPOGRAPHY BOOST ===== */
 
   .color-brand {
-    font-size: 1rem;
+    font-size: 0.8rem;
   }
 
   .color-type {
-    font-size: 1.05rem;
+    font-size: 0.85rem;
   }
 
   .color-name {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
   }
 
   .color-code {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
   }
 
   /* ===== SIMILARITY BADGE ===== */

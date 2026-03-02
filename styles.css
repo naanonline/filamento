@@ -451,8 +451,12 @@ header * {
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
-  html {
-    font-size: 48px;
+  .compare-layout,
+  header,
+  .filters,
+  .sticky-bar {
+    transform: scale(1.18);
+    transform-origin: top center;
   }
 
   header {

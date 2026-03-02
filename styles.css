@@ -470,7 +470,14 @@ header * {
     gap: 14px;
   }
 
+  .filter-wrap {
+    flex: none;          /* 🔥 clave */
+    min-width: 100%;
+    max-width: 100%;
+  }
+
   .filters select {
+    height: 52px;
     padding: 16px 48px 16px 20px;
     font-size: 16px;
   }

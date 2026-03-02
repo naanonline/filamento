@@ -450,7 +450,7 @@ header * {
 }
 
 /* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
+@media (max-width: 950px) {
   header {
     padding-bottom: 48px;
   }

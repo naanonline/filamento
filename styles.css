@@ -445,24 +445,23 @@ header * {
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
-.page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 72px 32px 0;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.nav-inner {
-  padding: 0 20px;
-}
-
-#results {
-  width: 100%;
-  margin-left: 50%;
-  padding: 0 0px 80px;
-}
+  .page {
+    margin: 0 auto;
+    padding: 72px 20px 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .nav-inner {
+    padding: 0 20px;
+  }
+  
+  #results {
+    width: 100%;
+    margin: 0;
+    padding: 0 0px 80px;
+  }
 
   header {
     padding-bottom: 3rem;

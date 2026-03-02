@@ -448,7 +448,7 @@ header * {
 
   /* ===== GLOBAL FONT BOOST ===== */
   html {
-    font-size: 24px;
+    font-size: 32px;
   }
 
   .page {
@@ -499,9 +499,9 @@ header * {
   }
 
   .filters select {
-    height: 3.5rem;
+    height: 5rem;
     padding: 1rem 3rem 1rem 1.25rem;
-    font-size: 1rem;
+    font-size: 2rem;
   }
 
   .clear-btn {
@@ -542,6 +542,10 @@ header * {
     grid-template-columns: 1fr;
   }
 
+  .compare-layout > div:last-child .color-swatch {
+    height: 7rem;
+  }
+
   .compare-layout > div:last-child .card-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
@@ -568,8 +572,8 @@ header * {
   }
 
   .highlight-card .color-swatch {
-    width: 6.5rem;
-    height: 6.5rem;
+    width: 9rem;
+    height: 9rem;
     margin-bottom: 0;
     flex-shrink: 0;
   }

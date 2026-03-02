@@ -618,9 +618,13 @@ header * {
   }
 
   /* ===== SIMILARITY BADGE ===== */
-
+  .color-similarity {
+    padding: 10px 26px;
+    top: 12px;
+  }
+  
   .similarity-value {
-    font-size: 1rem;
+    font-size: 0.8rem;
   }
 
   .similarity-label {

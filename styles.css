@@ -452,10 +452,7 @@ header * {
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
   .compare-layout,
-  header,
-  .filters,
-  .sticky-bar {
-    transform: scale(1.18);
+    transform: scale(1.2);
     transform-origin: top center;
   }
 

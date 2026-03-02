@@ -203,7 +203,6 @@ header * {
   grid-template-columns: 1fr 2fr;
   gap: 40px;
   margin-top: 0;
-  padding: 0 clamp(24px, 5vw, 96px);
 }
 
 /* ===== STICKY MY SPOOL ===== */

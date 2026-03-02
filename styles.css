@@ -490,7 +490,6 @@ header * {
     display: flex;
     align-items: center;
     gap: 18px;
-    padding: 18px;
   }
 
   .highlight-card .color-swatch {
@@ -498,6 +497,11 @@ header * {
     height: 120px;
     margin-bottom: 0;
     flex-shrink: 0;
+  }
+
+  .highlight-card > :not(.color-swatch) {
+    display: block;
+    width: 100%;
   }
 
   .highlight-card .color-brand,

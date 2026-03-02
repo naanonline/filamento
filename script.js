@@ -312,7 +312,7 @@ function buildSubstitutesColumn(title, items) {
       <div class="color-code">${r.code || ""}</div>
       <div class="color-similarity">
         <div class="similarity-value">${r.similarity}%</div>
-        <div class="similarity-label">Color Match</div>
+        <div class="similarity-label">Similarity</div>
       </div>`;
     grid.appendChild(card);
   });

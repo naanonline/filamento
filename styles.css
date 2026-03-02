@@ -501,14 +501,14 @@ header * {
   .filters select {
     height: 5rem;
     padding: 1rem 3rem 1rem 1.25rem;
-    font-size: 2rem;
+    font-size: 1.2rem;
   }
 
   .clear-btn {
     right: 0.75rem;
     width: 2.75rem;
     height: 2.75rem;
-    font-size: 1rem;
+    font-size: 1.5rem;
   }
 
   /* ===== SECTION LABELS ===== */
@@ -561,7 +561,7 @@ header * {
   /* ===== CARDS ===== */
 
   .color-card {
-    border-radius: 1.4rem;
+    border-radius: 1.5rem;
     padding: 1.25rem;
   }
 
@@ -572,8 +572,8 @@ header * {
   }
 
   .highlight-card .color-swatch {
-    width: 9rem;
-    height: 9rem;
+    width: 8rem;
+    height: 7rem;
     margin-bottom: 0;
     flex-shrink: 0;
   }
@@ -588,29 +588,29 @@ header * {
   /* ===== CARD TYPOGRAPHY BOOST ===== */
 
   .color-brand {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
   }
 
   .color-type {
-    font-size: 0.85rem;
+    font-size: 1.25rem;
   }
 
   .color-name {
-    font-size: 1.1rem;
+    font-size: 1.5rem;
   }
 
   .color-code {
-    font-size: 0.9rem;
+    font-size: 1.3rem;
   }
 
   /* ===== SIMILARITY BADGE ===== */
 
   .similarity-value {
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
 
   .similarity-label {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
   }
 
   /* ===== STATS ===== */
@@ -621,7 +621,7 @@ header * {
   }
 
   .stats-number {
-    font-size: 3.2rem;
+    font-size: 2rem;
   }
 
 }

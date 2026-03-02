@@ -463,6 +463,12 @@ header * {
     height: 120px;
   }
 
+  .sticky-bar {
+    position: sticky;
+    top: 120px; /* altura nueva del navbar */
+    padding: 1.5rem 0;
+  }
+
   .nav-inner {
     padding: 0 20px;
   }

@@ -267,12 +267,14 @@ function buildMySpool(title, row) {
      </div>
      <div class="card-grid">
        <div class="color-card highlight-card">
-         <div class="color-swatch" style="background:${row.hex}"></div>
-         <div class="color-brand">${row.marca}</div>
-         <div class="color-type">${row.tipo}</div>
-         <div class="color-name">${row.nombre}</div>
-         <div class="color-code">${row.code || ""}</div>
-       </div>
+        <div class="color-swatch" style="background:${row.hex}"></div>
+        <div class="highlight-content">
+          <div class="color-brand">${row.marca}</div>
+          <div class="color-type">${row.tipo}</div>
+          <div class="color-name">${row.nombre}</div>
+          <div class="color-code">${row.code || ""}</div>
+        </div>
+      </div>
      </div>
    `;
   return col;

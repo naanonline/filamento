@@ -451,6 +451,10 @@ header * {
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
+  html {
+    font-size: 20px;
+  }
+  
   header {
     padding-bottom: 48px;
   }

@@ -452,7 +452,7 @@ header * {
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
   html {
-    font-size: 32px;
+    font-size: 48px;
   }
 
   header {

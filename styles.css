@@ -463,6 +463,10 @@ header * {
     padding: 0 20px;
   }
 
+  .nav-logo {
+    font-size: 1.6rem;
+  }
+
   #results {
     width: 100%;
     margin: 0;
@@ -588,19 +592,19 @@ header * {
   /* ===== CARD TYPOGRAPHY BOOST ===== */
 
   .color-brand {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 
   .color-type {
-    font-size: 1.25rem;
+    font-size: 1.05rem;
   }
 
   .color-name {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   .color-code {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
   }
 
   /* ===== SIMILARITY BADGE ===== */

@@ -532,12 +532,31 @@ header * {
   /* ===== DESACTIVAR STICKY EN MOBILE ===== */
   .page {
     position: relative;
+    display: flex;
+    flex-direction: column;
   }
 
+  .stats-section {
+    order: 99;
+  }
+
+  .compare-layout {
+    grid-template-columns: 1fr;
+  }
+
+  /* Desactivar TODOS los stickies */
   .compare-layout > div:first-child,
   .compare-layout > div:last-child {
     position: relative;
+    top: auto;
     max-height: none;
     overflow: visible;
+  }
+
+  .compare-layout > div:last-child .column-title {
+    position: relative;
+    top: auto;
+    box-shadow: none;
+    clip-path: none;
   }
 }

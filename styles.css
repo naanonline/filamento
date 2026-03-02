@@ -241,12 +241,6 @@ header * {
   padding-right: 6px; /* opcional para espacio del scrollbar */
 }
 
-@media (max-width: 900px) {
-  .compare-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* ===== COLUMNS ===== */
 .column-title {
   font-weight: 800;
@@ -452,7 +446,7 @@ header * {
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
   .compare-layout,
-    transform: scale(2);
+    transform: scale(3);
     transform-origin: top center;
   }
 

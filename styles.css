@@ -499,15 +499,10 @@ header * {
     flex-shrink: 0;
   }
 
-  .highlight-card > :not(.color-swatch) {
-    display: block;
-    width: 100%;
-  }
-
-  .highlight-card .color-brand,
-  .highlight-card .color-type,
-  .highlight-card .color-name,
-  .highlight-card .color-code {
+  .highlight-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
     text-align: left;
   }
 

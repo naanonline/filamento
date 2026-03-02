@@ -445,11 +445,6 @@ header * {
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
-  .compare-layout,
-    transform: scale(1);
-    transform-origin: top center;
-  }
-
 .page {
   max-width: 1200px;
   margin: 0 auto;
@@ -464,10 +459,9 @@ header * {
 }
 
 #results {
-  width: 100vw;
+  width: 100%;
   margin-left: 50%;
-  transform: translateX(-50%);
-  padding: 0 80px 80px;
+  padding: 0 0px 80px;
 }
 
   header {

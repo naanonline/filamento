@@ -587,7 +587,7 @@ header * {
 
   .highlight-card .color-swatch {
     width: 14rem;
-    height: 7rem;
+    height: 12rem;
     margin-bottom: 0;
     flex-shrink: 0;
   }

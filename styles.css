@@ -637,9 +637,6 @@ header * {
   .stats-section {
     order: 99;
     transform: none;
-  }
-
-  .stats-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }

@@ -465,7 +465,7 @@ header * {
 
   .sticky-bar {
     position: sticky;
-    top: 120px; /* altura nueva del navbar */
+    top: 115px; /* altura nueva del navbar */
     padding: 1.5rem 0;
 
     margin-left: -2rem;

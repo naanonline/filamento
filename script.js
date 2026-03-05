@@ -106,7 +106,7 @@ function initFilters() {
   const brands = [...new Set(rows.map(r => r.marca))].sort();
 
   brandFilter.innerHTML =
-    `<option value="" disabled selected hidden>Marca</option>` +
+    `<option value="" disabled selected hidden>Brand</option>` +
     brands.map(b => `<option value="${b}">${b}</option>`).join("");
 
   typeFilter.innerHTML =
